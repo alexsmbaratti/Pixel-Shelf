@@ -6,9 +6,11 @@
 </head>
 <body>
 <%- include('partials/navbar') %>
+<div class="container">
 <h1 class="title">Add a Game</h1>
 <h6 class="subtitle is-6">Or add many games at once with <a href="/mass_import">Mass Import</a></h6>
 
+<h1 class="title is-4">Game Information</h1>
 <div class="field">
     <label class="label">Title</label>
     <div class="control">
@@ -16,5 +18,57 @@
     </div>
 </div>
 
+<div class="field">
+    <label class="label">Platform</label>
+    <div class="control">
+        <div class="select">
+            <select>
+                <option>Select platform</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<h1 class="title is-4">Edition Information</h1>
+<div class="field">
+    <label class="label">Edition</label>
+    <div class="control">
+        <input class="input" type="text" placeholder="i.e. Standard Edition">
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">MSRP</label>
+    <h1 class="subtitle is-6">How much does this normally cost?</h1>
+    <div class="control">
+        <input class="input" type="text" placeholder="i.e. 59.99">
+    </div>
+</div>
+
+<h1 class="title is-4">Your Copy's Information</h1>
+<div class="field">
+    <label class="label">Cost</label>
+    <h1 class="subtitle is-6">How much did you pay for it?</h1>
+    <div class="control">
+        <input class="input" type="text" placeholder="i.e. 29.99">
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">Condition</label>
+    <div class="control">
+        <div class="select">
+            <select>
+                <option>New</option>
+                <option>Used</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="control">
+    <button class="button is-link">Submit</button>
+</div>
+</div>
 </body>
 </html>
