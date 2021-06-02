@@ -6,4 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('add', { title: 'Pixel Shelf' });
 });
 
+router.get('/mass', function(req, res, next) {
+  res.render('mass', { title: 'Pixel Shelf' });
+});
+
 module.exports = router;
