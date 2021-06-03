@@ -29,23 +29,24 @@ CREATE TABLE edition
 
 CREATE TABLE library
 (
-    cost      REAL,
-    month     INTEGER,
-    day       INTEGER,
-    year      INTEGER,
-    editionid INTEGER,
+    cost       REAL,
+    month      INTEGER,
+    day        INTEGER,
+    year       INTEGER,
+    editionid  INTEGER,
     retailerid INTEGER,
-    id        INTEGER PRIMARY KEY,
+    new        INTEGER,
+    id         INTEGER PRIMARY KEY,
     FOREIGN KEY (editionid) REFERENCES edition (id)
-    FOREIGN KEY (retailerid) REFERENCES retailer (id)
+        FOREIGN KEY (retailerid) REFERENCES retailer (id)
 );
 
 CREATE TABLE retailer
 (
     retailer TEXT,
-    lat    REAL,
-    long    REAL,
-    id      INTEGER PRIMARY KEY
+    lat      REAL,
+    long     REAL,
+    id       INTEGER PRIMARY KEY
 );
 
 INSERT INTO platform
@@ -55,4 +56,4 @@ VALUES ('The Legend of Zelda: Breath of the Wild', 1, 1);
 INSERT INTO edition
 VALUES ('Standard Edition', NULL, 59.99, 1, 1);
 INSERT INTO library
-VALUES (59.99, 4, 3, 2017, 1, NULL, 1);
+VALUES (59.99, 4, 3, 2017, 1, NULL, 1, 1);
