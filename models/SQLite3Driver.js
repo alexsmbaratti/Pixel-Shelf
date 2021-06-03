@@ -18,11 +18,10 @@ SQLite3Driver.prototype.getLibrary = function getLibrary() {
                 }
                 let result = [];
                 rows.forEach((row) => {
-                    console.log(row);
                     result.push({
                         "title": row.title,
                         "platform": row.name,
-                        "date-added": row.month + '-' + row.day + '-' + row.year,
+                        "dateAdded": row.month + '-' + row.day + '-' + row.year,
                         "cost": row.cost,
                         "edition": row.name
                     });

@@ -17,7 +17,15 @@
     </tr>
     </thead>
     <tbody>
-
+    <% library.forEach(function(game) { %>
+        <tr>
+            <th><%= game.title %></th>
+            <td><%= game.platform %></td>
+            <td><%= game.dateAdded %></td>
+            <td><%= game.cost %></td>
+            <td><%= game.edition %></td>
+        </tr>
+    <% }); %>
     </tbody>
 </table>
 </body>
