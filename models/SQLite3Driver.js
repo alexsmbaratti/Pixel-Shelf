@@ -11,7 +11,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary() {
                 reject(err);
             }
             console.log('Connected to SQLite3 DB');
-            let sql = 'SELECT game.title, platform.name, library.month, library.day, library.year, library.cost FROM game, platform, edition, library INNER JOIN edition e ON editionid = e.id INNER JOIN game g ON edition.gameid = g.id INNER JOIN platform p ON p.id = game.platformid';
+            let sql = 'SELECT game.id, game.title, platform.name, library.month, library.day, library.year, library.cost FROM game, platform, edition, library INNER JOIN edition e ON editionid = e.id INNER JOIN game g ON edition.gameid = g.id INNER JOIN platform p ON p.id = game.platformid';
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -19,6 +19,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary() {
                 let result = [];
                 rows.forEach((row) => {
                     result.push({
+                        "id": row.id,
                         "title": row.title,
                         "platform": row.name,
                         "dateAdded": row.month + '-' + row.day + '-' + row.year,

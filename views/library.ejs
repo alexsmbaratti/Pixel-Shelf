@@ -19,7 +19,7 @@
     <tbody>
     <% library.forEach(function(game) { %>
         <tr>
-            <th><%= game.title %></th>
+            <th><a href="/library/<%= game.id %>"><%= game.title %></a></th>
             <td><%= game.platform %></td>
             <td><%= game.dateAdded %></td>
             <td><%= game.cost %></td>
