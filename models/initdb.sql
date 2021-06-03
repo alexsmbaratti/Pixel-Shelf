@@ -19,11 +19,11 @@ CREATE TABLE platform
 
 CREATE TABLE edition
 (
-    name   TEXT,
-    upc    TEXT,
-    msrp   REAL,
-    gameid INTEGER,
-    id     INTEGER PRIMARY KEY,
+    edition TEXT,
+    upc     TEXT,
+    msrp    REAL,
+    gameid  INTEGER,
+    id      INTEGER PRIMARY KEY,
     FOREIGN KEY (gameid) REFERENCES game (id)
 );
 
