@@ -13,7 +13,11 @@ function submit() {
             "edition": document.getElementById("edition-text").value,
             "condition": conditionSelect.selectedIndex == 0,
             "msrp": document.getElementById("msrp-text").value,
-            "cost": document.getElementById("cost-text").value
+            "cost": document.getElementById("cost-text").value,
+            "month": 1,
+            "day": 1,
+            "year": 1,
+            "upc": "1"
         };
 
         console.log(params);

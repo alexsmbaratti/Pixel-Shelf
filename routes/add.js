@@ -14,7 +14,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function (req, res) {
+  let driver = new SQLite3Driver();
   console.log(req.body);
+  driver.addGame(req.body).then(result => {
+  console.log("MADE IT");
+    console.log(result);
+  }).catch(err => {
+    res.render('error', {error: err});
+  });
 });
 
 router.get('/mass', function(req, res, next) {
