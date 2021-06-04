@@ -92,30 +92,31 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
 
 SQLite3Driver.prototype.addGame = function addGame(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, (err) => {
+        let db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, (err) => {
             if (err) {
-                SQLite3Driver.prototype.db.close();
+                console.log(err);
                 reject(err);
             }
-            console.log("MADE IT1")
-            SQLite3Driver.prototype.db.all(`INSERT INTO game VALUES (${json.title}, ${json.platform})`, ['C'], (err) => {
+            db.run(`INSERT INTO game
+                    VALUES (?, ?, ?)`, [`${json.title}`, `${json.platform}`], (err) => {
                 if (err) {
-                    SQLite3Driver.prototype.db.close();
+                    console.log(err);
                     reject(err);
                 }
-                console.log("MADE IT2")
-                SQLite3Driver.prototype.db.all(`INSERT INTO edition VALUES (${json.edition}, ${json.upc}, ${json.msrp}, ${this.lastID})`, ['C'], (err) => {
+                let gameID = this.lastID;
+                console.log(`A row has been inserted with rowid ${this.lastID}`);
+                db.run(`INSERT INTO edition
+                        VALUES (?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${gameID}`], (err) => {
                     if (err) {
-                        SQLite3Driver.prototype.db.close();
+                        console.log(err);
                         reject(err);
                     }
-                    console.log("MADE IT3")
-                    SQLite3Driver.prototype.db.all(`INSERT INTO library VALUES (${json.cost}, ${json.month}, ${json.day}, ${json.year}, ${this.lastID})`, ['C'], (err) => {
+                    let editionID = this.lastID;
+                    SQLite3Driver.prototype.db.run(`INSERT INTO library
+                                                    VALUES (?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${editionID}`], (err) => {
                         if (err) {
-                            SQLite3Driver.prototype.db.close();
                             reject(err);
                         }
-                        console.log("MADE IT4")
                         SQLite3Driver.prototype.db.close();
                         resolve();
                     });
