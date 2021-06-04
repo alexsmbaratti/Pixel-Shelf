@@ -3,12 +3,40 @@
 <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <%
+    let date = new Date(Date.parse(entry.date));
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
 </head>
 <body>
 <%- include('partials/navbar') %>
 <div class="container">
-    <h1 class="title"><%= entry.title %></h1>
-    <h1 class="subtitle"><%= entry.platform %></h1>
-</div>
+
+    <div class="tile is-ancestor">
+        <div class="tile">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <h1 class="title"><%= entry.title %></h1>
+                    <h1 class="title is-5"><%= entry.platform %></h1>
+                    <h1 class="subtitle"><%= entry.edition %></h1>
+                </article>
+                <div class="tile">
+                    <div class="tile is-parent is-vertical">
+                        <article class="tile is-parent box is-vertical">
+                            <h1 class="title is-4">Collection Information</h1>
+                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDay() %>
+                                , <%= date.getFullYear() %></h1>
+                        </article>
+                    </div>
+                    <div class="tile is-parent is-vertical">
+                        <article class="tile is-parent box is-vertical">
+                            <h1 class="title is-4">Purchase Information</h1>
+                            <h1 class="subtitle">Bought at</h1>
+                            <h1 class="subtitle">Bought for <%= entry.cost %></h1>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

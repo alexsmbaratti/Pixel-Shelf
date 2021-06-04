@@ -71,6 +71,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                 }
                 let result = {};
                 rows.forEach((row) => {
+                    console.log(row)
                     result = {
                         "title": row.title,
                         "platform": row.name,
@@ -78,7 +79,8 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                         "msrp": row.msrp,
                         "upc": row.upc,
                         "edition": row.edition,
-                        "new": row.new == 1
+                        "new": row.new == 1,
+                        "date": row.year + '-' + row.month + '-' + row.day
                     };
                 });
                 SQLite3Driver.prototype.db.close();
