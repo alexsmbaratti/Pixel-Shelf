@@ -23,7 +23,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary() {
                         "platform": row.name,
                         "dateAdded": row.month + '-' + row.day + '-' + row.year,
                         "cost": row.cost,
-                        "edition": row.name
+                        "edition": row.edition
                     });
                 });
                 SQLite3Driver.prototype.db.close();
