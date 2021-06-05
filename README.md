@@ -11,4 +11,5 @@ sqlite3 pixelshelf.db
 .read initdb.sql
 .quit
 ```
-4. Run `npm start` to run the web server on localhost:3000
+4. Run `node-sass --omit-source-map-url sass/styles.scss public/stylesheets/styles.css` from the project foler to build the CSS
+5. Run `npm start` to run the web server on localhost:3000

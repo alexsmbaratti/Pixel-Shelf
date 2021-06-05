@@ -5,6 +5,7 @@ $white-ter: hsl(0, 0%, 96%);
 $black-ter: hsl(0, 0%, 15%);
 $black-bis: hsl(0, 0%, 7%);
 $black: hsl(0, 0%, 4%);
+$grey: hsl(0, 0%, 25%);
 $epic-gamer-green: hsl(146, 100%, 39%);
 
 $primary: $epic-gamer-green;
@@ -21,6 +22,12 @@ $label-color: $white-ter;
 $table-row-hover-background-color: $epic-gamer-green;
 $table-striped-row-even-hover-background-color: $epic-gamer-green;
 $table-striped-row-even-background-color: $black-ter;
+$navbar-background-color: $grey;
+$navbar-item-color: $white;
+$navbar-item-hover-background-color: $epic-gamer-green;
+$navbar-item-hover-color: $white;
+$navbar-dropdown-arrow: $epic-gamer-green;
+$dropdown-item-color: $black;
 
 @charset "utf-8";
 @import "../node_modules/bulma/bulma.sass";
