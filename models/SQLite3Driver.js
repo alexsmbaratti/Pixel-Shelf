@@ -64,7 +64,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.*, edition.*, library.* FROM library, game, platform, edition INNER JOIN edition e ON editionid = e.id INNER JOIN game g ON edition.gameid = g.id INNER JOIN platform p ON p.id = game.platformid WHERE library.id = ' + id + ' LIMIT 1';
+            let sql = 'SELECT game.*, platform.*, edition.*, library.* FROM library, game, platform, edition WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid AND library.id = ' + id + ' LIMIT 1';
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
