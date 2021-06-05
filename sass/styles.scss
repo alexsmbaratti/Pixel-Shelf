@@ -1,4 +1,24 @@
 // node-sass --omit-source-map-url sass/styles.scss public/stylesheets/styles.css
 
+$white: #ffffff;
+$white-ter: hsl(0, 0%, 96%);
+$black-ter: hsl(0, 0%, 15%);
+$black-bis: hsl(0, 0%, 7%);
+$black: hsl(0, 0%, 4%);
+$epic-gamer-green: hsl(146, 100%, 39%);
+
+$primary: $epic-gamer-green;
+
+$body-background-color: $black-ter;
+$title-color: $white;
+$subtitle-color: $white-ter;
+$table-body-background-color: $black-bis;
+$table-head-background-color: $black-ter;
+$table-cell-heading-color: $white-ter;
+$table-color: $white-ter;
+$table-head-cell-color: $white-ter;
+$label-color: $white-ter;
+$table-row-hover-background-color: $epic-gamer-green;
+
 @charset "utf-8";
 @import "../node_modules/bulma/bulma.sass";
