@@ -8,6 +8,7 @@ $black: hsl(0, 0%, 4%);
 $grey: hsl(0, 0%, 25%);
 $grey-ter: hsl(0, 0%, 29%);
 $epic-gamer-green: hsl(146, 100%, 39%);
+$text-light: $white;
 
 $primary: $epic-gamer-green;
 
@@ -31,6 +32,7 @@ $navbar-dropdown-arrow: $white;
 $navbar-dropdown-background-color: $black-ter;
 $box-background-color: $grey;
 $card-background-color: $grey;
+$card-color: $white;
 
 @charset "utf-8";
 @import "../node_modules/bulma/bulma.sass";

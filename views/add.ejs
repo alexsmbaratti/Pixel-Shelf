@@ -7,14 +7,14 @@
 </head>
 <body>
 <%- include('partials/navbar') %>
-<div class="container">
+<div class="container pt-5">
     <div class="card">
         <div class="card-content">
             <div class="content">
-                <h1 class="title">Add a Game</h1>
-                <h6 class="subtitle is-6">Or add many games at once with <a href="/add/mass">Mass Import</a></h6>
+                <h1 class="title has-text-light">Add a Game</h1>
+                <h6 class="subtitle is-6 has-text-light">Or add many games at once with <a href="/add/mass">Mass Import</a></h6>
 
-                <h1 class="title is-4">Game Information</h1>
+                <h1 class="title is-4 has-text-light">Game Information</h1>
                 <div class="field">
                     <label class="label">Title</label>
                     <div class="control">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
 
-                <h1 class="title is-4">Edition Information</h1>
+                <h1 class="title is-4 has-text-light">Edition Information</h1>
                 <div class="field">
                     <label class="label">Edition</label>
                     <div class="control">
@@ -46,7 +46,7 @@
 
                 <div class="field">
                     <label class="label">MSRP</label>
-                    <h1 class="subtitle is-6">How much does this normally cost?</h1>
+                    <h1 class="subtitle is-6 has-text-light">How much does this normally cost?</h1>
                     <div class="control">
                         <input id="msrp-text" class="input" type="text" placeholder="i.e. 59.99">
                     </div>
@@ -60,12 +60,12 @@
                     </div>
                 </div>
 
-                <h1 class="title is-4">Your Copy's Information</h1>
+                <h1 class="title is-4 has-text-light">Your Copy's Information</h1>
 
                 <% let today = new Date(Date.now()); %>
                 <div class="field">
                     <label class="label">Date Added</label>
-                    <h1 class="subtitle is-6">When did you add this game to your collection?</h1>
+                    <h1 class="subtitle is-6 has-text-light">When did you add this game to your collection?</h1>
                     <div class="control">
                         <input type="date" id="start" name="trip-start"
                                value="<%= today.getFullYear() %>-<%= today.getMonth() %>-<%= today.getDay() %>"
@@ -76,7 +76,7 @@
 
                 <div class="field">
                     <label class="label">Cost</label>
-                    <h1 class="subtitle is-6">How much did you pay for it?</h1>
+                    <h1 class="subtitle is-6 has-text-light">How much did you pay for it?</h1>
                     <div class="control">
                         <input id="cost-text" class="input" type="text" placeholder="i.e. 29.99">
                     </div>
