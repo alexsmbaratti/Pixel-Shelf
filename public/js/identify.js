@@ -1,6 +1,9 @@
 function submit() {
     if (validateFields()) {
         let upc = document.getElementById("upc-text").value;
+        let button = document.getElementById("identify-button");
+
+        button.setAttribute("class", "button is-link is-loading");
 
         let request = new XMLHttpRequest();
         request.open('POST', `/identify`);
@@ -12,6 +15,7 @@ function submit() {
 
         request.onreadystatechange = function () {
             if (request.readyState === 4) {
+                button.setAttribute("class", "button is-link");
                 let data = JSON.parse(request.responseText).data;
                 if (request.status === 200) {
                     console.log(data);
