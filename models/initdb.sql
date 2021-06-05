@@ -50,11 +50,3 @@ CREATE TABLE retailer
     id       INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
-INSERT INTO platform
-VALUES ('Nintendo Switch', 1);
-INSERT INTO game
-VALUES ('The Legend of Zelda: Breath of the Wild', 1, 1);
-INSERT INTO edition
-VALUES ('Standard Edition', '45496590420', 59.99, 1, 1);
-INSERT INTO library
-VALUES (59.99, 4, 3, 2017, 1, NULL, 1, 1);
