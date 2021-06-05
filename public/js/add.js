@@ -1,23 +1,29 @@
 function submit() {
     if (validateFields()) {
         let platformSelect = document.getElementById("platform-selection");
-        let conditionSelect = document.getElementById("condition-check");
+        let conditionSelect = document.getElementById("condition-selection");
+
+        let titleText = document.getElementById("title-text").value;
+        let editionText = document.getElementById("edition-text").value;
+        let msrpText = document.getElementById("msrp-text").value;
+        let costText = document.getElementById("cost-text").value;
+        let upcText = document.getElementById("upc-text").value;
 
         let request = new XMLHttpRequest();
         request.open('POST', `/add`);
         request.setRequestHeader('Content-Type', 'application/json');
 
         let params = {
-            "title": document.getElementById("title-text").value,
+            "title": titleText,
             "platform": platformSelect[platformSelect.selectedIndex].id,
-            "edition": document.getElementById("edition-text").value,
+            "edition": editionText.length == 0 ? "Standard Edition" : editionText,
             "condition": conditionSelect.selectedIndex == 0,
-            "msrp": document.getElementById("msrp-text").value,
-            "cost": document.getElementById("cost-text").value,
+            "msrp": msrpText.length == 0 ? "59.99" : msrpText,
+            "cost": costText.length == 0 ? "59.99" : costText,
             "month": 1,
             "day": 1,
             "year": 1,
-            "upc": "1"
+            "upc": upcText.length == 0 ? null : upcText
         };
 
         console.log(params);

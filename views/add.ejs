@@ -24,7 +24,7 @@
         <div class="control">
             <div class="select">
                 <select id="platform-selection">
-                    <option>Select platform</option>
+                    <option id="-1">Select platform</option>
                     <% platforms.forEach(function(platform) { %>
                         <option id="<%= platform.id %>"><%= platform.platform %></option>
                     <% }); %>
@@ -81,9 +81,9 @@
         <label class="label">Condition</label>
         <div class="control">
             <div class="select">
-                <select id="condition-check">
-                    <option>New</option>
-                    <option>Used</option>
+                <select id="condition-selection">
+                    <option id="new">New</option>
+                    <option id="used">Used</option>
                 </select>
             </div>
         </div>
