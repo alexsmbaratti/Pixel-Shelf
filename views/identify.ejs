@@ -2,6 +2,7 @@
 <html>
 <head>
     <title><%= title %></title>
+    <script src="/js/identify.js"></script>
     <link rel="stylesheet" href="./stylesheets/styles.css">
 </head>
 <body>
@@ -15,6 +16,9 @@
                     <div class="control">
                         <input required id="upc-text" class="input" type="text" placeholder="Scan the UPC">
                     </div>
+                </div>
+                <div class="control">
+                    <button class="button is-link" onclick="submit()">Identify</button>
                 </div>
             </div>
         </div>

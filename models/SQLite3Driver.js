@@ -135,6 +135,41 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
     });
 }
 
+SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = 'SELECT game.*, platform.*, edition.* FROM game, platform, edition WHERE gameid = game.id AND platform.id = platformid AND edition.upc = ' + upc + ' LIMIT 1';
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                let result = {};
+                try {
+                    rows.forEach((row) => {
+                        console.log(row)
+                        result = {
+                            "title": row.title,
+                            "platform": row.name,
+                            "cost": row.cost,
+                            "msrp": row.msrp,
+                            "upc": row.upc,
+                            "edition": row.edition
+                        };
+                    });
+                } catch (e) {
+                    SQLite3Driver.prototype.db.close();
+                    reject(e);
+                }
+                SQLite3Driver.prototype.db.close();
+                resolve(result);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.connect = function connect() {
     SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, (err) => {
         if (err) {
