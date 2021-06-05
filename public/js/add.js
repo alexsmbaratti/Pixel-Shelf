@@ -25,9 +25,9 @@ function submit() {
         request.onreadystatechange = function () {
             if (request.readyState === 4) {
                 if (request.status === 200) {
-
+                    console.log("TODO: Redirect to new page")
                 } else {
-
+                    console.log("TODO: Handle error!")
                 }
             }
         }

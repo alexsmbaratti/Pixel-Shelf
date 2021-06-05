@@ -92,34 +92,37 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
 
 SQLite3Driver.prototype.addGame = function addGame(json) {
     return new Promise(function (resolve, reject) {
-        let db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
             if (err) {
                 console.log(err);
                 reject(err);
             }
-            db.run(`INSERT INTO game
-                    VALUES (?, ?, ?)`, [`${json.title}`, `${json.platform}`], function (err) {
+            SQLite3Driver.prototype.db.run(`INSERT INTO game
+                                            VALUES (?, ?, ?)`, [`${json.title}`, `${json.platform}`], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
                 let gameID = this.lastID;
-                console.log(this.lastID);
-                console.log(`A row has been inserted with rowid ${gameID}`);
-                db.run(`INSERT INTO edition
-                        VALUES (?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${gameID}`], function (err) {
+                console.log(`${json.title} was inserted with ID ${gameID}`);
+                SQLite3Driver.prototype.db.run(`INSERT INTO edition
+                                                VALUES (?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${gameID}`], function (err) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     }
                     let editionID = this.lastID;
+                    console.log(`${json.edition} was inserted with ID ${editionID}`);
                     SQLite3Driver.prototype.db.run(`INSERT INTO library
-                                                    VALUES (?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${editionID}`], function (err) {
+                                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${editionID}`, null], function (err) {
                         if (err) {
+                            console.log(err);
                             reject(err);
                         }
+                        let libraryID = this.lastID;
+                        console.log(`${json.title} was added to library with ID ${libraryID}`);
                         SQLite3Driver.prototype.db.close();
-                        resolve();
+                        resolve(libraryID);
                     });
                 });
             });
