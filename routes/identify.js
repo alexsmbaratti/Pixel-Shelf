@@ -12,7 +12,7 @@ router.post('/', function (req, res) {
   console.log(req.body);
   driver.lookupByUPC(req.body.upc).then(result => {
     if (result != undefined) {
-      res.status(200).send({"status": 200, "id": result});
+      res.status(200).send({"status": 200, "data": result});
     } else {
       res.status(500).send({"status": 500});
     }

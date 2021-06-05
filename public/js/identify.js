@@ -12,10 +12,12 @@ function submit() {
 
         request.onreadystatechange = function () {
             if (request.readyState === 4) {
-                let data = JSON.parse(request.responseText);
+                let data = JSON.parse(request.responseText).data;
                 if (request.status === 200) {
                     console.log(data);
-                    console.log("TODO: Handle success!")
+                    let modal = document.getElementById("identified-modal");
+                    document.getElementById("identified-title").innerText = data.title;
+                    modal.setAttribute("class", "modal is-active");
                 } else {
                     console.log("TODO: Handle error!")
                 }
@@ -28,4 +30,9 @@ function submit() {
 
 function validateFields() {
     return true; // TODO
+}
+
+function closeModal() {
+    let modal = document.getElementById("identified-modal");
+    modal.setAttribute("class", "modal");
 }
