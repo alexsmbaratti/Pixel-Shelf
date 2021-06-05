@@ -2,6 +2,7 @@
 <html>
 <head>
     <title><%= title %></title>
+    <script src="/js/mass.js"></script>
     <link rel="stylesheet" href="../stylesheets/styles.css">
 </head>
 <body>
@@ -20,16 +21,16 @@
                 </div>
 
                 <div class="pb-3">
-                    <span class="tag is-primary">{TITLE}</span>
-                    <span class="tag is-primary">{PLATFORM}</span>
-                    <span class="tag is-primary">{EDITION}</span>
-                    <span class="tag is-primary">{MSRP}</span>
-                    <span class="tag is-primary">{UPC}</span>
-                    <span class="tag is-primary">{DAY}</span>
-                    <span class="tag is-primary">{MONTH}</span>
-                    <span class="tag is-primary">{YEAR}</span>
-                    <span class="tag is-primary">{COST}</span>
-                    <span class="tag is-primary">{CONDITION}</span>
+                    <span class="tag is-primary" onclick="append('{TITLE}')">{TITLE}</span>
+                    <span class="tag is-primary" onclick="append('{PLATFORM}')">{PLATFORM}</span>
+                    <span class="tag is-primary" onclick="append('{EDITION}')">{EDITION}</span>
+                    <span class="tag is-primary" onclick="append('{MSRP}')">{MSRP}</span>
+                    <span class="tag is-primary" onclick="append('{UPC}')">{UPC}</span>
+                    <span class="tag is-primary" onclick="append('{DAY}')">{DAY}</span>
+                    <span class="tag is-primary" onclick="append('{MONTH}')">{MONTH}</span>
+                    <span class="tag is-primary" onclick="append('{YEAR}')">{YEAR}</span>
+                    <span class="tag is-primary" onclick="append('{COST}')">{COST}</span>
+                    <span class="tag is-primary" onclick="append('{CONDITION}')">{CONDITION}</span>
                 </div>
 
                 <textarea class="textarea" rows="10"></textarea>
