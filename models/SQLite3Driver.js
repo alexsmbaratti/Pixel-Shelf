@@ -70,19 +70,24 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                     reject(err);
                 }
                 let result = {};
-                rows.forEach((row) => {
-                    console.log(row)
-                    result = {
-                        "title": row.title,
-                        "platform": row.name,
-                        "cost": row.cost,
-                        "msrp": row.msrp,
-                        "upc": row.upc,
-                        "edition": row.edition,
-                        "new": row.new == 1,
-                        "date": row.year + '-' + row.month + '-' + row.day
-                    };
-                });
+                try {
+                    rows.forEach((row) => {
+                        console.log(row)
+                        result = {
+                            "title": row.title,
+                            "platform": row.name,
+                            "cost": row.cost,
+                            "msrp": row.msrp,
+                            "upc": row.upc,
+                            "edition": row.edition,
+                            "new": row.new == 1,
+                            "date": row.year + '-' + row.month + '-' + row.day
+                        };
+                    });
+                } catch (e) {
+                    SQLite3Driver.prototype.db.close();
+                    reject(e);
+                }
                 SQLite3Driver.prototype.db.close();
                 resolve(result);
             });

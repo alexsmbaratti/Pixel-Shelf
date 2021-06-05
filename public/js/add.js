@@ -26,12 +26,11 @@ function submit() {
             "upc": upcText.length == 0 ? null : upcText
         };
 
-        console.log(params);
-
         request.onreadystatechange = function () {
             if (request.readyState === 4) {
+                let data = JSON.parse(request.responseText);
                 if (request.status === 200) {
-                    console.log("TODO: Redirect to new page")
+                    window.location.href = `/library/${data.id}`;
                 } else {
                     console.log("TODO: Handle error!")
                 }

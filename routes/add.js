@@ -17,9 +17,13 @@ router.post('/', function (req, res) {
     let driver = new SQLite3Driver();
     console.log(req.body);
     driver.addGame(req.body).then(result => {
-        res.send({"status": 200, "id": result});
+        if (result != undefined) {
+            res.status(200).send({"status": 200, "id": result});
+        } else {
+            res.status(500).send({"status": 500});
+        }
     }).catch(err => {
-        res.send({"status": 500});
+        res.status(500).send({"status": 500});
     });
 });
 
