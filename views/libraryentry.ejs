@@ -12,7 +12,7 @@
 <div class="container">
 
     <div class="tile is-ancestor">
-        <div class="tile">
+        <div class="tile pt-5">
             <div class="tile is-parent is-vertical">
                 <article class="tile is-child box">
                     <h1 class="title"><%= entry.title %></h1>
@@ -20,14 +20,14 @@
                     <h1 class="subtitle"><%= entry.edition %></h1>
                 </article>
                 <div class="tile">
-                    <div class="tile is-parent is-vertical">
+                    <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Collection Information</h1>
                             <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDay() %>
                                 , <%= date.getFullYear() %></h1>
                         </article>
                     </div>
-                    <div class="tile is-parent is-vertical">
+                    <div class="tile is-child is-vertical pl-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Purchase Information</h1>
                             <h1 class="subtitle">Bought at</h1>
