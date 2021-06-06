@@ -8,6 +8,7 @@ $black: hsl(0, 0%, 4%);
 $grey: hsl(0, 0%, 25%);
 $grey-ter: hsl(0, 0%, 29%);
 $epic-gamer-green: hsl(146, 100%, 39%);
+$epic-gamer-green-bis: hsl(146, 100%, 25%);
 $text-light: $white;
 
 $primary: $epic-gamer-green;
@@ -22,8 +23,8 @@ $table-cell-heading-color: $white-ter;
 $table-color: $white-ter;
 $table-head-cell-color: $white-ter;
 $label-color: $white-ter;
-$table-row-hover-background-color: $epic-gamer-green;
-$table-striped-row-even-hover-background-color: $epic-gamer-green;
+$table-row-hover-background-color: $epic-gamer-green-bis;
+$table-striped-row-even-hover-background-color: $epic-gamer-green-bis;
 $navbar-background-color: $grey;
 $navbar-item-color: $white;
 $navbar-item-hover-background-color: $epic-gamer-green;
@@ -36,6 +37,7 @@ $card-color: $white;
 $modal-card-head-background-color: $black-ter;
 $modal-card-body-background-color: $grey;
 $modal-card-title-color: $white;
+$link: $epic-gamer-green;
 
 @charset "utf-8";
 @import "../node_modules/bulma/bulma.sass";
