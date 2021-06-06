@@ -31,4 +31,18 @@ router.get('/mass', function (req, res, next) {
     res.render('mass', {title: 'Pixel Shelf'});
 });
 
+router.post('/mass', function (req, res) {
+    let driver = new SQLite3Driver();
+    console.log(req.body);
+    driver.massImport(req.body).then(result => {
+        if (result != undefined) {
+            res.status(200).send({"status": 200, "id": result});
+        } else {
+            res.status(500).send({"status": 500});
+        }
+    }).catch(err => {
+        res.status(500).send({"status": 500});
+    });
+});
+
 module.exports = router;
