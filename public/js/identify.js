@@ -21,6 +21,8 @@ function submit() {
                     console.log(data);
                     let modal = document.getElementById("identified-modal");
                     document.getElementById("identified-title").innerText = data.title;
+                    document.getElementById("identified-platform").innerText = data.platform;
+                    document.getElementById("identified-edition").innerText = data.edition;
                     modal.setAttribute("class", "modal is-active");
                 } else {
                     console.log("TODO: Handle error!")
