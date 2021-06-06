@@ -33,7 +33,10 @@ function submit() {
 }
 
 function validateFields() {
-    return true; // TODO
+    if (document.getElementById("upc-text").value.length > 0) {
+        return true;
+    }
+    return false;
 }
 
 function closeModal() {
