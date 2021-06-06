@@ -52,7 +52,11 @@ function submit() {
                             }
                             break;
                         case 'UPC':
-                            obj["upc"] = keyData;
+                            if (keyData.length == 0) { // Default Value
+                                obj["upc"] = null;
+                            } else {
+                                obj["upc"] = keyData;
+                            }
                             break;
                         case 'EDITION':
                             if (keyData.length == 0) { // Default Value

@@ -170,6 +170,44 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
     });
 }
 
+SQLite3Driver.prototype.massImport = function massImport(json) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = 'SELECT platform.* FROM platform';
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+
+                let platforms = {};
+
+                rows.forEach((row) => {
+                    platforms[row.name] = row.id;
+                });
+                console.log(platforms);
+                SQLite3Driver.prototype.db.close();
+
+                let run = function (arr, i) {
+                    if (arr.length == i) {
+                        resolve();
+                    } else {
+                        arr[i]["platform"] = platforms[arr[i]["platform"]];
+                        console.log(arr[i]);
+                        SQLite3Driver.prototype.addGame(arr[i]).then(result => {
+                            run(arr, i + 1);
+                        });
+                    }
+                }
+
+                run(json, 0);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.connect = function connect() {
     SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, (err) => {
         if (err) {
