@@ -10,7 +10,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary() {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT library.id, game.id, game.title, platform.name, library.month, library.day, library.year, library.cost, edition.edition FROM game, platform, edition, library WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid';
+            let sql = 'SELECT library.id, game.id, game.title, platform.name, library.month, library.day, library.year, library.cost, edition.edition FROM game, platform, edition, library WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid ORDER BY game.title ASC';
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
