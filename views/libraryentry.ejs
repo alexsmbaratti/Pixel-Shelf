@@ -23,12 +23,16 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDay() %>
-                                , <%= date.getFullYear() %></h1>
+                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDay() %>, <%= date.getFullYear() %></h1>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Game Progress</h1>
+                                <div class="container">
+                                    <button class="button is-dark">Add to Backlog</button>
+                                    <button class="button is-dark">Currently Playing</button>
+                                    <button class="button is-dark">Completed</button>
+                                </div>
                             </article>
                         </div>
                     </div>
