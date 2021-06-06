@@ -21,7 +21,7 @@ CREATE TABLE platform
 CREATE TABLE edition
 (
     edition TEXT,
-    upc     TEXT UNIQUE,
+    upc     TEXT,
     msrp    REAL,
     gameid  INTEGER,
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
