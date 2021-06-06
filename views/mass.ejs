@@ -32,19 +32,19 @@
                     <span class="tag is-primary" onclick="append('{YEAR}')">{YEAR}</span>
                     <span class="tag is-primary" onclick="append('{COST}')">{COST}</span>
                     <span class="tag is-primary" onclick="append('{CONDITION}')">{CONDITION}</span>
-                    <span class="tag is-info" onclick="append(',')">Comma</span>
                     <span class="tag is-warning" onclick="append('{IGNORE}')">{IGNORE}</span>
+                    <span class="tag is-info" onclick="append(',')">Comma</span>
                 </div>
 
-                <textarea class="textarea" rows="10"></textarea>
+                <textarea id="mass-text" class="textarea" rows="10"></textarea>
 
                 <label class="checkbox">
-                    <input type="checkbox">
+                    <id="ignore-check" input type="checkbox">
                     Ignore First Line
                 </label>
 
                 <div class="control pt-3">
-                    <button class="button is-link">Submit</button>
+                    <button class="button is-link" onclick="submit()">Submit</button>
                 </div>
             </div>
         </div>
