@@ -17,12 +17,16 @@ SQLite3Driver.prototype.getLibrary = function getLibrary() {
                 }
                 let result = [];
                 rows.forEach((row) => {
+                    let date = row.month + '-' + row.day + '-' + row.year;
+                    if (row.month == 'null' || row.day == 'null' || row.year == 'null') {
+                        date = 'Unknown';
+                    }
                     result.push({
                         "id": row.id,
                         "title": row.title,
                         "platform": row.name,
-                        "dateAdded": row.month + '-' + row.day + '-' + row.year,
-                        "cost": row.cost,
+                        "dateAdded": date,
+                        "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
                         "edition": row.edition
                     });
                 });
