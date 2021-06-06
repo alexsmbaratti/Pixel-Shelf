@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="./stylesheets/styles.css">
+</head>
+<body>
+<%- include('partials/navbar') %>
+<table class="table is-hoverable is-striped is-fullwidth">
+    <thead>
+    <tr>
+        <th>Console</th>
+        <th>Brand</th>
+        <th>Date Added</th>
+        <th>Serial Number</th>
+        <th>Edition</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% platforms.forEach(function(game) { %>
+        <tr>
+            <th><a href="/library/<%= game.id %>"><%= game.title %></a></th>
+            <td><%= game.platform %></td>
+            <td><%= game.dateAdded %></td>
+            <td><%= game.cost %></td>
+            <td><%= game.edition %></td>
+        </tr>
+    <% }); %>
+    </tbody>
+</table>
+</body>
+</html>
