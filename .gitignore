@@ -4,3 +4,4 @@ node_modules
 *.db
 /identifier.sqlite
 public/stylesheets
+config.json
