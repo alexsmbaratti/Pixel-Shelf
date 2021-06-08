@@ -3,7 +3,7 @@ function append(text) {
     schemaField.value += text;
 }
 
-// Notes: Cannot have commas in variable names; cannot have two variables next to each other without delimiters; game consoles must exist prior
+// Notes: Cannot have commas in variable names; cannot have two variables next to each other without delimiters; game consoles must exist prior; game console is case-sensitive
 function submit() {
     if (true) {
         let schemaText = document.getElementById("schema").value;
