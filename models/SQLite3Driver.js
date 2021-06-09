@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
 function SQLite3Driver() {
-    SQLite3Driver.prototype.dbName = './models/pixelshelf.db';
+    SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
 }
 
 SQLite3Driver.prototype.getLibrary = function getLibrary() {

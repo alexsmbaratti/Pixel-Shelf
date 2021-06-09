@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - db:/usr/src/Pixel-Shelf/models/db
+volumes:
+  db:
