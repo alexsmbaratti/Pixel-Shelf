@@ -13,11 +13,8 @@ RUN npm install
 
 COPY . .
 
-RUN cd models
-RUN mkdir db
-RUN cd db
-RUN cat ../initdb.sql | sqlite3 pixelshelf.db
-RUN cd ../..
+RUN mkdir models/db
+RUN cat models/initdb.sql | sqlite3 models/db/pixelshelf.db
 
 ENV PORT=3000
 EXPOSE 3000

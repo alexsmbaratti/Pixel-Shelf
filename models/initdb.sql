@@ -1,9 +1,3 @@
-DROP TABLE game;
-DROP TABLE platform;
-DROP TABLE edition;
-DROP TABLE library;
-DROP TABLE retailer;
-
 CREATE TABLE game
 (
     title      TEXT,
