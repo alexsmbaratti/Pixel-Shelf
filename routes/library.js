@@ -19,7 +19,7 @@ router.get('/:libraryId', function (req, res, next) {
         console.log(result);
         res.render('libraryentry', {title: result.title + ' - Pixel Shelf', entry: result});
     }).catch(err => {
-        res.render('error', {error: err});
+        res.render('error', {message: "Error", error: err});
     });
 });
 
