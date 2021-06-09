@@ -11,19 +11,13 @@
     <tr>
         <th>Console</th>
         <th>Brand</th>
-        <th>Date Added</th>
-        <th>Serial Number</th>
-        <th>Edition</th>
     </tr>
     </thead>
     <tbody>
-    <% platforms.forEach(function(game) { %>
+    <% platforms.forEach(function(platform) { %>
         <tr>
-            <th><a href="/library/<%= game.id %>"><%= game.title %></a></th>
-            <td><%= game.platform %></td>
-            <td><%= game.dateAdded %></td>
-            <td><%= game.cost %></td>
-            <td><%= game.edition %></td>
+            <th><a href="/platform/<%= platform.id %>"><%= platform.name %></a></th>
+            <th><%= platform.brand %></a></th>
         </tr>
     <% }); %>
     </tbody>

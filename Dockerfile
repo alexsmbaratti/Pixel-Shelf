@@ -17,4 +17,5 @@ RUN cat ./models/initdb.sql | sqlite3 ./models/db/pixelshelf.db
 
 ENV PORT=3000
 EXPOSE 3000
+
 CMD [ "npm", "start" ]

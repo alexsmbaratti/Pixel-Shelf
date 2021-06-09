@@ -17,7 +17,7 @@ router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getLibraryGame(req.params.libraryId).then(result => {
         console.log(result);
-        res.render('libraryentry', {title: 'Pixel Shelf', entry: result});
+        res.render('libraryentry', {title: result.title + ' - Pixel Shelf', entry: result});
     }).catch(err => {
         res.render('error', {error: err});
     });

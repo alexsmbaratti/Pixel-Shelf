@@ -43,7 +43,7 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT platform.name, platform.id FROM platform';
+            let sql = 'SELECT platform.*, brand.brand FROM platform, brand WHERE platform.brandid = brand.id ORDER BY platform.name ASC';
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -52,7 +52,8 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
                 rows.forEach((row) => {
                     result.push({
                         "id": row.id,
-                        "platform": row.name,
+                        "name": row.name,
+                        "brand": row.brand
                     });
                 });
                 SQLite3Driver.prototype.db.close();

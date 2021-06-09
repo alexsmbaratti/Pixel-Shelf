@@ -14,8 +14,10 @@ CREATE TABLE game
 
 CREATE TABLE platform
 (
-    name TEXT,
-    id   INTEGER PRIMARY KEY AUTOINCREMENT
+    name    TEXT,
+    brandid INTEGER,
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    FOREIGN KEY (brandid) REFERENCES brand (id)
 );
 
 CREATE TABLE edition
@@ -38,8 +40,8 @@ CREATE TABLE library
     retailerid INTEGER,
     new        INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (editionid) REFERENCES edition (id)
-        FOREIGN KEY (retailerid) REFERENCES retailer (id)
+    FOREIGN KEY (editionid) REFERENCES edition (id),
+    FOREIGN KEY (retailerid) REFERENCES retailer (id)
 );
 
 CREATE TABLE retailer
@@ -50,3 +52,8 @@ CREATE TABLE retailer
     id       INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
+CREATE TABLE brand
+(
+    brand TEXT UNIQUE,
+    id    INTEGER PRIMARY KEY AUTOINCREMENT
+);
