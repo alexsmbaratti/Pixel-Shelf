@@ -7,6 +7,30 @@ function IGDBDriver() {
     IGDBDriver.prototype.token = config.token;
 }
 
+IGDBDriver.prototype.getGameByName = function getGameByName(name) {
+    // TODO: TEST! This is still boilerplate!
+    return new Promise(function (resolve, reject) {
+        axios({
+            method: 'post',
+            url: 'https://api.igdb.com/v4/games/',
+            headers: {
+                'Client-ID': IGDBDriver.prototype.clientID,
+                'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
+                'Content-Type': 'text/plain'
+            },
+            data: 'fields *; where name = \"' + name + '\";'
+        })
+            .then(function (res) {
+                console.log(JSON.stringify(res.data));
+                resolve(res);
+            })
+            .catch(function (e) {
+                console.log(e);
+                reject(e);
+            });
+    });
+}
+
 IGDBDriver.prototype.getGameByURL = function getGameByURL(url) {
     return new Promise(function (resolve, reject) {
         axios({
