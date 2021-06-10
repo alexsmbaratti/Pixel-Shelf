@@ -1,5 +1,7 @@
 // node-sass --omit-source-map-url sass/styles.scss public/stylesheets/styles.css
 
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 $white: #ffffff;
 $white-ter: hsl(0, 0%, 96%);
 $black-ter: hsl(0, 0%, 15%);
@@ -39,6 +41,13 @@ $modal-card-body-background-color: $grey;
 $modal-card-title-color: $white;
 $link: $epic-gamer-green;
 $link-hover: $white;
+
+$pixel-shelf-font: 'Press Start 2P', sans-serif;
+
+pixel-shelf-branding {
+  font: 100% $pixel-shelf-font;
+  color: #ffffff;
+}
 
 @charset "utf-8";
 @import "../node_modules/bulma/bulma.sass";
