@@ -44,8 +44,11 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url) {
             data: 'fields *; where url = \"' + url + '\";'
         })
             .then(function (res) {
-                console.log(JSON.stringify(res.data));
-                resolve(res);
+                let resJSON = res.data;
+                IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
+                    resJSON['coverArt'] = coverRes;
+                    resolve(resJSON);
+                });
             })
             .catch(function (e) {
                 console.log(e);
@@ -65,11 +68,11 @@ IGDBDriver.prototype.getCoverArtByID = function getCoverArtByID(id) {
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
                 'Content-Type': 'text/plain'
             },
-            data: 'fields image_id; where game = \"' + id + '\";'
+            data: 'fields image_id; where game = ' + id + ';'
         })
             .then(function (res) {
                 let size = 'cover_big';
-                let imageID = res.image_id;
+                let imageID = res.data[0]["image_id"];
                 let url = `https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`
                 resolve(url);
             })
