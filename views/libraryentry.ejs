@@ -2,6 +2,7 @@
 <html>
 <head>
     <title><%= title %></title>
+    <script src="/js/libraryEntry.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <%
     let date = new Date(Date.parse(entry.date));
@@ -23,7 +24,8 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDay() %>, <%= date.getFullYear() %></h1>
+                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDay() %>
+                                , <%= date.getFullYear() %></h1>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
@@ -42,6 +44,15 @@
                             <h1 class="subtitle">Retails for $<%= entry.msrp %></h1>
                             <h1 class="subtitle">Bought for $<%= entry.cost %></h1>
                         </article>
+                        <div class="tile is-child is-vertical">
+                            <article class="tile is-parent box is-vertical">
+                                <h1 class="title is-4">Manage Game</h1>
+                                <div class="container">
+                                    <button class="button is-info">Sell</button>
+                                    <button class="button is-danger" onclick="deleteGame(<%= id %>)">Delete</button>
+                                </div>
+                            </article>
+                        </div>
                     </div>
                 </div>
             </div>

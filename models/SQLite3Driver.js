@@ -1,4 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
+var IGDBDriver = require('../models/IGDBDriver');
 
 function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
@@ -102,6 +103,12 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
 
 SQLite3Driver.prototype.addGame = function addGame(json) {
     return new Promise(function (resolve, reject) {
+        if (json["igdb-url"] != null) {
+            let driver = new IGDBDriver();
+            driver.getGameByURL(json["igdb-url"]).then(result => {
+                console.log(result);
+            });
+        }
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
             if (err) {
                 console.log(err);
@@ -208,6 +215,26 @@ SQLite3Driver.prototype.massImport = function massImport(json) {
                 }
 
                 run(json, 0);
+            });
+        });
+    });
+}
+
+SQLite3Driver.prototype.deleteGame = function deleteGame(id) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, (err) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            let sql = 'DELETE FROM library WHERE id = ' + id;
+            SQLite3Driver.prototype.db.all(sql, [], (err) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                SQLite3Driver.prototype.db.close();
+                resolve();
             });
         });
     });

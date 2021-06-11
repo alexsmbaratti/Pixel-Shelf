@@ -7,6 +7,7 @@ function submit() {
         let editionText = document.getElementById("edition-text").value;
         let msrpText = document.getElementById("msrp-text").value;
         let costText = document.getElementById("cost-text").value;
+        let igdbText = document.getElementById("igdb-text").value;
         let upcText = document.getElementById("upc-text").value;
 
         let request = new XMLHttpRequest();
@@ -23,7 +24,8 @@ function submit() {
             "month": 1,
             "day": 1,
             "year": 1,
-            "upc": upcText.length == 0 ? null : upcText
+            "upc": upcText.length == 0 ? null : upcText,
+            "igdb-url": igdbText.length == 0 ? null : igdbText
         };
 
         request.onreadystatechange = function () {

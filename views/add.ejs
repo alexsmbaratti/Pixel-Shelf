@@ -29,10 +29,17 @@
                             <select id="platform-selection">
                                 <option id="-1">Select platform</option>
                                 <% platforms.forEach(function(platform) { %>
-                                    <option id="<%= platform.id %>"><%= platform.platform %></option>
+                                    <option id="<%= platform.id %>"><%= platform.name %></option>
                                 <% }); %>
                             </select>
                         </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">IGDB URL</label>
+                    <div class="control">
+                        <input required id="igdb-text" class="input" type="text" placeholder="i.e. https://www.igdb.com/games/gex">
                     </div>
                 </div>
 
