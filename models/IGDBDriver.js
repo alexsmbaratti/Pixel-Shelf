@@ -1,6 +1,9 @@
 const axios = require('axios');
 var config = require('../config.json');
 
+const https = require('https');
+const fs = require('fs');
+
 function IGDBDriver() {
     IGDBDriver.prototype.clientID = config.client_id;
     IGDBDriver.prototype.clientSecret = config.client_secret;
@@ -31,7 +34,7 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
     });
 }
 
-IGDBDriver.prototype.getGameByURL = function getGameByURL(url) {
+IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
     return new Promise(function (resolve, reject) {
         axios({
             method: 'post',
@@ -45,9 +48,15 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url) {
         })
             .then(function (res) {
                 let resJSON = res.data;
+                console.log(resJSON);
                 IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
                     resJSON['coverArt'] = coverRes;
-                    resolve(resJSON);
+
+                    const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
+                    const request = https.get(coverRes, function (fileRes) {
+                        fileRes.pipe(file);
+                        resolve(resJSON);
+                    });
                 });
             })
             .catch(function (e) {

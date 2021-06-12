@@ -3,4 +3,5 @@ node_modules
 *.db
 /identifier.sqlite
 public/stylesheets
+public/images/covers
 config.json

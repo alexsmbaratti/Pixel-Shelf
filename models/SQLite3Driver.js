@@ -103,12 +103,6 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
 
 SQLite3Driver.prototype.addGame = function addGame(json) {
     return new Promise(function (resolve, reject) {
-        if (json["igdb-url"] != null) {
-            let driver = new IGDBDriver();
-            driver.getGameByURL(json["igdb-url"]).then(result => {
-                console.log(result);
-            });
-        }
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
             if (err) {
                 console.log(err);
@@ -122,6 +116,12 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
                 }
                 let gameID = this.lastID;
                 console.log(`${json.title} was inserted with ID ${gameID}`);
+                if (json["igdb-url"] != null) {
+                    let driver = new IGDBDriver();
+                    driver.getGameByURL(json["igdb-url"], gameID).then(result => {
+                        console.log(result);
+                    });
+                }
                 SQLite3Driver.prototype.db.run(`INSERT INTO edition
                                                 VALUES (?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${gameID}`], function (err) {
                     if (err) {
