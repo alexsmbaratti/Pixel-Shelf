@@ -44,6 +44,10 @@ function submit() {
                         case 'DAY':
                             obj["day"] = parseInt(keyData);
                             break;
+                        case 'IGDB':
+                            console.log("AHHHHH")
+                            obj["igdb-url"] = keyData;
+                            break;
                         case 'COST':
                             if (keyData.charAt(0) == '$') {
                                 obj["cost"] = keyData.substring(1);
