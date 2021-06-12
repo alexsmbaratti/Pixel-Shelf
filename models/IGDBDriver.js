@@ -88,10 +88,14 @@ IGDBDriver.prototype.getCoverArtByID = function getCoverArtByID(id) {
             data: 'fields image_id; where game = ' + id + ';'
         })
             .then(function (res) {
-                let size = 'cover_big';
-                let imageID = res.data[0]["image_id"];
-                let url = `https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`
-                resolve(url);
+                if (res.data.length > 0) {
+                    let size = 'cover_big';
+                    let imageID = res.data[0]["image_id"];
+                    let url = `https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`
+                    resolve(url);
+                } else { // There is no art for this game (yet)
+                    reject();
+                }
             })
             .catch(function (e) {
                 console.log("Error in Cover Art");
