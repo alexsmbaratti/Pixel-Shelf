@@ -1,5 +1,4 @@
 const sqlite3 = require('sqlite3').verbose();
-var IGDBDriver = require('../models/IGDBDriver');
 
 function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
@@ -87,6 +86,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "upc": row.upc,
                             "edition": row.edition,
                             "new": row.new == 1,
+                            "igdbURL": row.igdbURL.length == 0 ? null : row.igdbURL,
                             "date": row.year + '-' + row.month + '-' + row.day
                         };
                     });
@@ -109,19 +109,13 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO game
-                                            VALUES (?, ?, ?)`, [`${json.title}`, `${json.platform}`], function (err) {
+                                            VALUES (?, ?, ?, ?)`, [`${json.title}`, `${json.platform}`, `${json['igdb-url']}`], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
                 let gameID = this.lastID;
                 console.log(`${json.title} was inserted with ID ${gameID}`);
-                if (json["igdb-url"] != null) {
-                    let driver = new IGDBDriver();
-                    driver.getGameByURL(json["igdb-url"], gameID).then(result => {
-                        console.log(result);
-                    });
-                }
                 SQLite3Driver.prototype.db.run(`INSERT INTO edition
                                                 VALUES (?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${gameID}`], function (err) {
                     if (err) {

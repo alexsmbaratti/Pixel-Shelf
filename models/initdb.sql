@@ -2,6 +2,7 @@ CREATE TABLE game
 (
     title      TEXT,
     platformid INTEGER,
+    igdbURL    TEXT,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (platformid) REFERENCES platform (id)
 );
@@ -50,13 +51,6 @@ CREATE TABLE brand
 (
     brand TEXT UNIQUE,
     id    INTEGER PRIMARY KEY AUTOINCREMENT
-);
-
-CREATE TABLE igdb
-(
-    url   TEXT UNIQUE,
-    cover TEXT,
-    id    INTEGER PRIMARY KEY
 );
 
 CREATE TABLE list

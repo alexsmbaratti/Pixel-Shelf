@@ -10,7 +10,7 @@ function IGDBDriver() {
     IGDBDriver.prototype.token = config.token;
 }
 
-IGDBDriver.prototype.getGameByName = function getGameByName(name) {
+IGDBDriver.prototype.getGameByName = function getGameByName(name, gameID) {
     // TODO: TEST! This is still boilerplate!
     return new Promise(function (resolve, reject) {
         axios({
@@ -24,8 +24,16 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
             data: 'fields *; where name = \"' + name + '\";'
         })
             .then(function (res) {
-                console.log(JSON.stringify(res.data));
-                resolve(res);
+                let resJSON = res.data;
+                IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
+                    resJSON['coverArt'] = coverRes;
+
+                    const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
+                    const request = https.get(coverRes, function (fileRes) {
+                        fileRes.pipe(file);
+                        resolve(resJSON);
+                    });
+                });
             })
             .catch(function (e) {
                 console.log(e);
@@ -48,7 +56,6 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
         })
             .then(function (res) {
                 let resJSON = res.data;
-                console.log(resJSON);
                 IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
                     resJSON['coverArt'] = coverRes;
 
@@ -60,6 +67,7 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
                 });
             })
             .catch(function (e) {
+                console.log("Error in Game Info");
                 console.log(e);
                 reject(e);
             });
@@ -86,6 +94,7 @@ IGDBDriver.prototype.getCoverArtByID = function getCoverArtByID(id) {
                 resolve(url);
             })
             .catch(function (e) {
+                console.log("Error in Cover Art");
                 console.log(e);
                 reject(e);
             });
