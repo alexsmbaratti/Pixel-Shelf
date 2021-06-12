@@ -5,5 +5,7 @@ services:
       - "3000:3000"
     volumes:
       - db:/usr/src/Pixel-Shelf/models/db
+      - images:/usr/src/Pixel-Shelf/public/images
 volumes:
   db:
+  images:

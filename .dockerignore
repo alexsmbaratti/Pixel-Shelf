@@ -2,3 +2,5 @@ node_modules
 npm-debug.log
 models/db
 identifier.sqlite
+public/images
+public/stylesheets
