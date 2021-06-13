@@ -103,17 +103,19 @@ router.get('/:libraryId/cover', function (req, res, next) {
                     igdbDriver.getCoverByURL(result.igdbURL, libraryId).then(igdbRes => {
                         res.redirect('/images/covers/' + libraryId + '.jpg');
                     }).catch(err => {
-
+                        res.redirect('/images/covers/placeholder.jpg');
                     });
+                } else {
+                    res.redirect('/images/covers/placeholder.jpg');
                 }
             } else { // Art is already cached or user-uploaded
                 res.redirect('/images/covers/' + libraryId + '.jpg');
             }
         }).catch(err => {
-
+            res.redirect('/images/covers/placeholder.jpg');
         });
     }).catch(err => {
-
+        res.redirect('/images/covers/placeholder.jpg');
     });
 });
 
