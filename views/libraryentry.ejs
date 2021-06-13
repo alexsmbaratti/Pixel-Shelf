@@ -11,7 +11,6 @@
 <body>
 <%- include('partials/navbar') %>
 <div class="container">
-
     <div class="tile is-ancestor">
         <div class="tile pt-5">
             <div class="tile is-parent is-vertical">
@@ -57,7 +56,8 @@
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Manage Game</h1>
                                 <div class="container">
-                                    <button class="button is-info">Sell</button>
+                                    <button class="button is-info">Edit</button>
+                                    <button class="button is-warning">Sell</button>
                                     <button class="button is-danger" onclick="deleteGame(<%= id %>)">Delete</button>
                                 </div>
                             </article>
@@ -67,5 +67,6 @@
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

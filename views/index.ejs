@@ -2,6 +2,7 @@
 <html>
 <head>
     <title><%= title %></title>
+    <script src="/js/index.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
 </head>
 <body>
@@ -18,5 +19,42 @@
         </p>
     </div>
 </section>
+<div class="container">
+    <div class="tile is-ancestor">
+        <div class="tile pt-5">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <h1 class="title is-4">Game Collection</h1>
+                    <h1 id="game-count-text" class="subtitle">... Games</h1>
+                    <h1 class="subtitle">Cool statistics</h1>
+                </article>
+            </div>
+        </div>
+        <div class="tile pt-5">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <h1 class="title is-4">Currently Playing</h1>
+                    <h1 class="subtitle">RANDOM_GAME_CURRENTLY_PLAYING</h1>
+                </article>
+            </div>
+        </div>
+        <div class="tile pt-5">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <h1 class="title is-4">Backlog</h1>
+                    <table class="table is-hoverable is-striped is-fullwidth">
+                        <thead>
+                        <tr>
+                            <th onclick="sortBy('title')">Title</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-body">
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -15,6 +15,16 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.get('/size', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getLibrarySize().then(result => {
+        console.log(result);
+        res.status(200).send({"status": 200, "size": result});
+    }).catch(err => {
+        res.status(500).send({"status": 500});
+    });
+});
+
 router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
@@ -28,7 +38,8 @@ router.get('/:libraryId', function (req, res, next) {
                         res.render('libraryentry', {
                             title: result.title + ' - Pixel Shelf',
                             entry: result,
-                            id: libraryId
+                            id: libraryId,
+                            igdb: result.igdbURL
                         });
                     }).catch(err => {
                         console.log("Couldn't retrieve cover art!");
@@ -36,14 +47,16 @@ router.get('/:libraryId', function (req, res, next) {
                         res.render('libraryentry', {
                             title: result.title + ' - Pixel Shelf',
                             entry: result,
-                            id: libraryId
+                            id: libraryId,
+                            igdb: result.igdbURL
                         });
                     });
                 } else {
                     res.render('libraryentry', {
                         title: result.title + ' - Pixel Shelf',
                         entry: result,
-                        id: libraryId
+                        id: libraryId,
+                        igdb: result.igdbURL
                     });
                 }
             }).catch(err => {
@@ -53,7 +66,8 @@ router.get('/:libraryId', function (req, res, next) {
             res.render('libraryentry', {
                 title: result.title + ' - Pixel Shelf',
                 entry: result,
-                id: libraryId
+                id: libraryId,
+                igdb: null
             });
         }
     }).catch(err => {
