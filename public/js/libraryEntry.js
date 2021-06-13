@@ -4,9 +4,10 @@ function getIGDBInfo(id) {
 
     igdbRequest.onreadystatechange = function () {
         if (igdbRequest.readyState === 4) {
-            let data = JSON.parse(igdbRequest.responseText);
+            let data = JSON.parse(igdbRequest.responseText)['data'][0];
             if (igdbRequest.status === 200) {
                 console.log(data);
+                document.getElementById("description").innerHTML = data['summary'];
             } else {
                 console.log("TODO: Handle error!")
             }
