@@ -92,6 +92,31 @@ router.get('/:libraryId/igdb', function (req, res, next) {
     });
 });
 
+router.get('/:libraryId/cover', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    const libraryId = req.params.libraryId;
+    driver.getLibraryGame(libraryId).then(result => {
+        coverArtExists(libraryId, req).then(exists => {
+            if (!exists) {
+                if (result.igdbURL != null) {
+                    let igdbDriver = new IGDBDriver();
+                    igdbDriver.getCoverByURL(result.igdbURL, libraryId).then(igdbRes => {
+                        res.redirect('/images/covers/' + libraryId + '.jpg');
+                    }).catch(err => {
+
+                    });
+                }
+            } else { // Art is already cached or user-uploaded
+                res.redirect('/images/covers/' + libraryId + '.jpg');
+            }
+        }).catch(err => {
+
+        });
+    }).catch(err => {
+
+    });
+});
+
 router.delete('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.deleteGame(req.params.libraryId).then(result => {

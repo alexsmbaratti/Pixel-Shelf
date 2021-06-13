@@ -57,9 +57,32 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
             .then(function (res) {
                 let resJSON = res.data;
                 console.log(resJSON);
-                IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
-                    resJSON['coverArt'] = coverRes;
+                resolve(resJSON);
+            })
+            .catch(function (e) {
+                console.log("Error in Game Info");
+                console.log(e);
+                reject(e);
+            });
+    });
+}
 
+IGDBDriver.prototype.getCoverByURL = function getCoverByURL(url, gameID) {
+    return new Promise(function (resolve, reject) {
+        axios({
+            method: 'post',
+            url: 'https://api.igdb.com/v4/games/',
+            headers: {
+                'Client-ID': IGDBDriver.prototype.clientID,
+                'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
+                'Content-Type': 'text/plain'
+            },
+            data: 'fields *; where url = \"' + url + '\";'
+        })
+            .then(function (res) {
+                console.log("Caching cover art from IGDB...");
+                let resJSON = res.data;
+                IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
                     const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
                     const request = https.get(coverRes, function (fileRes) {
                         fileRes.pipe(file);
@@ -76,7 +99,6 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
 }
 
 IGDBDriver.prototype.getCoverArtByID = function getCoverArtByID(id) {
-    // TODO: TEST! This is still boilerplate!
     return new Promise(function (resolve, reject) {
         axios({
             method: 'post',
