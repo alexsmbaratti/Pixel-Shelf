@@ -78,6 +78,21 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                 try {
                     rows.forEach((row) => {
                         console.log(row)
+
+                        let month;
+                        if (row.month < 10) {
+                            month = '0' + row.month;
+                        } else {
+                            month = row.month;
+                        }
+
+                        let day;
+                        if (row.day < 10) {
+                            day = '0' + row.day;
+                        } else {
+                            day = row.day;
+                        }
+
                         result = {
                             "title": row.title,
                             "platform": row.name,
@@ -87,7 +102,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "edition": row.edition,
                             "new": row.new == 1,
                             "igdbURL": row.igdbURL.length == 0 ? null : row.igdbURL,
-                            "date": row.year + '-' + row.month + '-' + row.day
+                            "date": row.year + '-' + month + '-' + day
                         };
                     });
                 } catch (e) {
