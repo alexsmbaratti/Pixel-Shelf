@@ -56,6 +56,7 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
         })
             .then(function (res) {
                 let resJSON = res.data;
+                console.log(resJSON);
                 IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
                     resJSON['coverArt'] = coverRes;
 

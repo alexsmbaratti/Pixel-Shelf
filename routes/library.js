@@ -75,6 +75,23 @@ router.get('/:libraryId', function (req, res, next) {
     });
 });
 
+router.get('/:libraryId/igdb', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    const libraryId = req.params.libraryId;
+    driver.getLibraryGame(libraryId).then(result => {
+        if (result.igdbURL != null) {
+            let igdbDriver = new IGDBDriver();
+            igdbDriver.getGameByURL(result.igdbURL, libraryId).then(igdbRes => {
+                res.status(200).send({"status": 200, "data": igdbRes});
+            }).catch(err => {
+                res.status(500).send({"status": 500});
+            });
+        }
+    }).catch(err => {
+
+    });
+});
+
 router.delete('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.deleteGame(req.params.libraryId).then(result => {
