@@ -98,23 +98,26 @@ router.get('/:libraryId/cover', function (req, res, next) {
     driver.getLibraryGame(libraryId).then(result => {
         coverArtExists(libraryId, req).then(exists => {
             if (!exists) {
-                if (result.igdbURL != null) {
+                if (result.igdbURL != null) { // Cache the IGDB cover
                     let igdbDriver = new IGDBDriver();
                     igdbDriver.getCoverByURL(result.igdbURL, libraryId).then(igdbRes => {
                         res.redirect('/images/covers/' + libraryId + '.jpg');
                     }).catch(err => {
+                        console.log(err);
                         res.redirect('/images/covers/placeholder.jpg');
                     });
-                } else {
+                } else { // No IGDB link
                     res.redirect('/images/covers/placeholder.jpg');
                 }
             } else { // Art is already cached or user-uploaded
                 res.redirect('/images/covers/' + libraryId + '.jpg');
             }
         }).catch(err => {
+            console.log(err);
             res.redirect('/images/covers/placeholder.jpg');
         });
     }).catch(err => {
+        console.log(err);
         res.redirect('/images/covers/placeholder.jpg');
     });
 });
