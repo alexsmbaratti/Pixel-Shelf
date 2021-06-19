@@ -8,11 +8,12 @@ function EInkDriver() {
 EInkDriver.prototype.drawLibrarySize = function drawLibrarySize() {
     new Promise(function (resolve, reject) {
         if (EInkDriver.prototype.useEInk) {
+            console.log("Drawing library size...");
             let options = {
                 mode: 'text',
                 args: ['-1']
             };
-            PythonShell.run('./eink/library_size.py', options, function (err, res) {
+            PythonShell.run('library_size.py', options, function (err, res) {
                 console.log(res);
             });
         }
