@@ -50,6 +50,9 @@ app.use(function (err, req, res, next) {
 if (useEInk) {
     console.log("Spawning E-Ink Driver...");
     const python = spawn('python3', [eInkPath]);
+    python.stdout.on('data', function (data) {
+        console.log(data.toString());
+    });
 }
 
 module.exports = app;
