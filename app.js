@@ -3,9 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const {spawn} = require('child_process');
-const useEInk = require('./config.json')["e-ink"];
-const eInkPath = require('./config.json')["e-ink-path"];
 
 var indexRouter = require('./routes/index');
 var libraryRouter = require('./routes/library');
@@ -46,16 +43,5 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-
-if (useEInk) {
-    console.log("Spawning E-Ink Driver at " + eInkPath);
-    const python = spawn('python3', [eInkPath]);
-    python.stdout.on('data', function (data) {
-        console.log(data.toString());
-    });
-    python.on('close', (code) => {
-        console.log("Output closed with code " + code);
-    });
-}
 
 module.exports = app;
