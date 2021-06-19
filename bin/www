@@ -8,6 +8,8 @@ var app = require('../app');
 var debug = require('debug')('pixel-shelf:server');
 var http = require('http');
 
+var EInkDriver = require('../eink/EInkDriver');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -87,4 +89,6 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  let driver = new EInkDriver();
+  driver.drawLibrarySize();
 }

@@ -7,7 +7,7 @@ function EInkDriver() {
 
 EInkDriver.prototype.drawLibrarySize = function drawLibrarySize() {
     if (EInkDriver.prototype.useEInk) {
-        const python = spawn('python3', ['library_size.py']);
+        const python = spawn('python3', ['./eink/library_size.py', -1]);
         python.stdout.on('data', function (data) {
             console.log(data.toString());
         });
