@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const {spawn} = require('child_process');
-const useEInk = require('config.json')["e-ink"];
-const eInkPath = require('config.json')["e-ink-path"];
+const useEInk = require('./config.json')["e-ink"];
+const eInkPath = require('./config.json')["e-ink-path"];
 
 var indexRouter = require('./routes/index');
 var libraryRouter = require('./routes/library');
