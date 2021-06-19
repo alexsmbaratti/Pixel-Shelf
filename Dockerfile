@@ -16,6 +16,8 @@ COPY . .
 RUN node-sass --omit-source-map-url sass/styles.scss public/stylesheets/styles.css
 
 RUN mkdir models/db
+RUN mkdir public/images
+RUN mkdir public/images/covers
 RUN cat models/initdb.sql | sqlite3 models/db/pixelshelf.db
 
 ENV PORT=3000
