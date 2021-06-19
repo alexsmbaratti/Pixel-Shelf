@@ -48,7 +48,7 @@ app.use(function (err, req, res, next) {
 });
 
 if (useEInk) {
-    console.log("Spawning E-Ink Driver...");
+    console.log("Spawning E-Ink Driver at " + eInkPath);
     const python = spawn('python3', [eInkPath]);
     python.stdout.on('data', function (data) {
         console.log(data.toString());
