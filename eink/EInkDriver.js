@@ -1,5 +1,5 @@
 var config = require('../config.json');
-const {spawn} = require('child_process');
+const PythonShell = require('python-shell').PythonShell;
 
 function EInkDriver() {
     EInkDriver.prototype.useEInk = config['useEInk'];
@@ -8,12 +8,12 @@ function EInkDriver() {
 EInkDriver.prototype.drawLibrarySize = function drawLibrarySize() {
     new Promise(function (resolve, reject) {
         if (EInkDriver.prototype.useEInk) {
-            const python = spawn('python3', ['./eink/library_size.py', -1]);
-            python.stdout.on('data', function (data) {
-                console.log(data.toString());
-            });
-            python.on('close', (code) => {
-                console.log("Existed with code " + code);
+            let options = {
+                mode: 'text',
+                args: ['-1']
+            };
+            PythonShell.run('./eink/library_size.py', options, function (err, res) {
+                console.log(res);
             });
         }
     });
