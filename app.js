@@ -53,6 +53,9 @@ if (useEInk) {
     python.stdout.on('data', function (data) {
         console.log(data.toString());
     });
+    python.on('close', (code) => {
+        console.log("Output closed with code " + code);
+    });
 }
 
 module.exports = app;
