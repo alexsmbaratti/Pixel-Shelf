@@ -46,3 +46,12 @@ function submit() {
 function validateFields() {
     return true; // TODO
 }
+
+function giftCheck() {
+    let giftCheck = document.getElementById("gift-check").checked;
+    if (giftCheck) {
+        document.getElementById("cost-text").disabled = true;
+    } else {
+        document.getElementById("cost-text").disabled = false;
+    }
+}
