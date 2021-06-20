@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <script src="/js/index.js"></script>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+<body>
+<%- include('partials/navbar') %>
+<div class="container">
+    <div class="tile is-ancestor">
+        <div class="tile pt-5">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <h1 class="title">Backend Information</h1>
+                    <h1 class="subtitle">Pixel Shelf v<%= version %></h1>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
