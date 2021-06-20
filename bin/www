@@ -112,6 +112,9 @@ function readCode(driver) {
             }
             console.log(result.upc);
             driver.drawGame(result.upc);
+            setTimeout(function(){
+                driver.drawLibrarySize(); // Return to default screen
+            },10000);
             readCode();
             resolve();
         });
