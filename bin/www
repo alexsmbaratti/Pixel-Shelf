@@ -94,6 +94,7 @@ function onListening() {
     if (eInk) {
         let driver = new EInkDriver();
         driver.drawLibrarySize();
+        readCode(driver);
     }
 }
 
