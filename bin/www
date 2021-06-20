@@ -9,7 +9,6 @@ var debug = require('debug')('pixel-shelf:server');
 var http = require('http');
 
 var EInkDriver = require('../eink/EInkDriver');
-const readline = require("readline");
 const eInk = require('../config.json')['e-ink'];
 
 /**
@@ -94,17 +93,10 @@ function onListening() {
     if (eInk) {
         let driver = new EInkDriver();
         driver.drawLibrarySize();
-        const readline = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-        readCode(readline, driver);
     }
 }
 
-function readCode(readline, driver) {
-    readline.question("Now Listening for UPC...", function(upc) {
-        driver.drawGame(upc);
-        readCode();
-    });
+function readCode(driver) {
+    driver.drawGame(upc);
+    readCode();
 }
