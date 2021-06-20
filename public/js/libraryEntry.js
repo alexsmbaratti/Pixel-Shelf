@@ -1,3 +1,40 @@
+function renderCostChart(msrp, cost) {
+    let chart = new Chart(document.getElementById('cost-chart').getContext('2d'), {
+        type: 'horizontalBar',
+        data: {
+            labels: ["MSRP", "Cost"],
+            datasets: [{
+                scaleFontColor: "#FFFFFF",
+                borderColor: ['rgb(196, 25, 25)', 'rgb(25, 25, 196)'],
+                backgroundColor: ['rgb(196, 25, 25)', 'rgb(25, 25, 196)'],
+                data: [msrp, cost]
+            }]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            animation: {
+                tension: {
+                    duration: 1000,
+                    easing: 'linear',
+                    from: 1,
+                    to: 0,
+                    loop: true
+                }
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontColor: 'rgb(255, 255, 255)'
+                    }
+                }]
+            }
+        }
+    });
+}
+
 function getIGDBInfo(id) {
     let igdbRequest = new XMLHttpRequest();
     igdbRequest.open('GET', `/library/${id}/igdb`);

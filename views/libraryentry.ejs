@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <script src="/js/libraryEntry.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <%
     let date = new Date(Date.parse(entry.date));
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
@@ -37,8 +38,7 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDate() + 1 %>
-                                , <%= date.getFullYear() %></h1>
+                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDate() + 1 %>, <%= date.getFullYear() %></h1>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
@@ -56,6 +56,7 @@
                             <h1 class="title is-4">Purchase Information</h1>
                             <h1 class="subtitle">Retails for $<%= entry.msrp %></h1>
                             <h1 class="subtitle">Bought for $<%= entry.cost %></h1>
+                            <canvas id="cost-chart" width="350" height="100"></canvas>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
@@ -74,6 +75,7 @@
     </div>
 </div>
 <script>
+    renderCostChart(<%= entry.msrp %>, <%= entry.cost %>);
     getIGDBInfo(<%= id %>);
 </script>
 </body>
