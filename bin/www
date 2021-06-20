@@ -10,6 +10,7 @@ var http = require('http');
 
 var EInkDriver = require('../eink/EInkDriver');
 const eInk = require('../config.json')['e-ink'];
+const prompt = require('prompt');
 
 /**
  * Get port from environment and store in Express.
@@ -97,6 +98,17 @@ function onListening() {
 }
 
 function readCode(driver) {
-    driver.drawGame(upc);
-    readCode();
+    prompt.start();
+    prompt.get([{
+        name: 'upc',
+        validator: /^[0-9]*$/,
+        warning: 'UPCs only consist of numbers'
+    }], function (err, result) {
+        if (err) {
+            console.log(err);
+        }
+        console.log(result.upc);
+        driver.drawGame(upc);
+        readCode();
+    });
 }
