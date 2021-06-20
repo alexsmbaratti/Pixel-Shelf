@@ -112,7 +112,7 @@ IGDBDriver.prototype.getCoverArtByID = function getCoverArtByID(id) {
         })
             .then(function (res) {
                 if (res.data.length > 0) {
-                    let size = 'cover_big';
+                    let size = 'cover_big_2x';
                     let imageID = res.data[0]["image_id"];
                     let url = `https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`
                     resolve(url);

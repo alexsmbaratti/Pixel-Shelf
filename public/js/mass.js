@@ -13,6 +13,7 @@ function submit() {
 
         button.setAttribute("class", "button is-link is-loading");
         button.disabled = true;
+        button.innerHTML = "";
 
         let request = new XMLHttpRequest();
         request.open('POST', `/add/mass`);
@@ -113,6 +114,7 @@ function submit() {
                     console.log("TODO: Handle error!");
                     button.setAttribute("class", "button is-link");
                     button.disabled = false;
+                    button.innerHTML = "Submit";
                 }
             }
         }
