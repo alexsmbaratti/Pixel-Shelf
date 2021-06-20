@@ -6,12 +6,15 @@ const axios = require('axios');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    res.render('library', {title: 'Pixel Shelf'});
+});
+
+router.get('/games', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getLibrary().then(result => {
-        console.log(result);
-        res.render('library', {title: 'Pixel Shelf', library: result});
+        res.status(200).send({"status": 200, "library": result});
     }).catch(err => {
-        res.render('error', {error: err});
+        res.status(500).send({"status": 500});
     });
 });
 
