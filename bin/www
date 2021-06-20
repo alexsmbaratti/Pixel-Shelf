@@ -115,7 +115,7 @@ function readCode(driver) {
             setTimeout(function(){
                 driver.drawLibrarySize(); // Return to default screen
             },10000);
-            readCode();
+            readCode(driver);
             resolve();
         });
     });
