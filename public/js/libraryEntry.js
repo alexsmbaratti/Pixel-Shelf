@@ -8,6 +8,7 @@ function getIGDBInfo(id) {
             if (igdbRequest.status === 200) {
                 console.log(data);
                 document.getElementById("description").innerHTML = data['summary'];
+                document.getElementById("igdb-link").innerHTML = 'View on IGDB';
             } else {
                 console.log("TODO: Handle error!")
             }

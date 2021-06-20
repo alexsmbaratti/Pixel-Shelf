@@ -9,6 +9,7 @@ function submit() {
         let button = document.getElementById("submit");
         let schemaText = document.getElementById("schema").value;
         let massText = document.getElementById("mass-text").value;
+        let ignoreFirstLine = document.getElementById("ignore-check").checked;
 
         button.setAttribute("class", "button is-link is-loading");
         button.disabled = true;
@@ -18,6 +19,11 @@ function submit() {
         request.setRequestHeader('Content-Type', 'application/json');
 
         var parsed = [];
+
+        if (ignoreFirstLine) {
+            let firstLineIndex = massText.indexOf('\n') + 2;
+            massText = massText.substring(firstLineIndex);
+        }
 
         massText.split('\n').forEach(function (line) {
             var obj = {};
