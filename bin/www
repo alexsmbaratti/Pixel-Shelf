@@ -94,15 +94,7 @@ function onListening() {
     if (eInk) {
         let driver = new EInkDriver();
         driver.drawLibrarySize();
-        while (true) {
-            let flag = false;
-            readCode(driver).then(result => {
-                flag = true;
-            })
-            while (!flag) {
-                // This is bad practice and I am not endorsing it
-            }
-        }
+        readCode(driver);
     }
 }
 
