@@ -6,8 +6,12 @@ function append(text) {
 // Notes: Cannot have commas in variable names; cannot have two variables next to each other without delimiters; game consoles must exist prior; game console is case-sensitive
 function submit() {
     if (true) {
+        let button = document.getElementById("submit");
         let schemaText = document.getElementById("schema").value;
         let massText = document.getElementById("mass-text").value;
+
+        button.setAttribute("class", "button is-link is-loading");
+        button.disabled = true;
 
         let request = new XMLHttpRequest();
         request.open('POST', `/add/mass`);
@@ -45,7 +49,6 @@ function submit() {
                             obj["day"] = parseInt(keyData);
                             break;
                         case 'IGDB':
-                            console.log("AHHHHH")
                             obj["igdb-url"] = keyData;
                             break;
                         case 'COST':
@@ -101,7 +104,9 @@ function submit() {
                 if (request.status === 200) {
                     window.location.href = `/library/`;
                 } else {
-                    console.log("TODO: Handle error!")
+                    console.log("TODO: Handle error!");
+                    button.setAttribute("class", "button is-link");
+                    button.disabled = false;
                 }
             }
         }
