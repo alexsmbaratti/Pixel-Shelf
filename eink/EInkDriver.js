@@ -28,4 +28,26 @@ EInkDriver.prototype.drawLibrarySize = function drawLibrarySize() {
     });
 }
 
+EInkDriver.prototype.drawGame = function drawGame(upc) {
+    new Promise(function (resolve, reject) {
+        if (use) {
+            console.log("Querying game by UPC...");
+            EInkDriver.prototype.driver.lookupByUPC(upc).then(result => {
+                let options = {
+                    mode: 'text',
+                    args: [result.title, result.platform]
+                };
+                PythonShell.run('eink/game_display.py', options, function (err, res) {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log(res);
+                });
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    });
+}
+
 module.exports = EInkDriver;
