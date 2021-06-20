@@ -94,7 +94,13 @@ function onListening() {
     if (eInk) {
         let driver = new EInkDriver();
         driver.drawLibrarySize();
-        readCode(driver);
+        let flag = false;
+        while (true) {
+            readCode(driver);
+            while (!flag) {
+                // This is bad practice and I am not endorsing it
+            }
+        }
     }
 }
 
@@ -112,10 +118,9 @@ function readCode(driver) {
             }
             console.log(result.upc);
             driver.drawGame(result.upc);
-            setTimeout(function(){
+            setTimeout(function () {
                 driver.drawLibrarySize(); // Return to default screen
-            },10000);
-            readCode(driver);
+            }, 10000);
             resolve();
         });
     });
