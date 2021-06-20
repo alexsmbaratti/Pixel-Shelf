@@ -99,17 +99,21 @@ function onListening() {
 }
 
 function readCode(driver) {
-    prompt.start();
-    prompt.get([{
-        name: 'upc',
-        validator: /^[0-9]*$/,
-        warning: 'UPCs only consist of numbers'
-    }], function (err, result) {
-        if (err) {
-            console.log(err);
-        }
-        console.log(result.upc);
-        driver.drawGame(upc);
-        readCode();
+    new Promise(function (resolve, reject) {
+        prompt.start();
+        prompt.get([{
+            name: 'upc',
+            validator: /^[0-9]*$/,
+            warning: 'UPCs only consist of numbers'
+        }], function (err, result) {
+            if (err) {
+                console.log(err);
+                reject();
+            }
+            console.log(result.upc);
+            driver.drawGame(result.upc);
+            readCode();
+            resolve();
+        });
     });
 }
