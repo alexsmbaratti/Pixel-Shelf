@@ -26,6 +26,8 @@
                             <h1 class="title"><%= entry.title %></h1>
                             <h1 class="title is-5"><%= entry.platform %></h1>
                             <h1 class="subtitle"><%= entry.edition %></h1>
+                            <div id="tags-div"></div>
+                            <br>
                             <p id="description" class="has-text-light"></p>
                             <br>
                             <a href="<%= entry.igdbURL %>">
@@ -38,8 +40,9 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDate() + 1 %>
-                                , <%= date.getFullYear() %></h1>
+                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDate() + 1 %>, <%= date.getFullYear() %></h1>
+                            <h1 class="subtitle">Condition: New/Used</h1>
+                            <h1 class="subtitle">UPC: <%= entry.upc %></h1>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">

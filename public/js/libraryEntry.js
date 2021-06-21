@@ -46,6 +46,13 @@ function getIGDBInfo(id) {
                 console.log(data);
                 document.getElementById("description").innerHTML = data['summary'];
                 document.getElementById("igdb-link").innerHTML = 'View on IGDB';
+                let tagsDiv = document.getElementById("tags-div");
+                data['genres'].forEach(genre => {
+                    let genreTag = document.createElement("span");
+                    genreTag.setAttribute("class", "tag is-light mr-3");
+                    genreTag.innerHTML = genre.name;
+                    tagsDiv.appendChild(genreTag);
+                });
             } else {
                 console.log("TODO: Handle error!")
             }
