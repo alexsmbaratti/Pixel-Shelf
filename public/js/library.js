@@ -31,28 +31,11 @@ function fetchLibrary() {
                     mainDiv.removeChild(mainDiv.firstChild);
                 }
 
-                let titleHeader = document.createElement("th");
-                let platformHeader = document.createElement("th");
-                let dateHeader = document.createElement("th");
-                let costHeader = document.createElement("th");
-                let editionHeader = document.createElement("th");
-                titleHeader.innerHTML = 'Title';
-                platformHeader.innerHTML = 'Platform';
-                dateHeader.innerHTML = 'Date Added';
-                costHeader.innerHTML = 'Cost';
-                editionHeader.innerHTML = 'Edition';
+                let tableBody = document.getElementById("table-body");
+                while (tableBody.firstChild) {
+                    tableBody.removeChild(tableBody.firstChild);
+                }
 
-                let header = document.createElement("tr");
-                header.appendChild(titleHeader);
-                header.appendChild(platformHeader);
-                header.appendChild(dateHeader);
-                header.appendChild(costHeader);
-                header.appendChild(editionHeader);
-
-                let tableHead = document.createElement("thead");
-                tableHead.appendChild(header);
-
-                let tableBody = document.createElement("tbody");
                 data.forEach(game => {
                     let link = document.createElement("a");
                     link.setAttribute("href", `/library/${game.id}`);
@@ -81,13 +64,6 @@ function fetchLibrary() {
 
                     tableBody.appendChild(row);
                 });
-
-                let table = document.createElement("table");
-                table.setAttribute("class", "table is-hoverable is-striped is-fullwidth");
-                table.appendChild(tableHead);
-                table.appendChild(tableBody);
-
-                mainDiv.appendChild(table);
             } else {
                 // TODO: Handle error!
             }

@@ -8,9 +8,24 @@
 </head>
 <body>
 <%- include('partials/navbar') %>
+<table class="table is-hoverable is-striped is-fullwidth">
+    <thead>
+    <tr>
+        <th onclick="sortBy('title')">Title</th>
+        <th onclick="sortBy('platform')">Platform</th>
+        <th onclick="sortBy('dateAdded')">Date Added</th>
+        <th onclick="sortBy('cost')">Cost</th>
+        <th onclick="sortBy('edition')">Edition</th>
+    </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+</table>
 <div id="main-div">
-    <p class="title">Fetching Library...</p>
-    <progress class="progress is-small is-primary" max="100"></progress>
+    <div class="container pt-5">
+        <p class="title">Fetching Library...</p>
+        <progress class="progress is-small is-primary" max="100"></progress>
+    </div>
 </div>
 </body>
 </html>
