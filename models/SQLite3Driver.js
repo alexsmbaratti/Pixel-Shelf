@@ -290,6 +290,12 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
     });
 }
 
+SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
+    return new Promise(function (resolve, reject) {
+        reject();
+    });
+}
+
 SQLite3Driver.prototype.connect = function connect() {
     SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, (err) => {
         if (err) {
