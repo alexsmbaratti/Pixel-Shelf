@@ -25,8 +25,24 @@ function getSizeByPlatforms() {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
                 console.log(data);
+                // Example data
             } else {
-                console.log("TODO: Handle error!")
+                let chart = new Chart(document.getElementById('platforms-chart').getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ["Platform 1", "Platform 2", "Platform 3"],
+                        datasets: [{
+                            scaleFontColor: "#FFFFFF",
+                            backgroundColor: ['red', 'yellow', 'green'],
+                            data: [120, 80, 30]
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
             }
         }
     }
