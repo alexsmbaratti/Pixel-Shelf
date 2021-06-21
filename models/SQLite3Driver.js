@@ -4,13 +4,33 @@ function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
 }
 
-SQLite3Driver.prototype.getLibrary = function getLibrary() {
+SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
+    let parsedSortBy;
+    switch (sortBy) {
+        case 'title':
+            parsedSortBy = "game.title";
+            break;
+        case 'platform':
+            parsedSortBy = "platform.name ASC, game.title";
+            break;
+        case 'dateAdded':
+            parsedSortBy = "library.year ASC, library.month ASC, library.day";
+            break;
+        case 'cost':
+            parsedSortBy = "library.cost";
+            break;
+        case 'edition':
+            parsedSortBy = "edition.edition";
+            break;
+        default:
+            parsedSortBy = "game.title";
+    }
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT library.id, game.id, game.title, platform.name, library.month, library.day, library.year, library.cost, edition.edition FROM game, platform, edition, library WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid ORDER BY game.title ASC';
+            let sql = `SELECT library.id, game.id, game.title, platform.name, library.month, library.day, library.year, library.cost, edition.edition FROM game, platform, edition, library WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid ORDER BY ${parsedSortBy} ASC`;
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);

@@ -1,23 +1,6 @@
-function sortBy(sortCriteria) {
-    switch (sortCriteria) {
-        case "title":
-            break;
-        case "platform":
-            break;
-        case "dateAdded":
-            break;
-        case "cost":
-            break;
-        case "edition":
-            break;
-        default:
-
-    }
-}
-
-function fetchLibrary() {
+function fetchLibrary(sortBy = "title") {
     let request = new XMLHttpRequest();
-    request.open('GET', `/library/games`);
+    request.open('GET', `/library/games?sortBy=${sortBy}`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {

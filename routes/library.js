@@ -3,6 +3,7 @@ var router = express.Router();
 var SQLite3Driver = require('../models/SQLite3Driver');
 var IGDBDriver = require('../models/IGDBDriver');
 const axios = require('axios');
+const querystring = require('querystring');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -11,7 +12,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/games', function (req, res, next) {
     let driver = new SQLite3Driver();
-    driver.getLibrary().then(result => {
+    driver.getLibrary(req.query.sortBy).then(result => {
         res.status(200).send({"status": 200, "library": result});
     }).catch(err => {
         res.status(500).send({"status": 500});
