@@ -36,3 +36,5 @@ sqlite3 pixelshelf.db
 ```
 
 7. Run `npm start` to run the web server on localhost:3000
+
+Note: You must provide your own icons for game ratings.

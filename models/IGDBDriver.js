@@ -52,7 +52,7 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
                 'Content-Type': 'text/plain'
             },
-            data: 'fields *, genres.name; where url = \"' + url + '\";'
+            data: 'fields *, genres.name, age_ratings.*; where url = \"' + url + '\";'
         })
             .then(function (res) {
                 let resJSON = res.data;

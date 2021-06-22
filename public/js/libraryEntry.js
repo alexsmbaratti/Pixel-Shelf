@@ -59,6 +59,19 @@ function getIGDBInfo(id) {
                     genreTag.innerHTML = genre.name;
                     tagsDiv.appendChild(genreTag);
                 });
+                const ratingOrg = 1; // ESRB Ratings Only
+                const ratingLegend = ["N/A", "Three", "Seven", "Twelve", "Sixteen", "Eighteen", "RP", "EC", "E", "E10", "T", "M", "AO"];
+                let ratings = data['age_ratings'];
+                for (let i = 0; i < ratings.length; i++) {
+                    if (ratings[i]['category'] === ratingOrg) {
+                        console.log(ratings[i]['rating']);
+                        console.log("Rating is " + ratingLegend[ratings[i]['rating']]);
+                        let image = document.createElement("img");
+                        image.setAttribute("src", "/images/ratings/" + ratings[i]['rating'] + ".jpg");
+                        document.getElementById("rating-figure").appendChild(image);
+                        break;
+                    }
+                }
             } else {
                 console.log("TODO: Handle error!")
             }

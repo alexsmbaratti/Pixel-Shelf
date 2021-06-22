@@ -30,6 +30,7 @@
                             <div id="tags-div"></div>
                             <br>
                             <p id="description" class="has-text-light"></p>
+                            <figure id="rating-figure" class="image is-24x24"></figure>
                             <br>
                             <a href="<%= entry.igdbURL %>">
                                 <p id="igdb-link" class="has-text-link"></p>
@@ -41,8 +42,7 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDate() + 1 %>
-                                , <%= date.getFullYear() %></h1>
+                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDate() + 1 %>, <%= date.getFullYear() %></h1>
                             <h1 class="subtitle">Condition: New/Used</h1>
                             <h1 class="subtitle">UPC: <%= entry.upc %></h1>
                         </article>
