@@ -30,7 +30,7 @@
                                     <h1 class="subtitle"><%= entry.edition %></h1>
                                 </div>
                                 <div class="column is-one-fifth">
-                                    <figure id="rating-figure" class="image is-24x24"></figure>
+                                    <figure id="rating-figure" class="image is-48x48"></figure>
                                 </div>
                             </div>
                             <div id="loading-div"></div>
@@ -91,8 +91,8 @@
     </div>
 </div>
 <script>
-    renderCostChart(<%= entry.msrp %>, <%= entry.cost %>);
     getIGDBInfo(<%= id %>);
+    renderCostChart(<%= entry.msrp %>, <%= entry.cost %>);
 </script>
 </body>
 </html>
