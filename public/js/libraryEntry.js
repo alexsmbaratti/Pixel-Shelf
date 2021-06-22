@@ -36,6 +36,11 @@ function renderCostChart(msrp, cost) {
 }
 
 function getIGDBInfo(id) {
+    let loader = document.createElement("div");
+    loader.setAttribute("class", "loader");
+    loader.setAttribute("id", "igdb-loader");
+    document.getElementById("loading-div").appendChild(loader);
+
     let igdbRequest = new XMLHttpRequest();
     igdbRequest.open('GET', `/library/${id}/igdb`);
 
@@ -44,6 +49,7 @@ function getIGDBInfo(id) {
             let data = JSON.parse(igdbRequest.responseText)['data'][0];
             if (igdbRequest.status === 200) {
                 console.log(data);
+                document.getElementById("igdb-loader").remove();
                 document.getElementById("description").innerHTML = data['summary'];
                 document.getElementById("igdb-link").innerHTML = 'View on IGDB';
                 let tagsDiv = document.getElementById("tags-div");
