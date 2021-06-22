@@ -24,13 +24,19 @@
                         </div>
                         <div class="column">
                             <h1 class="title"><%= entry.title %></h1>
-                            <h1 class="title is-5"><%= entry.platform %></h1>
-                            <h1 class="subtitle"><%= entry.edition %></h1>
+                            <div class="columns">
+                                <div class="column">
+                                    <h1 class="title is-5"><%= entry.platform %></h1>
+                                    <h1 class="subtitle"><%= entry.edition %></h1>
+                                </div>
+                                <div class="column is-one-fifth">
+                                    <figure id="rating-figure" class="image is-24x24"></figure>
+                                </div>
+                            </div>
                             <div id="loading-div"></div>
                             <div id="tags-div"></div>
                             <br>
                             <p id="description" class="has-text-light"></p>
-                            <figure id="rating-figure" class="image is-24x24"></figure>
                             <br>
                             <a href="<%= entry.igdbURL %>">
                                 <p id="igdb-link" class="has-text-link"></p>
