@@ -1,18 +1,38 @@
-function renderCostChart(msrp, cost, sold) {
+function renderCostChart(msrp = null, cost = null, sold = null) {
+    let labels = [];
+    let data = [];
+    if (msrp != null) {
+        data.push(msrp);
+        labels.push('MSRP');
+    }
+    if (cost != null) {
+        data.push(cost);
+        labels.push('Bought at');
+    }
+    if (sold != null) {
+        data.push(sold);
+        labels.push('Sold For');
+    }
     let chart = new Chart(document.getElementById('cost-chart').getContext('2d'), {
         type: 'line',
         data: {
-            labels: ['MSRP', 'Cost', 'Sold Price'],
+            labels: labels,
             datasets: [{
                 scaleFontColor: "#FFFFFF",
                 borderColor: ['hsl(146, 100%, 39%)'],
                 backgroundColor: ['hsla(146, 100%, 39%, .2)'],
-                data: [msrp, cost, sold]
+                data: data
             }]
         },
         options: {
             legend: {
                 display: false
+            },
+            title: {
+                display: false,
+                text: 'Cost Breakdown',
+                fontColor: 'rgb(255, 255, 255)',
+                fontSize: 22
             },
             animation: {
                 tension: {
@@ -38,6 +58,30 @@ function renderCostChart(msrp, cost, sold) {
                         }
                     }
                 }]
+            },
+            tooltips: {
+                callbacks: {
+                    title: function (tooltipItem, data) {
+                        if (data['labels'][tooltipItem[0]['index']] == 'Bought at') {
+                            return 'Cost'
+                        }
+                        return data['labels'][tooltipItem[0]['index']];
+                    },
+                    label: function (tooltipItem, data) {
+                        return '$' + data['datasets'][0]['data'][tooltipItem['index']];
+                    },
+                    afterLabel: function (tooltipItem, data) {
+                        if (msrp != null && cost != null) {
+                            if (tooltipItem['label'] == 'Bought at') {
+                                let savings = calculateSavings(msrp, cost);
+                                if (savings > 0) {
+                                    return 'Savings of ' + savings + '%';
+                                }
+                            }
+                        }
+                    }
+                },
+                displayColors: false
             }
         }
     });
@@ -109,4 +153,8 @@ function deleteGame(id) {
     }
 
     request.send(JSON.stringify(params));
+}
+
+function calculateSavings(msrp, cost) {
+    return ((1 - (cost / msrp)) * 100).toFixed(2);
 }

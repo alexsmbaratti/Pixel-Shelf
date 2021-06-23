@@ -66,12 +66,6 @@
                     <div class="tile is-child is-vertical pl-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Purchase Information</h1>
-                            <h1 class="subtitle">Retails for $<%= entry.msrp %></h1>
-                            <h1 class="subtitle">Bought for $<%= entry.cost %></h1>
-                            <% if (entry.cost < entry.msrp) { %>
-                                <% let percent = ((1 - (entry.cost / entry.msrp)) * 100); %>
-                                <h1 class="subtitle">Savings of <%= percent.toFixed(2) %>%</h1>
-                            <% } %>
                             <div class="mr-3 ml-3">
                             <canvas id="cost-chart" width="350" height="100"></canvas>
                             </div>
