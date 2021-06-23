@@ -1,13 +1,13 @@
-function renderCostChart(msrp, cost) {
+function renderCostChart(msrp, cost, sold) {
     let chart = new Chart(document.getElementById('cost-chart').getContext('2d'), {
-        type: 'horizontalBar',
+        type: 'line',
         data: {
-            labels: ["MSRP", "Cost"],
+            labels: ['MSRP', 'Cost', 'Sold Price'],
             datasets: [{
                 scaleFontColor: "#FFFFFF",
-                borderColor: ['rgb(196, 25, 25)', 'rgb(25, 25, 196)'],
-                backgroundColor: ['rgb(196, 25, 25)', 'rgb(25, 25, 196)'],
-                data: [msrp, cost]
+                borderColor: ['hsl(146, 100%, 39%)'],
+                backgroundColor: ['hsla(146, 100%, 39%, .2)'],
+                data: [msrp, cost, sold]
             }]
         },
         options: {
@@ -26,8 +26,16 @@ function renderCostChart(msrp, cost) {
             scales: {
                 xAxes: [{
                     ticks: {
-                        beginAtZero: true,
                         fontColor: 'rgb(255, 255, 255)'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontColor: 'rgb(255, 255, 255)',
+                        callback: function (value, index, values) {
+                            return '$' + value;
+                        }
                     }
                 }]
             }

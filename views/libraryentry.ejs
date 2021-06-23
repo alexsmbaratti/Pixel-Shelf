@@ -72,7 +72,9 @@
                                 <% let percent = ((1 - (entry.cost / entry.msrp)) * 100); %>
                                 <h1 class="subtitle">Savings of <%= percent.toFixed(2) %>%</h1>
                             <% } %>
+                            <div class="mr-3 ml-3">
                             <canvas id="cost-chart" width="350" height="100"></canvas>
+                            </div>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
@@ -92,7 +94,7 @@
 </div>
 <script>
     getIGDBInfo(<%= id %>);
-    renderCostChart(<%= entry.msrp == '' ? "null": entry.msrp %>, <%= entry.cost == '' ? "null" : entry.cost %>);
+    renderCostChart(<%= entry.msrp == '' ? "null": entry.msrp %>, <%= entry.cost == '' ? "null" : entry.cost %>, null);
 </script>
 </body>
 </html>
