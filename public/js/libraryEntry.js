@@ -13,14 +13,24 @@ function renderCostChart(msrp = null, cost = null, sold = null) {
         data.push(sold);
         labels.push('Sold For');
     }
+    let borderColor;
+    let backgroundColor;
+    if (cost > msrp) { // Paid over MSRP
+        borderColor = 'hsl(15, 100%, 39%)';
+        backgroundColor = 'hsla(15, 100%, 39%, .2)';
+    } else {
+        borderColor = 'hsl(146, 100%, 39%)';
+        backgroundColor = 'hsla(146, 100%, 39%, .2)';
+
+    }
     let chart = new Chart(document.getElementById('cost-chart').getContext('2d'), {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 scaleFontColor: "#FFFFFF",
-                borderColor: ['hsl(146, 100%, 39%)'],
-                backgroundColor: ['hsla(146, 100%, 39%, .2)'],
+                borderColor: [borderColor],
+                backgroundColor: [backgroundColor],
                 data: data
             }]
         },
