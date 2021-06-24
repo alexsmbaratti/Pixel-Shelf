@@ -43,8 +43,65 @@ function submit() {
     }
 }
 
-function validateFields() {
-    return true; // TODO
+function submitGameInfo() {
+    let titleText = document.getElementById("title-text").value;
+    let platformSelect = document.getElementById("platform-selection");
+    if (titleText.length == 0) { // If left blank
+        return;
+    }
+    if (platformSelect[platformSelect.selectedIndex].id == -2) { // If left on Select Platform
+        return;
+    }
+    let button = document.getElementById("submit-button");
+    button.setAttribute("class", "button is-link is-loading");
+    button.disabled = true;
+
+    if (platformSelect[platformSelect.selectedIndex].id != -1) { // The platform already exists
+        let request = new XMLHttpRequest();
+        request.open('POST', `/add/gameinfo`);
+        request.setRequestHeader('Content-Type', 'application/json');
+
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                let data = JSON.parse(request.responseText);
+                if (request.status === 200) {
+                    console.log(data);
+
+                    let card = document.getElementById("add-card-div");
+                    while (card.firstChild) {
+                        card.removeChild(card.firstChild);
+                    }
+
+                    document.getElementById("edition-info-segment").setAttribute("class", "steps-segment is-active");
+                    document.getElementById("game-info-segment").setAttribute("class", "steps-segment");
+
+                    updateCard('/html/edition_info.html');
+                } else {
+                    console.log(data.err);
+                }
+            }
+        }
+
+        request.send(JSON.stringify({
+            "title": titleText,
+            "platform": platformSelect[platformSelect.selectedIndex].id
+        }));
+    }
+}
+
+function updateCard(url) {
+    var request = new XMLHttpRequest();
+    request.open('GET', url);
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                document.getElementById("add-card-div").innerHTML = request.responseText;
+            } else {
+
+            }
+        }
+    }
+    request.send();
 }
 
 function giftCheck() {
@@ -54,4 +111,8 @@ function giftCheck() {
     } else {
         document.getElementById("cost-text").disabled = false;
     }
+}
+
+function submitEditionInfo() {
+
 }

@@ -9,6 +9,16 @@ router.get('/', function (req, res, next) {
     res.render('library', {title: 'Pixel Shelf'});
 });
 
+router.get('/add', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getPlatforms().then(result => {
+        console.log(result);
+        res.render('add', {title: 'Pixel Shelf', platforms: result});
+    }).catch(err => {
+        res.render('error', {error: err});
+    });
+});
+
 router.get('/games', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getLibrary(req.query.sortBy).then(result => {

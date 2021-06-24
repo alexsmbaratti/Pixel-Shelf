@@ -97,8 +97,6 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                 let result = {};
                 try {
                     rows.forEach((row) => {
-                        console.log(row)
-
                         let month;
                         if (row.month < 10) {
                             month = '0' + row.month;
@@ -152,26 +150,7 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
                 }
                 let gameID = this.lastID;
                 console.log(`${json.title} was inserted with ID ${gameID}`);
-                SQLite3Driver.prototype.db.run(`INSERT INTO edition
-                                                VALUES (?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${gameID}`], function (err) {
-                    if (err) {
-                        console.log(err);
-                        reject(err);
-                    }
-                    let editionID = this.lastID;
-                    console.log(`${json.edition} was inserted with ID ${editionID}`);
-                    SQLite3Driver.prototype.db.run(`INSERT INTO library
-                                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${editionID}`, null], function (err) {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        }
-                        let libraryID = this.lastID;
-                        console.log(`${json.title} was added to library with ID ${libraryID}`);
-                        SQLite3Driver.prototype.db.close();
-                        resolve(libraryID);
-                    });
-                });
+                resolve(gameID);
             });
         });
     });
@@ -191,7 +170,6 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
                 let result = {};
                 try {
                     rows.forEach((row) => {
-                        console.log(row)
                         result = {
                             "title": row.title,
                             "platform": row.name,
@@ -229,7 +207,6 @@ SQLite3Driver.prototype.massImport = function massImport(json) {
                 rows.forEach((row) => {
                     platforms[row.name] = row.id;
                 });
-                console.log(platforms);
                 SQLite3Driver.prototype.db.close();
 
                 let run = function (arr, i) {
@@ -237,7 +214,6 @@ SQLite3Driver.prototype.massImport = function massImport(json) {
                         resolve();
                     } else {
                         arr[i]["platform"] = platforms[arr[i]["platform"]];
-                        console.log(arr[i]);
                         SQLite3Driver.prototype.addGame(arr[i]).then(result => {
                             run(arr, i + 1);
                         });
@@ -308,7 +284,7 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
                 if (res.length < 1) {
                     resolve({"found": false});
                 } else {
-                    resolve({"found": true, "id": res[0].id});
+                    resolve({"found": true, "id": res[0].id, "igdb": res[0]['igdbURL']});
                 }
             });
         });

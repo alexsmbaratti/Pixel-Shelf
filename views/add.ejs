@@ -16,26 +16,26 @@
 </section>
 
 <div class="container pt-5">
-    <ul class="steps">
-        <li class="steps-segment is-active">
+    <ul class="steps has-content-centered">
+        <li id="game-info-segment" class="steps-segment is-active">
             <span class="steps-marker"></span>
             <div class="steps-content has-text-light">
                 <p class="is-size-5">Game Information</p>
                 <p>Name, platform, and metadata</p>
             </div>
         </li>
-        <li class="steps-segment">
+        <li id="edition-info-segment" class="steps-segment">
             <span class="steps-marker"></span>
             <div class="steps-content has-text-light">
                 <p class="is-size-5">Edition Information</p>
                 <p>Edition and MSRP</p>
             </div>
         </li>
-        <li class="steps-segment">
+        <li id="purchase-info-segment" class="steps-segment">
             <span class="steps-marker"></span>
             <div class="steps-content has-text-light">
                 <p class="is-size-5">Purchase Information</p>
-                <p>Cost, date, and condition</p>
+                <p>Cost, date, store, and condition</p>
             </div>
         </li>
         <li class="steps-segment">
@@ -47,13 +47,9 @@
     </ul>
 
     <div class="card">
-        <div class="card-content">
+        <div id="add-card-div" class="card-content">
             <div class="content">
-                <h1 class="title has-text-light">Add a Game</h1>
-                <h6 class="subtitle is-6 has-text-light">Or add many games at once with <a href="/add/mass">Mass
-                        Import</a></h6>
-                <br>
-                <h1 class="title is-4 has-text-light">Game Information</h1>
+                <h1 class="title has-text-light">Game Information</h1>
                 <div class="field">
                     <label class="label">Title</label>
                     <div class="control">
@@ -66,95 +62,21 @@
                     <div class="control">
                         <div class="select">
                             <select id="platform-selection">
-                                <option id="-1">Select platform</option>
+                                <option id="-2">Select Platform</option>
                                 <% platforms.forEach(function(platform) { %>
                                     <option id="<%= platform.id %>"><%= platform.name %></option>
                                 <% }); %>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">IGDB URL</label>
-                    <div class="control">
-                        <input required id="igdb-text" class="input" type="text"
-                               placeholder="i.e. https://www.igdb.com/games/gex">
-                    </div>
-                </div>
-
-                <h1 class="title is-4 has-text-light">Edition Information</h1>
-
-                <div class="field">
-                    <label class="label">Edition</label>
-                    <div class="control">
-                        <input id="edition-text" class="input" type="text" placeholder="Defaults to Standard Edition">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">MSRP</label>
-                    <h1 class="subtitle is-6 has-text-light">How much does this normally cost?</h1>
-                    <div class="control">
-                        <input id="msrp-text" class="input" type="text" placeholder="Defaults to 59.99">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">UPC</label>
-                    <div class="control">
-                        <input id="upc-text" class="input" type="text"
-                               placeholder="Type or scan the barcode on the package">
-                    </div>
-                </div>
-
-                <h1 class="title is-4 has-text-light">Your Copy's Information</h1>
-
-                <% let today = new Date(Date.now()); %>
-                <div class="field">
-                    <label class="label">Date Added</label>
-                    <h1 class="subtitle is-6 has-text-light">When did you add this game to your collection?</h1>
-                    <div class="control">
-                        <input type="date" id="start" name="trip-start"
-                               value="<%= today.getFullYear() %>-<%= today.getMonth() %>-<%= today.getDay() %>"
-                               min="1970-01-01"
-                               max="<%= today.getFullYear() %>-<%= today.getMonth() %>-<%= today.getDay() %>">
-                    </div>
-                </div>
-                <div class="field">
-                    <input id="date-check" type="checkbox">
-                    <label class="checkbox has-text-light">I don't know when I bought it</label>
-                </div>
-                <div class="field">
-                    <label class="label">Cost</label>
-                    <h1 class="subtitle is-6 has-text-light">How much did you pay for it?</h1>
-                    <div class="control">
-                        <input id="cost-text" class="input" type="text" placeholder="i.e. 29.99">
-                    </div>
-                </div>
-                <div class="field" onclick="giftCheck()">
-                    <input id="gift-check" type="checkbox" onclick="giftCheck()">
-                    <label class="checkbox has-text-light" onclick="giftCheck()">This was a gift</label>
-                </div>
-
-                <div class="field">
-                    <label class="label">Condition</label>
-                    <div class="control">
-                        <div class="select">
-                            <select id="condition-selection">
-                                <option id="new">New</option>
-                                <option id="used">Used</option>
+                                <option id="-1">-- New Platform --</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
                 <div class="control">
-                    <button class="button is-link" onclick="submit()">Submit</button>
+                    <button id="submit-button" class="button is-link" onclick="submitGameInfo()">Next</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>
