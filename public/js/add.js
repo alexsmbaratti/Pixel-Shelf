@@ -1,3 +1,5 @@
+let gameID;
+
 function submit() {
     if (validateFields()) {
         let platformSelect = document.getElementById("platform-selection");
@@ -66,6 +68,7 @@ function submitGameInfo() {
                 let data = JSON.parse(request.responseText);
                 if (request.status === 200) {
                     console.log(data);
+                    gameID = data.id;
 
                     let card = document.getElementById("add-card-div");
                     while (card.firstChild) {
@@ -89,6 +92,50 @@ function submitGameInfo() {
     }
 }
 
+function submitEditionInfo() {
+    let editionText = document.getElementById("edition-text").value;
+    let upcText = document.getElementById("upc-text").value;
+    let msrpText = document.getElementById("msrp-text").value;
+
+    let edition;
+    if (editionText.length == 0) { // If left blank
+        edition = 'Standard Edition';
+    } else {
+        edition = editionText;
+    }
+
+    let button = document.getElementById("submit-button");
+    button.setAttribute("class", "button is-link is-loading");
+    button.disabled = true;
+
+    document.getElementById("destination-segment").setAttribute("class", "steps-segment is-active");
+    document.getElementById("edition-info-segment").setAttribute("class", "steps-segment");
+
+    updateCard('/html/destination.html');
+}
+
+function submitDestinationInfo() {
+    let button = document.getElementById("submit-button");
+    button.setAttribute("class", "button is-link is-loading");
+    button.disabled = true;
+
+    document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment is-active");
+    document.getElementById("destination-segment").setAttribute("class", "steps-segment");
+
+    updateCard('/html/purchase_info.html');
+}
+
+function submitPurchaseInfo() {
+    let button = document.getElementById("submit-button");
+    button.setAttribute("class", "button is-link is-loading");
+    button.disabled = true;
+
+    document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
+    document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment");
+
+    updateCard('/html/completion.html');
+}
+
 function updateCard(url) {
     var request = new XMLHttpRequest();
     request.open('GET', url);
@@ -97,7 +144,7 @@ function updateCard(url) {
             if (request.status === 200) {
                 document.getElementById("add-card-div").innerHTML = request.responseText;
             } else {
-
+                document.getElementById("add-card-div").innerText = "An error has occurred.";
             }
         }
     }
@@ -111,8 +158,4 @@ function giftCheck() {
     } else {
         document.getElementById("cost-text").disabled = false;
     }
-}
-
-function submitEditionInfo() {
-
 }
