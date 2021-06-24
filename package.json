@@ -8,6 +8,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "bulma-calendar": "^6.1.6",
+    "bulma-o-steps": "^1.1.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
