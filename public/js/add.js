@@ -1,4 +1,5 @@
 let gameID;
+let editionID;
 
 function submit() {
     if (validateFields()) {
@@ -60,7 +61,7 @@ function submitGameInfo() {
 
     if (platformSelect[platformSelect.selectedIndex].id != -1) { // The platform already exists
         let request = new XMLHttpRequest();
-        request.open('POST', `/add/gameinfo`);
+        request.open('POST', `/add/game`);
         request.setRequestHeader('Content-Type', 'application/json');
 
         request.onreadystatechange = function () {
@@ -103,15 +104,48 @@ function submitEditionInfo() {
     } else {
         edition = editionText;
     }
+    if (isNaN(msrpText) && msrpText.length > 0) {
+        return;
+    }
 
     let button = document.getElementById("submit-button");
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;
 
-    document.getElementById("destination-segment").setAttribute("class", "steps-segment is-active");
-    document.getElementById("edition-info-segment").setAttribute("class", "steps-segment");
+    let request = new XMLHttpRequest();
+    request.open('POST', `/add/edition`);
+    request.setRequestHeader('Content-Type', 'application/json');
 
-    updateCard('/html/destination.html');
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let data = JSON.parse(request.responseText);
+            if (request.status === 200) {
+                console.log(data);
+                editionID = data.id;
+
+                let card = document.getElementById("add-card-div");
+                while (card.firstChild) {
+                    card.removeChild(card.firstChild);
+                }
+
+                document.getElementById("destination-segment").setAttribute("class", "steps-segment is-active");
+                document.getElementById("edition-info-segment").setAttribute("class", "steps-segment");
+
+                updateCard('/html/destination.html');
+            } else {
+                console.log(data.err);
+                button.setAttribute("class", "button is-danger");
+                button.innerHTML = "Error!"
+            }
+        }
+    }
+
+    request.send(JSON.stringify({
+        "edition": edition,
+        "upc": upcText,
+        "msrp": msrpText,
+        "gameID": gameID
+    }));
 }
 
 function submitDestinationInfo() {

@@ -20,9 +20,8 @@ router.post('/', function (req, res) {
     });
 });
 
-router.post('/gameinfo', function (req, res) {
+router.post('/game', function (req, res) {
     let driver = new SQLite3Driver();
-    console.log(req.body);
     driver.lookupGame(req.body.title, req.body.platform).then(result => {
         if (result.found === true) {
             res.status(200).send({"status": 200, "id": result.id, "igdb": result.igdb});
@@ -52,6 +51,12 @@ router.post('/gameinfo', function (req, res) {
     }).catch(err => {
         res.status(500).send({"status": 500, "error": err});
     });
+});
+
+router.post('/edition', function (req, res) {
+    let driver = new SQLite3Driver();
+    console.log(req.body);
+    res.status(500).send({"status": 500, "error": "Not Implemented!"});
 });
 
 router.get('/mass', function (req, res, next) {
