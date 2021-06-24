@@ -156,6 +156,26 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
     });
 }
 
+SQLite3Driver.prototype.addEdition = function addEdition(json) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            SQLite3Driver.prototype.db.run(`INSERT INTO edition
+                                            VALUES (?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${json.gameID}`], function (err) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                let editionID = this.lastID;
+                resolve(editionID);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
