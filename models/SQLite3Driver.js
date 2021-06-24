@@ -122,7 +122,8 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "edition": row.edition,
                             "new": row.new == 1,
                             "igdbURL": row.igdbURL.length == 0 ? null : row.igdbURL,
-                            "date": row.year + '-' + month + '-' + day
+                            "date": row.year + '-' + month + '-' + day,
+                            "gameID": row.gameid
                         };
                     });
                 } catch (e) {
@@ -290,19 +291,33 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
     });
 }
 
+SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            let sql = `SELECT * FROM game WHERE title = '${title}' AND platformid = '${platformID}'`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                SQLite3Driver.prototype.db.close();
+                if (res.length < 1) {
+                    resolve({"found": false});
+                } else {
+                    resolve({"found": true, "id": res[0].id});
+                }
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
     return new Promise(function (resolve, reject) {
         reject();
     });
 }
-
-SQLite3Driver.prototype.connect = function connect() {
-    SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, (err) => {
-        if (err) {
-            return console.error(err.message);
-        }
-        console.log('Connected to SQLite3 DB');
-    });
-}
-
 module.exports = SQLite3Driver;
