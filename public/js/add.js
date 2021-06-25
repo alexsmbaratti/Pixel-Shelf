@@ -140,7 +140,7 @@ function updateCard(url) {
                 document.getElementById("add-card-div").innerHTML = request.responseText;
                 if (url == '/html/completion.html') {
                     document.getElementById('game-title').innerHTML = gameTitle;
-                    document.getElementById('game-cover').setAttribute("src", "/library/" + gameID + "/covers");
+                    document.getElementById('game-cover').setAttribute("src", "/library/" + gameID + "/cover");
                 }
             } else {
                 document.getElementById("add-card-div").innerText = "An error has occurred.";

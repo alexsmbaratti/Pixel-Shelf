@@ -114,16 +114,17 @@ router.get('/:libraryId/igdb', function (req, res, next) {
     });
 });
 
-router.get('/:libraryId/cover', function (req, res, next) {
+router.get('/:gameId/cover', function (req, res, next) {
     let driver = new SQLite3Driver();
-    const libraryId = req.params.libraryId;
-    driver.getLibraryGame(libraryId).then(result => {
-        coverArtExists(libraryId, req).then(exists => {
+    const gameId = req.params.gameId;
+    driver.getGame(gameId).then(result => {
+        console.log(result)
+        coverArtExists(gameId, req).then(exists => {
             if (!exists) {
                 if (result.igdbURL != null) { // Cache the IGDB cover
                     let igdbDriver = new IGDBDriver();
-                    igdbDriver.getCoverByURL(result.igdbURL, libraryId).then(igdbRes => {
-                        res.redirect('/images/covers/' + libraryId + '.jpg');
+                    igdbDriver.getCoverByURL(result.igdbURL, gameId).then(igdbRes => {
+                        res.redirect('/images/covers/' + gameId + '.jpg');
                     }).catch(err => {
                         console.log(err);
                         res.redirect('/images/covers/placeholder.jpg');
@@ -132,7 +133,7 @@ router.get('/:libraryId/cover', function (req, res, next) {
                     res.redirect('/images/covers/placeholder.jpg');
                 }
             } else { // Art is already cached or user-uploaded
-                res.redirect('/images/covers/' + libraryId + '.jpg');
+                res.redirect('/images/covers/' + gameId + '.jpg');
             }
         }).catch(err => {
             console.log(err);

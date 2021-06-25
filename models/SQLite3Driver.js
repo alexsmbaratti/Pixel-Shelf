@@ -83,6 +83,37 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
     });
 }
 
+SQLite3Driver.prototype.getGame = function getGame(id) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = 'SELECT game.*, platform.* FROM game, platform WHERE game.id = ' + id + ' AND platform.id = platformid LIMIT 1';
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                let result = {};
+                try {
+                    rows.forEach((row) => {
+                        result = {
+                            "title": row.title,
+                            "platform": row.name,
+                            "igdbURL": row.igdbURL.length == 0 ? null : row.igdbURL
+                        };
+                    });
+                } catch (e) {
+                    SQLite3Driver.prototype.db.close();
+                    reject(e);
+                }
+                SQLite3Driver.prototype.db.close();
+                resolve(result);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
