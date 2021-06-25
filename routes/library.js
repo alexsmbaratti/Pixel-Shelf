@@ -52,46 +52,12 @@ router.get('/:libraryId', function (req, res, next) {
     const libraryId = req.params.libraryId;
     driver.getLibraryGame(libraryId).then(result => {
         console.log(result);
-        if (result.igdbURL != null) {
-            coverArtExists(libraryId, req).then(exists => {
-                if (!exists) {
-                    let igdbDriver = new IGDBDriver();
-                    igdbDriver.getGameByURL(result.igdbURL, libraryId).then(igdbRes => {
-                        res.render('libraryentry', {
-                            title: result.title + ' - Pixel Shelf',
-                            entry: result,
-                            id: libraryId,
-                            igdb: result.igdbURL
-                        });
-                    }).catch(err => {
-                        console.log("Couldn't retrieve cover art!");
-                        console.log(err);
-                        res.render('libraryentry', {
-                            title: result.title + ' - Pixel Shelf',
-                            entry: result,
-                            id: libraryId,
-                            igdb: result.igdbURL
-                        });
-                    });
-                } else {
-                    res.render('libraryentry', {
-                        title: result.title + ' - Pixel Shelf',
-                        entry: result,
-                        id: libraryId,
-                        igdb: result.igdbURL
-                    });
-                }
-            }).catch(err => {
-                res.render('error', {message: "Error", error: err});
-            });
-        } else {
-            res.render('libraryentry', {
-                title: result.title + ' - Pixel Shelf',
-                entry: result,
-                id: libraryId,
-                igdb: null
-            });
-        }
+        res.render('libraryentry', {
+            title: result.title + ' - Pixel Shelf',
+            entry: result,
+            id: libraryId,
+            igdb: result.igdbURL
+        });
     }).catch(err => {
         res.render('error', {message: "Error", error: err});
     });
