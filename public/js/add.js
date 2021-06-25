@@ -1,5 +1,6 @@
 let gameID;
 let editionID;
+let libraryID;
 let gameTitle;
 
 function submitGameInfo() {
@@ -117,18 +118,60 @@ function submitDestinationInfo() {
     document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment is-active");
     document.getElementById("destination-segment").setAttribute("class", "steps-segment");
 
-    updateCard('/html/purchase_info.html');
+    if (document.getElementById('collection-radio').checked) {
+        updateCard('/html/purchase_info.html');
+    } else if (document.getElementById('wishlist-radio').checked) {
+        updateCard('/html/wishlist_info.html');
+    }
 }
 
 function submitPurchaseInfo() {
+    let cost = document.getElementById("cost-text").value;
+    if (cost.length == 0) {
+        cost = null;
+    }
+
     let button = document.getElementById("submit-button");
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;
 
-    document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
-    document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment");
+    let request = new XMLHttpRequest();
+    request.open('POST', `/add/library`);
+    request.setRequestHeader('Content-Type', 'application/json');
 
-    updateCard('/html/completion.html');
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let data = JSON.parse(request.responseText);
+            if (request.status === 200) {
+                console.log(data);
+                libraryID = data.id;
+
+                let card = document.getElementById("add-card-div");
+                while (card.firstChild) {
+                    card.removeChild(card.firstChild);
+                }
+
+                document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
+                document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment");
+
+                updateCard('/html/completion.html');
+            } else {
+                console.log(data.err);
+                button.setAttribute("class", "button is-danger");
+                button.innerHTML = "Error!"
+            }
+        }
+    }
+
+    request.send(JSON.stringify({
+        "cost": cost,
+        "month": null,
+        "day": null,
+        "year": null,
+        "condition": null,
+        "retailerID": null,
+        "editionID": editionID
+    }));
 }
 
 function updateCard(url) {
@@ -140,6 +183,7 @@ function updateCard(url) {
                 document.getElementById("add-card-div").innerHTML = request.responseText;
                 if (url == '/html/completion.html') {
                     document.getElementById('game-title').innerHTML = gameTitle;
+                    document.getElementById('library-view').setAttribute("href", "/library/" + libraryID);
                     document.getElementById('game-cover').setAttribute("src", "/library/" + gameID + "/cover");
                 }
             } else {
