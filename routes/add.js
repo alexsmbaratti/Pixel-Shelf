@@ -56,7 +56,19 @@ router.post('/game', function (req, res) {
 router.post('/edition', function (req, res) {
     let driver = new SQLite3Driver();
     console.log(req.body);
-    res.status(500).send({"status": 500, "error": "Not Implemented!"});
+    driver.lookupEdition(req.body.edition, req.body.gameID).then(result => {
+        if (result.found === true) {
+            res.status(200).send({"status": 200, "id": result.id});
+        } else {
+            driver.addEdition(req.body).then(addResult => {
+                res.status(200).send({"status": 200, "id": addResult});
+            }).catch(err => {
+                res.status(500).send({"status": 500, "error": err});
+            })
+        }
+    }).catch(err => {
+        res.status(500).send({"status": 500, "error": err});
+    });
 });
 
 router.get('/mass', function (req, res, next) {

@@ -2,13 +2,57 @@
     <h1 class="title has-text-light">Purchase Information</h1>
 
     <div class="field">
+        <label class="label">Date Added</label>
+        <div class="control">
+            <input id="calendar-input" type="date" id="start" name="trip-start"
+                   min="1970-01-01">
+        </div>
+    </div>
+
+    <div class="field" onclick="dateCheck()">
+        <input id="date-check" type="checkbox" onclick="dateCheck()">
+        <label class="checkbox has-text-light" onclick="dateCheck()">I don't know when I bought it</label>
+    </div>
+
+    <div class="field">
         <label class="label">Cost</label>
         <div class="control">
             <input required id="cost-text" class="input" type="text" placeholder="How much did you pay for this?">
         </div>
     </div>
 
+    <div class="field" onclick="giftCheck()">
+        <input id="gift-check" type="checkbox" onclick="giftCheck()">
+        <label class="checkbox has-text-light" onclick="giftCheck()">This was a gift</label>
+    </div>
+
+    <div class="field">
+        <label class="label">Condition</label>
+        <div class="control">
+            <div class="select">
+                <select id="condition-selection">
+                    <option id="new">New</option>
+                    <option id="used">Used</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Items</label>
+        <input id="box-check" type="checkbox">
+        <label class="checkbox has-text-light">Box</label>
+        <input id="manual-check" type="checkbox">
+        <label class="checkbox has-text-light">Manual</label>
+    </div>
+
     <div class="control">
         <button id="submit-button" class="button is-link" onclick="submitPurchaseInfo()">Next</button>
     </div>
 </div>
+<script>
+    let calendar = document.getElementById("calendar-input");
+    let today = new Date(Date.now());
+    calendar.setAttribute("value", today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay());
+    calendar.setAttribute("max", today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay());
+</script>

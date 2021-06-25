@@ -311,6 +311,30 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
     });
 }
 
+SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            let sql = `SELECT * FROM edition WHERE edition = '${edition}' AND gameid = '${gameID}'`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                SQLite3Driver.prototype.db.close();
+                if (res.length < 1) {
+                    resolve({"found": false});
+                } else {
+                    resolve({"found": true, "id": res[0].id});
+                }
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
     return new Promise(function (resolve, reject) {
         reject();
