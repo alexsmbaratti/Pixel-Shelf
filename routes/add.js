@@ -71,6 +71,16 @@ router.post('/edition', function (req, res) {
     });
 });
 
+router.post('/library', function (req, res) {
+    let driver = new SQLite3Driver();
+    console.log(req.body);
+    driver.addLibrary(req.body).then(addResult => {
+        res.status(200).send({"status": 200, "id": addResult});
+    }).catch(err => {
+        res.status(500).send({"status": 500, "error": err});
+    })
+});
+
 router.get('/mass', function (req, res, next) {
     res.render('mass', {title: 'Pixel Shelf'});
 });
