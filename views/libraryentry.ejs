@@ -55,6 +55,32 @@
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Game Progress</h1>
+                                <ul class="steps has-content-centered">
+                                    <li id="game-info-segment" class="steps-segment is-active">
+                                        <span class="steps-marker"></span>
+                                        <div class="steps-content has-text-light">
+                                            <p class="is-size-6">Owned</p>
+                                        </div>
+                                    </li>
+                                    <li id="edition-info-segment" class="steps-segment">
+                                        <span class="steps-marker"></span>
+                                        <div class="steps-content has-text-light">
+                                            <p class="is-size-6">In Backlog</p>
+                                        </div>
+                                    </li>
+                                    <li id="destination-segment" class="steps-segment">
+                                        <span class="steps-marker"></span>
+                                        <div class="steps-content has-text-light">
+                                            <p class="is-size-6">Currently Playing</p>
+                                        </div>
+                                    </li>
+                                    <li id="purchase-info-segment" class="steps-segment">
+                                        <span class="steps-marker"></span>
+                                        <div class="steps-content has-text-light">
+                                            <p class="is-size-6">Completed</p>
+                                        </div>
+                                    </li>
+                                </ul>
                                 <div class="container">
                                     <button class="button is-light">Add to Backlog</button>
                                     <button class="button is-info">Currently Playing</button>
@@ -72,13 +98,19 @@
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
-                                <h1 class="title is-4">Manage Game</h1>
-                                <div class="container">
-                                    <button class="button is-info">Edit</button>
-                                    <button class="button is-warning">Sell</button>
-                                    <button class="button is-danger" onclick="deleteGame(<%= id %>)">Delete</button>
-                                </div>
+                                <h1 class="title is-4">Purchase Information</h1>
+                                <h1 class="subtitle">Purchased at: </h1>
                             </article>
+                            <div class="tile is-child is-vertical">
+                                <article class="tile is-parent box is-vertical">
+                                    <h1 class="title is-4">Manage Game</h1>
+                                    <div class="container">
+                                        <button class="button is-info">Edit</button>
+                                        <button class="button is-warning">Sell</button>
+                                        <button class="button is-danger" onclick="deleteGame(<%= id %>)">Delete</button>
+                                    </div>
+                                </article>
+                            </div>
                         </div>
                     </div>
                 </div>
