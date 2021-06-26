@@ -5,9 +5,7 @@
     <script src="/js/libraryEntry.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <%
-    let date = new Date(Date.parse(entry.date));
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
+    <% const months = ["N/A", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
 </head>
 <body>
 <%- include('partials/navbar') %>
@@ -19,7 +17,7 @@
                     <div class="columns">
                         <div class="column is-one-fifth">
                             <figure class="image is-3by4">
-                                <img src="/library/<%= id %>/cover">
+                                <img src="/library/<%= entry.gameID %>/cover">
                             </figure>
                         </div>
                         <div class="column">
@@ -48,13 +46,39 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDate() + 1 %>, <%= date.getFullYear() %></h1>
+                            <h1 class="subtitle">Added on <%= months[parseInt(entry.date.split('-')[1])] %> <%= parseInt(entry.date.split('-')[2]) %>, <%= parseInt(entry.date.split('-')[0]) %></h1>
                             <h1 class="subtitle">Condition: New/Used</h1>
                             <h1 class="subtitle">UPC: <%= entry.upc %></h1>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Game Progress</h1>
+                                <ul class="steps has-content-centered">
+                                    <li id="game-info-segment" class="steps-segment is-active">
+                                        <span class="steps-marker"></span>
+                                        <div class="steps-content has-text-light">
+                                            <p class="is-size-6">Owned</p>
+                                        </div>
+                                    </li>
+                                    <li id="edition-info-segment" class="steps-segment">
+                                        <span class="steps-marker"></span>
+                                        <div class="steps-content has-text-light">
+                                            <p class="is-size-6">In Backlog</p>
+                                        </div>
+                                    </li>
+                                    <li id="destination-segment" class="steps-segment">
+                                        <span class="steps-marker"></span>
+                                        <div class="steps-content has-text-light">
+                                            <p class="is-size-6">Currently Playing</p>
+                                        </div>
+                                    </li>
+                                    <li id="purchase-info-segment" class="steps-segment">
+                                        <span class="steps-marker"></span>
+                                        <div class="steps-content has-text-light">
+                                            <p class="is-size-6">Completed</p>
+                                        </div>
+                                    </li>
+                                </ul>
                                 <div class="container">
                                     <button class="button is-light">Add to Backlog</button>
                                     <button class="button is-info">Currently Playing</button>
@@ -65,20 +89,26 @@
                     </div>
                     <div class="tile is-child is-vertical pl-3">
                         <article class="tile is-parent box is-vertical">
-                            <h1 class="title is-4">Purchase Information</h1>
+                            <h1 class="title is-4">Cost Breakdown</h1>
                             <div class="mr-3 ml-3">
-                            <canvas id="cost-chart" width="350" height="100"></canvas>
+                                <canvas id="cost-chart" width="350" height="100"></canvas>
                             </div>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
-                                <h1 class="title is-4">Manage Game</h1>
-                                <div class="container">
-                                    <button class="button is-info">Edit</button>
-                                    <button class="button is-warning">Sell</button>
-                                    <button class="button is-danger" onclick="deleteGame(<%= id %>)">Delete</button>
-                                </div>
+                                <h1 class="title is-4">Purchase Information</h1>
+                                <h1 class="subtitle">Purchased at: </h1>
                             </article>
+                            <div class="tile is-child is-vertical">
+                                <article class="tile is-parent box is-vertical">
+                                    <h1 class="title is-4">Manage Game</h1>
+                                    <div class="container">
+                                        <button class="button is-info">Edit</button>
+                                        <button class="button is-warning">Sell</button>
+                                        <button class="button is-danger" onclick="deleteGame(<%= id %>)">Delete</button>
+                                    </div>
+                                </article>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -88,7 +118,7 @@
 </div>
 <script>
     getIGDBInfo(<%= id %>);
-    renderCostChart(<%= entry.msrp == '' ? "null": entry.msrp %>, <%= entry.cost == '' ? "null" : entry.cost %>, null);
+    renderCostChart(<%= entry.msrp == '' ? "null" : entry.msrp %>, <%= entry.cost == '' ? "null" : entry.cost %>, null);
 </script>
 </body>
 </html>

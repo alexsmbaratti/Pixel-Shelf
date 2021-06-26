@@ -53,6 +53,14 @@ CREATE TABLE brand
     id    INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
+CREATE TABLE wishlist
+(
+    editionid INTEGER,
+    amazonURL TEXT,
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    FOREIGN KEY (editionid) REFERENCES edition (id)
+);
+
 CREATE TABLE list
 (
     id     INTEGER PRIMARY KEY AUTOINCREMENT,

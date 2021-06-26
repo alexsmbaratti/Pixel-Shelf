@@ -13,14 +13,24 @@ function renderCostChart(msrp = null, cost = null, sold = null) {
         data.push(sold);
         labels.push('Sold For');
     }
+    let borderColor;
+    let backgroundColor;
+    if (cost > msrp) { // Paid over MSRP
+        borderColor = 'hsl(15, 100%, 39%)';
+        backgroundColor = 'hsla(15, 100%, 39%, .2)';
+    } else {
+        borderColor = 'hsl(146, 100%, 39%)';
+        backgroundColor = 'hsla(146, 100%, 39%, .2)';
+
+    }
     let chart = new Chart(document.getElementById('cost-chart').getContext('2d'), {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 scaleFontColor: "#FFFFFF",
-                borderColor: ['hsl(146, 100%, 39%)'],
-                backgroundColor: ['hsla(146, 100%, 39%, .2)'],
+                borderColor: [borderColor],
+                backgroundColor: [backgroundColor],
                 data: data
             }]
         },
@@ -100,7 +110,6 @@ function getIGDBInfo(id) {
         if (igdbRequest.readyState === 4) {
             let data = JSON.parse(igdbRequest.responseText)['data'][0];
             if (igdbRequest.status === 200) {
-                console.log(data);
                 document.getElementById("igdb-loader").remove();
                 document.getElementById("description").innerHTML = data['summary'];
                 document.getElementById("igdb-link").innerHTML = 'View on IGDB';
@@ -116,8 +125,6 @@ function getIGDBInfo(id) {
                 let ratings = data['age_ratings'];
                 for (let i = 0; i < ratings.length; i++) {
                     if (ratings[i]['category'] === ratingOrg) {
-                        console.log(ratings[i]['rating']);
-                        console.log("Rating is " + ratingLegend[ratings[i]['rating']]);
                         let image = document.createElement("img");
                         image.setAttribute("src", "/images/ratings/" + ratings[i]['rating'] + ".jpg");
                         document.getElementById("rating-figure").appendChild(image);

@@ -7,11 +7,18 @@ function fetchLibrary(sortBy = "title") {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
                 data = data.library;
-                console.log(data);
 
                 let mainDiv = document.getElementById("main-div");
                 while (mainDiv.firstChild) {
                     mainDiv.removeChild(mainDiv.firstChild);
+                }
+
+                if (data.length == 0) {
+                    let noGamesText = document.createElement("p");
+                    noGamesText.setAttribute("class", "title has-text-centered");
+                    noGamesText.innerHTML = "No Games to Display...";
+                    mainDiv.appendChild(noGamesText);
+                    return;
                 }
 
                 let tableBody = document.getElementById("table-body");
