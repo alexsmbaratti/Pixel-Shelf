@@ -110,7 +110,6 @@ function getIGDBInfo(id) {
         if (igdbRequest.readyState === 4) {
             let data = JSON.parse(igdbRequest.responseText)['data'][0];
             if (igdbRequest.status === 200) {
-                console.log(data);
                 document.getElementById("igdb-loader").remove();
                 document.getElementById("description").innerHTML = data['summary'];
                 document.getElementById("igdb-link").innerHTML = 'View on IGDB';
@@ -126,8 +125,6 @@ function getIGDBInfo(id) {
                 let ratings = data['age_ratings'];
                 for (let i = 0; i < ratings.length; i++) {
                     if (ratings[i]['category'] === ratingOrg) {
-                        console.log(ratings[i]['rating']);
-                        console.log("Rating is " + ratingLegend[ratings[i]['rating']]);
                         let image = document.createElement("img");
                         image.setAttribute("src", "/images/ratings/" + ratings[i]['rating'] + ".jpg");
                         document.getElementById("rating-figure").appendChild(image);

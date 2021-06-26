@@ -10,8 +10,7 @@ function IGDBDriver() {
     IGDBDriver.prototype.token = config.token;
 }
 
-IGDBDriver.prototype.getGameByName = function getGameByName(name, gameID) {
-    // TODO: TEST! This is still boilerplate!
+IGDBDriver.prototype.getGameByName = function getGameByName(name) {
     return new Promise(function (resolve, reject) {
         axios({
             method: 'post',
@@ -25,17 +24,10 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name, gameID) {
         })
             .then(function (res) {
                 let resJSON = res.data;
-                IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
-                    resJSON['coverArt'] = coverRes;
-
-                    const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
-                    const request = https.get(coverRes, function (fileRes) {
-                        fileRes.pipe(file);
-                        resolve(resJSON);
-                    });
-                });
+                resolve(resJSON);
             })
             .catch(function (e) {
+                console.log("Error in Game Info");
                 console.log(e);
                 reject(e);
             });
@@ -56,7 +48,6 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
         })
             .then(function (res) {
                 let resJSON = res.data;
-                console.log(resJSON);
                 resolve(resJSON);
             })
             .catch(function (e) {
@@ -82,13 +73,17 @@ IGDBDriver.prototype.getCoverByURL = function getCoverByURL(url, gameID) {
             .then(function (res) {
                 console.log("Caching cover art from IGDB...");
                 let resJSON = res.data;
-                IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
-                    const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
-                    const request = https.get(coverRes, function (fileRes) {
-                        fileRes.pipe(file);
-                        resolve(resJSON);
+                if (resJSON.length > 0) {
+                    IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
+                        const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
+                        const request = https.get(coverRes, function (fileRes) {
+                            fileRes.pipe(file);
+                            resolve(resJSON);
+                        });
                     });
-                });
+                } else {
+                    reject();
+                }
             })
             .catch(function (e) {
                 console.log("Error in Game Info");

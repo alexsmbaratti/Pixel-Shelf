@@ -9,6 +9,15 @@ router.get('/', function (req, res, next) {
     res.render('library', {title: 'Pixel Shelf'});
 });
 
+router.get('/add', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getPlatforms().then(result => {
+        res.render('add', {title: 'Pixel Shelf', platforms: result});
+    }).catch(err => {
+        res.render('error', {error: err});
+    });
+});
+
 router.get('/games', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getLibrary(req.query.sortBy).then(result => {
@@ -22,14 +31,12 @@ router.get('/size', function (req, res, next) {
     let driver = new SQLite3Driver();
     if (req.query.by === 'platform') {
         driver.countByPlatform().then(result => {
-            console.log("res " + result);
             res.status(200).send({"status": 200, "size": result});
         }).catch(err => {
             res.status(500).send({"status": 500});
         });
     } else {
         driver.getLibrarySize().then(result => {
-            console.log(result);
             res.status(200).send({"status": 200, "size": result});
         }).catch(err => {
             res.status(500).send({"status": 500});
@@ -41,47 +48,12 @@ router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
     driver.getLibraryGame(libraryId).then(result => {
-        console.log(result);
-        if (result.igdbURL != null) {
-            coverArtExists(libraryId, req).then(exists => {
-                if (!exists) {
-                    let igdbDriver = new IGDBDriver();
-                    igdbDriver.getGameByURL(result.igdbURL, libraryId).then(igdbRes => {
-                        res.render('libraryentry', {
-                            title: result.title + ' - Pixel Shelf',
-                            entry: result,
-                            id: libraryId,
-                            igdb: result.igdbURL
-                        });
-                    }).catch(err => {
-                        console.log("Couldn't retrieve cover art!");
-                        console.log(err);
-                        res.render('libraryentry', {
-                            title: result.title + ' - Pixel Shelf',
-                            entry: result,
-                            id: libraryId,
-                            igdb: result.igdbURL
-                        });
-                    });
-                } else {
-                    res.render('libraryentry', {
-                        title: result.title + ' - Pixel Shelf',
-                        entry: result,
-                        id: libraryId,
-                        igdb: result.igdbURL
-                    });
-                }
-            }).catch(err => {
-                res.render('error', {message: "Error", error: err});
-            });
-        } else {
-            res.render('libraryentry', {
-                title: result.title + ' - Pixel Shelf',
-                entry: result,
-                id: libraryId,
-                igdb: null
-            });
-        }
+        res.render('libraryentry', {
+            title: result.title + ' - Pixel Shelf',
+            entry: result,
+            id: libraryId,
+            igdb: result.igdbURL
+        });
     }).catch(err => {
         res.render('error', {message: "Error", error: err});
     });
@@ -104,16 +76,16 @@ router.get('/:libraryId/igdb', function (req, res, next) {
     });
 });
 
-router.get('/:libraryId/cover', function (req, res, next) {
+router.get('/:gameId/cover', function (req, res, next) {
     let driver = new SQLite3Driver();
-    const libraryId = req.params.libraryId;
-    driver.getLibraryGame(libraryId).then(result => {
-        coverArtExists(libraryId, req).then(exists => {
+    const gameId = req.params.gameId;
+    driver.getGame(gameId).then(result => {
+        coverArtExists(gameId, req).then(exists => {
             if (!exists) {
                 if (result.igdbURL != null) { // Cache the IGDB cover
                     let igdbDriver = new IGDBDriver();
-                    igdbDriver.getCoverByURL(result.igdbURL, libraryId).then(igdbRes => {
-                        res.redirect('/images/covers/' + libraryId + '.jpg');
+                    igdbDriver.getCoverByURL(result.igdbURL, gameId).then(igdbRes => {
+                        res.redirect('/images/covers/' + gameId + '.jpg');
                     }).catch(err => {
                         console.log(err);
                         res.redirect('/images/covers/placeholder.jpg');
@@ -122,7 +94,7 @@ router.get('/:libraryId/cover', function (req, res, next) {
                     res.redirect('/images/covers/placeholder.jpg');
                 }
             } else { // Art is already cached or user-uploaded
-                res.redirect('/images/covers/' + libraryId + '.jpg');
+                res.redirect('/images/covers/' + gameId + '.jpg');
             }
         }).catch(err => {
             console.log(err);
@@ -137,7 +109,6 @@ router.get('/:libraryId/cover', function (req, res, next) {
 router.delete('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.deleteGame(req.params.libraryId).then(result => {
-        console.log(result);
         res.status(204).send({"status": 204});
     }).catch(err => {
         res.status(500).send({"status": 500});
