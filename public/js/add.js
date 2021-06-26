@@ -4,12 +4,24 @@ let libraryID;
 let gameTitle;
 
 function submitGameInfo() {
+    let warningDiv = document.getElementById("warning-div");
+    let warningMessage = document.createElement("p");
+    warningMessage.setAttribute("class", "has-text-danger");
+
+    while (warningDiv.firstChild) {
+        warningDiv.removeChild(warningDiv.firstChild);
+    }
+
     let titleText = document.getElementById("title-text").value;
     let platformSelect = document.getElementById("platform-selection");
     if (titleText.length == 0) { // If left blank
+        warningMessage.innerHTML = "You must enter a game title.";
+        warningDiv.appendChild(warningMessage);
         return;
     }
     if (platformSelect[platformSelect.selectedIndex].id == -2) { // If left on Select Platform
+        warningMessage.innerHTML = "You must select a platform.";
+        warningDiv.appendChild(warningMessage);
         return;
     }
     let button = document.getElementById("submit-button");
@@ -25,7 +37,6 @@ function submitGameInfo() {
             if (request.readyState === 4) {
                 let data = JSON.parse(request.responseText);
                 if (request.status === 200) {
-                    console.log(data);
                     gameID = data.id;
                     gameTitle = titleText;
 
@@ -48,6 +59,11 @@ function submitGameInfo() {
             "title": titleText,
             "platform": platformSelect[platformSelect.selectedIndex].id
         }));
+    } else {
+        warningMessage.innerHTML = "Adding new platforms is not implemented yet.";
+        warningDiv.appendChild(warningMessage);
+        button.setAttribute("class", "button is-link");
+        button.disabled = false;
     }
 }
 
@@ -56,12 +72,6 @@ function submitEditionInfo() {
     let upcText = document.getElementById("upc-text").value;
     let msrpText = document.getElementById("msrp-text").value;
 
-    let edition;
-    if (editionText.length == 0) { // If left blank
-        edition = 'Standard Edition';
-    } else {
-        edition = editionText;
-    }
     if (isNaN(msrpText) && msrpText.length > 0) {
         return;
     }
@@ -78,7 +88,6 @@ function submitEditionInfo() {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
-                console.log(data);
                 editionID = data.id;
 
                 let card = document.getElementById("add-card-div");
@@ -99,7 +108,7 @@ function submitEditionInfo() {
     }
 
     request.send(JSON.stringify({
-        "edition": edition,
+        "edition": editionText.length == 0 ? "Standard Edition" : editionText,
         "upc": upcText,
         "msrp": msrpText,
         "gameID": gameID
@@ -131,6 +140,12 @@ function submitPurchaseInfo() {
         cost = null;
     }
 
+    let year = parseInt(document.getElementById("calendar-input").value.split('-')[0]);
+    let month = parseInt(document.getElementById("calendar-input").value.split('-')[1]);
+    let day = parseInt(document.getElementById("calendar-input").value.split('-')[2]);
+
+    let conditionSelect = document.getElementById("condition-selection");
+
     let button = document.getElementById("submit-button");
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;
@@ -143,7 +158,6 @@ function submitPurchaseInfo() {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
-                console.log(data);
                 libraryID = data.id;
 
                 let card = document.getElementById("add-card-div");
@@ -165,10 +179,10 @@ function submitPurchaseInfo() {
 
     request.send(JSON.stringify({
         "cost": cost,
-        "month": null,
-        "day": null,
-        "year": null,
-        "condition": null,
+        "month": month,
+        "day": day,
+        "year": year,
+        "condition": conditionSelect.selectedIndex == 0,
         "retailerID": null,
         "editionID": editionID
     }));
