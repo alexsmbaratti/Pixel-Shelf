@@ -12,7 +12,6 @@ router.get('/', function (req, res, next) {
 router.get('/add', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getPlatforms().then(result => {
-        console.log(result);
         res.render('add', {title: 'Pixel Shelf', platforms: result});
     }).catch(err => {
         res.render('error', {error: err});
@@ -32,14 +31,12 @@ router.get('/size', function (req, res, next) {
     let driver = new SQLite3Driver();
     if (req.query.by === 'platform') {
         driver.countByPlatform().then(result => {
-            console.log("res " + result);
             res.status(200).send({"status": 200, "size": result});
         }).catch(err => {
             res.status(500).send({"status": 500});
         });
     } else {
         driver.getLibrarySize().then(result => {
-            console.log(result);
             res.status(200).send({"status": 200, "size": result});
         }).catch(err => {
             res.status(500).send({"status": 500});
@@ -51,7 +48,6 @@ router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
     driver.getLibraryGame(libraryId).then(result => {
-        console.log(result);
         res.render('libraryentry', {
             title: result.title + ' - Pixel Shelf',
             entry: result,
@@ -84,7 +80,6 @@ router.get('/:gameId/cover', function (req, res, next) {
     let driver = new SQLite3Driver();
     const gameId = req.params.gameId;
     driver.getGame(gameId).then(result => {
-        console.log(result)
         coverArtExists(gameId, req).then(exists => {
             if (!exists) {
                 if (result.igdbURL != null) { // Cache the IGDB cover
@@ -114,7 +109,6 @@ router.get('/:gameId/cover', function (req, res, next) {
 router.delete('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.deleteGame(req.params.libraryId).then(result => {
-        console.log(result);
         res.status(204).send({"status": 204});
     }).catch(err => {
         res.status(500).send({"status": 500});

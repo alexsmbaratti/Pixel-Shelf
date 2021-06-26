@@ -24,7 +24,6 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
         })
             .then(function (res) {
                 let resJSON = res.data;
-                console.log(resJSON);
                 resolve(resJSON);
             })
             .catch(function (e) {
@@ -49,7 +48,6 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
         })
             .then(function (res) {
                 let resJSON = res.data;
-                console.log(resJSON);
                 resolve(resJSON);
             })
             .catch(function (e) {
@@ -75,13 +73,17 @@ IGDBDriver.prototype.getCoverByURL = function getCoverByURL(url, gameID) {
             .then(function (res) {
                 console.log("Caching cover art from IGDB...");
                 let resJSON = res.data;
-                IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
-                    const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
-                    const request = https.get(coverRes, function (fileRes) {
-                        fileRes.pipe(file);
-                        resolve(resJSON);
+                if (resJSON.length > 0) {
+                    IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
+                        const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
+                        const request = https.get(coverRes, function (fileRes) {
+                            fileRes.pipe(file);
+                            resolve(resJSON);
+                        });
                     });
-                });
+                } else {
+                    reject();
+                }
             })
             .catch(function (e) {
                 console.log("Error in Game Info");
