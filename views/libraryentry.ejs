@@ -5,9 +5,7 @@
     <script src="/js/libraryEntry.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <%
-    let date = new Date(Date.parse(entry.date));
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
+    <% const months = ["N/A", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
 </head>
 <body>
 <%- include('partials/navbar') %>
@@ -48,7 +46,7 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <h1 class="subtitle">Added on <%= months[date.getMonth()]; %> <%= date.getDate() + 1 %>, <%= date.getFullYear() %></h1>
+                            <h1 class="subtitle">Added on <%= months[parseInt(entry.date.split('-')[1])] %> <%= parseInt(entry.date.split('-')[2]) %>, <%= parseInt(entry.date.split('-')[0]) %></h1>
                             <h1 class="subtitle">Condition: New/Used</h1>
                             <h1 class="subtitle">UPC: <%= entry.upc %></h1>
                         </article>
@@ -93,7 +91,7 @@
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Cost Breakdown</h1>
                             <div class="mr-3 ml-3">
-                            <canvas id="cost-chart" width="350" height="100"></canvas>
+                                <canvas id="cost-chart" width="350" height="100"></canvas>
                             </div>
                         </article>
                         <div class="tile is-child is-vertical">
@@ -120,7 +118,7 @@
 </div>
 <script>
     getIGDBInfo(<%= id %>);
-    renderCostChart(<%= entry.msrp == '' ? "null": entry.msrp %>, <%= entry.cost == '' ? "null" : entry.cost %>, null);
+    renderCostChart(<%= entry.msrp == '' ? "null" : entry.msrp %>, <%= entry.cost == '' ? "null" : entry.cost %>, null);
 </script>
 </body>
 </html>

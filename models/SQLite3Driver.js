@@ -285,8 +285,39 @@ SQLite3Driver.prototype.massImport = function massImport(json) {
                         resolve();
                     } else {
                         arr[i]["platform"] = platforms[arr[i]["platform"]];
-                        SQLite3Driver.prototype.addGame(arr[i]).then(result => {
-                            run(arr, i + 1);
+                        SQLite3Driver.prototype.lookupGame(arr[i]['title'], arr[i]['platform']).then(gameFound => {
+                            if (gameFound['found'] === true) {
+                                SQLite3Driver.prototype.lookupEdition(arr[i]['edition'], gameFound['id']).then(editionFound => {
+                                    if (editionFound['found'] === true) {
+                                        arr[i]['editionID'] = editionFound['id'];
+                                        SQLite3Driver.prototype.addLibrary(arr[i]).then(libraryResult => {
+                                            run(arr, i + 1);
+                                        });
+                                    } else {
+                                        arr[i]['gameID'] = gameFound['id'];
+                                        SQLite3Driver.prototype.addEdition(arr[i]).then(editionResult => {
+                                            arr[i]['editionID'] = editionResult;
+                                            SQLite3Driver.prototype.addLibrary(arr[i]).then(libraryResult => {
+                                                run(arr, i + 1);
+                                            });
+                                        });
+                                    }
+                                }).catch(err => {
+                                    console.log(err);
+                                });
+                            } else {
+                                SQLite3Driver.prototype.addGame(arr[i]).then(result => {
+                                    arr[i]['gameID'] = result;
+                                    SQLite3Driver.prototype.addEdition(arr[i]).then(editionResult => {
+                                        arr[i]['editionID'] = editionResult;
+                                        SQLite3Driver.prototype.addLibrary(arr[i]).then(libraryResult => {
+                                            run(arr, i + 1);
+                                        });
+                                    });
+                                });
+                            }
+                        }).catch(err => {
+                            console.log(err);
                         });
                     }
                 }
@@ -340,6 +371,9 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
 
 SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
     return new Promise(function (resolve, reject) {
+        if (title.includes("'")) { // TODO: Find a better way to do this
+            resolve({"found": false});
+        }
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
             if (err) {
                 console.log(err);
@@ -352,7 +386,7 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
                     reject(err);
                 }
                 SQLite3Driver.prototype.db.close();
-                if (res.length < 1) {
+                if (res == null || res.length < 1) {
                     resolve({"found": false});
                 } else {
                     resolve({"found": true, "id": res[0].id, "igdb": res[0]['igdbURL']});
@@ -369,7 +403,7 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
                 console.log(err);
                 reject(err);
             }
-            let sql = `SELECT * FROM edition WHERE edition = '${edition}' AND gameid = '${gameID}'`;
+            let sql = `SELECT * FROM edition WHERE edition = "${edition}" AND gameid = '${gameID}'`;
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     console.log(err);
