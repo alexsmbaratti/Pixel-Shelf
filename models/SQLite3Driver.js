@@ -321,7 +321,6 @@ SQLite3Driver.prototype.massImport = function massImport(json) {
                         });
                     }
                 }
-
                 run(json, 0);
             });
         });
@@ -354,13 +353,13 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT COUNT(title) FROM game';
+            let sql = 'SELECT COUNT(id) FROM library';
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
                 }
 
-                let num = res[0]['COUNT(title)'];
+                let num = res[0]['COUNT(id)'];
 
                 SQLite3Driver.prototype.db.close();
                 resolve(num);
