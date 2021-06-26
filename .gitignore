@@ -6,3 +6,5 @@ public/stylesheets
 public/images/covers
 public/images/ratings
 config.json
+
+!public/images/covers/placeholder.jpg
