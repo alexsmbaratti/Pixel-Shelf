@@ -130,6 +130,8 @@ function submitDestinationInfo() {
     if (document.getElementById('collection-radio').checked) {
         updateCard('/html/purchase_info.html');
     } else if (document.getElementById('wishlist-radio').checked) {
+        document.getElementById('purchase-text').innerHTML = "Wishlist Information";
+        document.getElementById('purchase-description').innerHTML = "Price Tracking";
         updateCard('/html/wishlist_info.html');
     }
 }
