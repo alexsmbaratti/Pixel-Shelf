@@ -8,8 +8,6 @@ pipeline {
                 sh 'npm install'
                 sh 'npx node-sass --omit-source-map-url sass/styles.scss public/stylesheets/styles.css'
                 sh 'mkdir models/db'
-                sh 'mkdir public/images/'
-                sh 'mkdir public/images/covers'
                 sh 'mkdir public/images/ratings'
             }
         }
