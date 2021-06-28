@@ -208,6 +208,9 @@ SQLite3Driver.prototype.addEdition = function addEdition(json) {
 }
 
 SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
+    if (json.condition == null) {
+        json.condition = true; // Default to true
+    }
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
             if (err) {
@@ -215,7 +218,7 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${json.editionID}`, `${json.retailerID}`, `${json.condition}`], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${json.editionID}`, `${json.retailerID}`, `${json.condition ? 1 : 0}`], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);

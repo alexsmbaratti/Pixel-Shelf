@@ -98,6 +98,9 @@ function submit() {
                     }
                 }
             }
+            if (obj["condition"] == null) {
+                obj["condition"] = true; // Default to new copy
+            }
             console.log(obj);
             parsed.push(obj);
         });
