@@ -34,7 +34,7 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
     });
 }
 
-IGDBDriver.prototype.getGameByURL = function getGameByURL(url, gameID) {
+IGDBDriver.prototype.getGameByURL = function getGameByURL(url) {
     return new Promise(function (resolve, reject) {
         axios({
             method: 'post',

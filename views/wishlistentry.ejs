@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <script src="/js/wishlistEntry.js"></script>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+<body>
+<%- include('partials/navbar') %>
+<div class="container">
+    <div class="tile is-ancestor">
+        <div class="tile pt-5">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <div class="columns">
+                        <div class="column is-one-fifth">
+                            <figure class="image is-3by4">
+                                <img src="/library/<%= entry.gameID %>/cover">
+                            </figure>
+                        </div>
+                        <div class="column">
+                            <h1 class="title"><%= entry.title %></h1>
+                            <div class="columns">
+                                <div class="column">
+                                    <h1 class="title is-5"><%= entry.platform %></h1>
+                                    <h1 class="subtitle"><%= entry.edition %></h1>
+                                </div>
+                                <div class="column is-one-fifth">
+                                    <figure id="rating-figure" class="image is-48x48"></figure>
+                                </div>
+                            </div>
+                            <div id="loading-div"></div>
+                            <div id="tags-div"></div>
+                            <br>
+                            <p id="description" class="has-text-light"></p>
+                            <br>
+                            <a href="<%= entry.igdbURL %>">
+                                <p id="igdb-link" class="has-text-link"></p>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                <div class="tile">
+                    <div class="tile is-child is-vertical pr-3">
+                        <article class="tile is-parent box is-vertical">
+                            <h1 class="title is-4">Cost Breakdown</h1>
+                            <div class="mr-3 ml-3">
+                                <canvas id="cost-chart" width="350" height="100"></canvas>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="tile is-child is-vertical pl-3">
+                        <div class="tile is-child is-vertical">
+                            <article class="tile is-parent box is-vertical">
+                                <h1 class="title is-4">Manage Game</h1>
+                                <div class="container">
+                                    <button class="button is-success">Add to Library</button>
+                                    <button class="button is-info">Edit</button>
+                                    <button class="button is-danger" onclick="deleteGame(<%= id %>)">Delete</button>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    getIGDBInfo(<%= entry.gameID %>);
+</script>
+</body>
+</html>

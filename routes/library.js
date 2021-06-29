@@ -65,7 +65,7 @@ router.get('/:libraryId/igdb', function (req, res, next) {
     driver.getLibraryGame(libraryId).then(result => {
         if (result.igdbURL != null) {
             let igdbDriver = new IGDBDriver();
-            igdbDriver.getGameByURL(result.igdbURL, libraryId).then(igdbRes => {
+            igdbDriver.getGameByURL(result.igdbURL).then(igdbRes => {
                 res.status(200).send({"status": 200, "data": igdbRes});
             }).catch(err => {
                 res.status(500).send({"status": 500});
