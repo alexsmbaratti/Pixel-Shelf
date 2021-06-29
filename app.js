@@ -9,6 +9,7 @@ var libraryRouter = require('./routes/library');
 var addGameRouter = require('./routes/add');
 var identifyRouter = require('./routes/identify');
 var platformsRouter = require('./routes/platforms');
+var wishlistRouter = require('./routes/wishlist');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use('/library', libraryRouter);
 app.use('/add', addGameRouter);
 app.use('/identify', identifyRouter);
 app.use('/platforms', platformsRouter);
+app.use('/wishlist', wishlistRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

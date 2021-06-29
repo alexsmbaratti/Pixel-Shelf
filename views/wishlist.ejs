@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script src="/js/wishlist.js"></script>
+    <script>fetchWishlist();</script>
+</head>
+<body>
+<%- include('partials/navbar') %>
+<section class="hero is-primary is-small">
+    <div class="hero-body">
+        <p class="title">
+            Game Library
+        </p>
+    </div>
+</section>
+<table class="table is-hoverable is-striped is-fullwidth">
+    <thead>
+    <tr>
+        <th onclick="fetchWishlist('title')">Title</th>
+        <th onclick="fetchWishlist('platform')">Platform</th>
+        <th onclick="fetchWishlist('msrp')">MSRP</th>
+        <th onclick="fetchWishlist('edition')">Edition</th>
+    </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+</table>
+<div id="main-div">
+    <div class="container pt-5">
+        <p class="title">Fetching Wishlist...</p>
+        <progress class="progress is-small is-primary" max="100"></progress>
+    </div>
+</div>
+</body>
+</html>

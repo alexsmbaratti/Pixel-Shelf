@@ -57,6 +57,52 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
     });
 }
 
+SQLite3Driver.prototype.getWishlist = function getWishlist(sortBy) {
+    let parsedSortBy;
+    switch (sortBy) {
+        case 'title':
+            parsedSortBy = "game.title";
+            break;
+        case 'platform':
+            parsedSortBy = "platform.name ASC, game.title";
+            break;
+        case 'msrp':
+            parsedSortBy = "edition.msrp";
+            break;
+        case 'edition':
+            parsedSortBy = "edition.edition";
+            break;
+        default:
+            parsedSortBy = "game.title";
+    }
+
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT wishlist.*, game.title, platform.name, edition.edition, edition.msrp FROM game, platform, edition, wishlist WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid ORDER BY ${parsedSortBy} ASC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                let result = [];
+                rows.forEach((row) => {
+                    result.push({
+                        "id": row.id,
+                        "title": row.title,
+                        "platform": row.name,
+                        "msrp": row.msrp,
+                        "edition": row.edition
+                    });
+                });
+                SQLite3Driver.prototype.db.close();
+                resolve(result);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
