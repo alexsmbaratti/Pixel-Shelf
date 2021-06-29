@@ -230,6 +230,26 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
     });
 }
 
+SQLite3Driver.prototype.addWishlist = function addWishlist(json) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            SQLite3Driver.prototype.db.run(`INSERT INTO wishlist
+                                            VALUES (?, ?, ?)`, [`${json.editionID}`, `${json.trackingURL}`], function (err) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                let wishlistID = this.lastID;
+                resolve(wishlistID);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {

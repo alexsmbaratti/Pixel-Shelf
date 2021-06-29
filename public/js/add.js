@@ -190,6 +190,49 @@ function submitPurchaseInfo() {
     }));
 }
 
+function submitWishlistInfo() {
+    let trackingLink = document.getElementById("amazon-text").value;
+    if (trackingLink.length == 0) {
+        trackingLink = null;
+    }
+
+    let button = document.getElementById("submit-button");
+    button.setAttribute("class", "button is-link is-loading");
+    button.disabled = true;
+
+    let request = new XMLHttpRequest();
+    request.open('POST', `/add/wishlist`);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let data = JSON.parse(request.responseText);
+            if (request.status === 200) {
+                libraryID = data.id; // Stand-in for wishlist ID
+
+                let card = document.getElementById("add-card-div");
+                while (card.firstChild) {
+                    card.removeChild(card.firstChild);
+                }
+
+                document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
+                document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment");
+
+                updateCard('/html/wishlist_completion.html');
+            } else {
+                console.log(data.err);
+                button.setAttribute("class", "button is-danger");
+                button.innerHTML = "Error!"
+            }
+        }
+    }
+
+    request.send(JSON.stringify({
+        "trackingURL": trackingLink,
+        "editionID": editionID
+    }));
+}
+
 function updateCard(url) {
     var request = new XMLHttpRequest();
     request.open('GET', url);
@@ -200,6 +243,10 @@ function updateCard(url) {
                 if (url == '/html/completion.html') {
                     document.getElementById('game-title').innerHTML = gameTitle;
                     document.getElementById('library-view').setAttribute("href", "/library/" + libraryID);
+                    document.getElementById('game-cover').setAttribute("src", "/library/" + gameID + "/cover");
+                } else if (url == '/html/wishlist_completion.html') {
+                    document.getElementById('game-title').innerHTML = gameTitle;
+                    document.getElementById('library-view').setAttribute("href", "/wishlist/" + libraryID);
                     document.getElementById('game-cover').setAttribute("src", "/library/" + gameID + "/cover");
                 }
             } else {

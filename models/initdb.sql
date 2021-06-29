@@ -63,8 +63,8 @@ CREATE TABLE wishlist
 
 CREATE TABLE list
 (
-    id     INTEGER PRIMARY KEY AUTOINCREMENT,
     gameid INTEGER UNIQUE,
     status INTEGER,
+    id     INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (gameid) REFERENCES game (id)
 );
