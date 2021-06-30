@@ -17,11 +17,12 @@ CREATE TABLE platform
 
 CREATE TABLE edition
 (
-    edition TEXT,
-    upc     TEXT,
-    msrp    REAL,
-    gameid  INTEGER,
-    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    edition     TEXT,
+    upc         TEXT,
+    msrp        REAL,
+    gameid      INTEGER,
+    trackingURL TEXT,
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (gameid) REFERENCES game (id)
 );
 
@@ -56,7 +57,6 @@ CREATE TABLE brand
 CREATE TABLE wishlist
 (
     editionid INTEGER,
-    amazonURL TEXT,
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id)
 );

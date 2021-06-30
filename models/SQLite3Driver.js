@@ -275,7 +275,7 @@ SQLite3Driver.prototype.addEdition = function addEdition(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO edition
-                                            VALUES (?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${json.gameID}`], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${json.gameID}`, `${json.trackingURL}`], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -318,7 +318,7 @@ SQLite3Driver.prototype.addWishlist = function addWishlist(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO wishlist
-                                            VALUES (?, ?, ?)`, [`${json.editionID}`, `${json.trackingURL}`], function (err) {
+                                            VALUES (?, ?)`, [`${json.editionID}`], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
