@@ -30,7 +30,7 @@ function submitGameInfo() {
 
     if (platformSelect[platformSelect.selectedIndex].id != -1) { // The platform already exists
         let request = new XMLHttpRequest();
-        request.open('POST', `/add/game`);
+        request.open('POST', `/api/games`);
         request.setRequestHeader('Content-Type', 'application/json');
 
         request.onreadystatechange = function () {
@@ -81,7 +81,7 @@ function submitEditionInfo() {
     button.disabled = true;
 
     let request = new XMLHttpRequest();
-    request.open('POST', `/add/edition`);
+    request.open('POST', `/api/editions`);
     request.setRequestHeader('Content-Type', 'application/json');
 
     request.onreadystatechange = function () {
@@ -153,7 +153,7 @@ function submitPurchaseInfo() {
     button.disabled = true;
 
     let request = new XMLHttpRequest();
-    request.open('POST', `/add/library`);
+    request.open('POST', `/api/library`);
     request.setRequestHeader('Content-Type', 'application/json');
 
     request.onreadystatechange = function () {
@@ -201,7 +201,7 @@ function submitWishlistInfo() {
     button.disabled = true;
 
     let request = new XMLHttpRequest();
-    request.open('POST', `/add/wishlist`);
+    request.open('POST', `/api/wishlist`);
     request.setRequestHeader('Content-Type', 'application/json');
 
     request.onreadystatechange = function () {

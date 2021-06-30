@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var SQLite3Driver = require('../models/SQLite3Driver');
 var IGDBDriver = require('../models/IGDBDriver');
+var EInkDriver = require('../eink/EInkDriver');
 
 router.get('/', function (req, res, next) {
     res.status(200).send({"status": 200});
@@ -56,17 +57,95 @@ router.delete('/library/:libraryId', function (req, res, next) {
     driver.deleteGame(req.params.libraryId).then(result => {
         res.status(204).send({"status": 204});
     }).catch(err => {
-        res.status(500).send({"status": 500, "error": err});
+        sendError(res, err);
     });
 });
 
 router.get('/wishlist', function (req, res, next) {
+    let sortBy = req.query.sortBy;
+    if (sortBy === null) {
+        sortBy = 'title';
+    }
     let driver = new SQLite3Driver();
-    driver.getWishlist(req.query.sortBy).then(result => {
+    driver.getWishlist(sortBy).then(result => {
         res.status(200).send({"status": 200, "library": result});
     }).catch(err => {
-        res.status(500).send({"status": 500});
+        sendError(res, err);
     });
+});
+
+router.post('/games', function (req, res) {
+    let driver = new SQLite3Driver();
+    driver.lookupGame(req.body.title, req.body.platform).then(gameResult => {
+        if (gameResult.found === true) {
+            res.status(200).send({"status": 200, "id": gameResult.id, "igdb": gameResult.igdb});
+        } else {
+            let igdbDriver = new IGDBDriver();
+            igdbDriver.getGameByName(req.body.title).then(result => {
+                console.log(result)
+                let igdbLink;
+                if (result.length < 1) {
+                    igdbLink = null;
+                } else {
+                    igdbLink = result[0].url;
+                }
+                driver.addGame({
+                    "title": req.body.title,
+                    "platform": req.body.platform,
+                    "igdb-url": igdbLink
+                }).then(addResult => {
+                    res.status(200).send({"status": 200, "id": addResult, "igdb": igdbLink});
+                    igdbDriver.getCoverByURL(igdbLink, addResult).catch(err => {
+                        console.log(err);
+                    });
+                }).catch(err => {
+                    sendError(res, err);
+                })
+            }).catch(err => {
+                sendError(res, err);
+            });
+        }
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
+router.post('/editions', function (req, res) {
+    let driver = new SQLite3Driver();
+    console.log(req.body);
+    driver.lookupEdition(req.body.edition, req.body.gameID).then(result => {
+        if (result.found === true) {
+            res.status(200).send({"status": 200, "id": result.id});
+        } else {
+            driver.addEdition(req.body).then(addResult => {
+                res.status(200).send({"status": 200, "id": addResult});
+            }).catch(err => {
+                sendError(res, err);
+            })
+        }
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
+router.post('/library', function (req, res) {
+    let driver = new SQLite3Driver();
+    console.log(req.body);
+    driver.addLibrary(req.body).then(addResult => {
+        res.status(200).send({"status": 200, "id": addResult});
+    }).catch(err => {
+        sendError(res, err);
+    })
+});
+
+router.post('/wishlist', function (req, res) {
+    let driver = new SQLite3Driver();
+    console.log(req.body);
+    driver.addWishlist(req.body).then(addResult => {
+        res.status(200).send({"status": 200, "id": addResult});
+    }).catch(err => {
+        sendError(res, err);
+    })
 });
 
 function sendError(res, err) {
