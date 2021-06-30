@@ -104,7 +104,7 @@ function getIGDBInfo(id) {
     document.getElementById("loading-div").appendChild(loader);
 
     let igdbRequest = new XMLHttpRequest();
-    igdbRequest.open('GET', `/library/${id}/igdb`);
+    igdbRequest.open('GET', `/api/library/${id}/igdb`);
 
     igdbRequest.onreadystatechange = function () {
         if (igdbRequest.readyState === 4) {
@@ -132,7 +132,9 @@ function getIGDBInfo(id) {
                     }
                 }
             } else {
-                console.log("TODO: Handle error!")
+                document.getElementById("igdb-loader").remove();
+                document.getElementById("description").innerHTML = "Failed to load IGDB information!";
+                document.getElementById("igdb-link").innerHTML = 'View on IGDB';
             }
         }
     }
@@ -142,8 +144,12 @@ function getIGDBInfo(id) {
 
 function deleteGame(id) {
     let request = new XMLHttpRequest();
-    request.open('DELETE', `/library/${id}`);
+    request.open('DELETE', `/api/library/${id}`);
     request.setRequestHeader('Content-Type', 'application/json');
+
+    let button = document.getElementById("delete-button");
+    button.setAttribute("class", "button is-danger is-loading");
+    button.disabled = true;
 
     let params = {
         "id": id
@@ -152,9 +158,10 @@ function deleteGame(id) {
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
             if (request.status === 204) {
-                console.log("Success!");
+                location.href = "/library";
             } else {
-                console.log("TODO: Handle error!")
+                button.setAttribute("class", "button is-danger");
+                button.disabled = false;
             }
         }
     }

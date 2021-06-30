@@ -18,32 +18,6 @@ router.get('/add', function (req, res, next) {
     });
 });
 
-router.get('/games', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getLibrary(req.query.sortBy).then(result => {
-        res.status(200).send({"status": 200, "library": result});
-    }).catch(err => {
-        res.status(500).send({"status": 500});
-    });
-});
-
-router.get('/size', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    if (req.query.by === 'platform') {
-        driver.countByPlatform().then(result => {
-            res.status(200).send({"status": 200, "size": result});
-        }).catch(err => {
-            res.status(500).send({"status": 500});
-        });
-    } else {
-        driver.getLibrarySize().then(result => {
-            res.status(200).send({"status": 200, "size": result});
-        }).catch(err => {
-            res.status(500).send({"status": 500});
-        });
-    }
-});
-
 router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
@@ -56,23 +30,6 @@ router.get('/:libraryId', function (req, res, next) {
         });
     }).catch(err => {
         res.render('error', {message: "Error", error: err});
-    });
-});
-
-router.get('/:libraryId/igdb', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    const libraryId = req.params.libraryId;
-    driver.getLibraryGame(libraryId).then(result => {
-        if (result.igdbURL != null) {
-            let igdbDriver = new IGDBDriver();
-            igdbDriver.getGameByURL(result.igdbURL).then(igdbRes => {
-                res.status(200).send({"status": 200, "data": igdbRes});
-            }).catch(err => {
-                res.status(500).send({"status": 500});
-            });
-        }
-    }).catch(err => {
-
     });
 });
 
@@ -103,15 +60,6 @@ router.get('/:gameId/cover', function (req, res, next) {
     }).catch(err => {
         console.log(err);
         res.redirect('/images/covers/placeholder.jpg');
-    });
-});
-
-router.delete('/:libraryId', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.deleteGame(req.params.libraryId).then(result => {
-        res.status(204).send({"status": 204});
-    }).catch(err => {
-        res.status(500).send({"status": 500});
     });
 });
 

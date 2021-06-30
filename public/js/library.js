@@ -1,6 +1,6 @@
 function fetchLibrary(sortBy = "title") {
     let request = new XMLHttpRequest();
-    request.open('GET', `/library/games?sortBy=${sortBy}`);
+    request.open('GET', `/api/library?sortBy=${sortBy}`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {

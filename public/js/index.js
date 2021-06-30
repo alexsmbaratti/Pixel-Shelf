@@ -1,6 +1,6 @@
 function getSize() {
     let request = new XMLHttpRequest();
-    request.open('GET', `/library/size`);
+    request.open('GET', `/api/library/size`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
@@ -8,7 +8,7 @@ function getSize() {
             if (request.status === 200) {
                 document.getElementById('game-count-text').innerHTML = data.size + ' Games';
             } else {
-                console.log("TODO: Handle error!")
+                document.getElementById('game-count-text').innerHTML = '? Games';
             }
         }
     }
@@ -18,7 +18,7 @@ function getSize() {
 
 function getSizeByPlatforms() {
     let request = new XMLHttpRequest();
-    request.open('GET', `/library/size?by=platform`);
+    request.open('GET', `/api/library/size?by=platform`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
