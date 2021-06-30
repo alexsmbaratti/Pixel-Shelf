@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo 'Building...'
                 sh 'npm install'
                 sh 'npx node-sass --omit-source-map-url sass/styles.scss public/stylesheets/styles.css'
                 sh 'mkdir models/db'
@@ -13,12 +13,13 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'To be implemented'
+                echo 'Testing...'
+                sh 'jest'
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                echo 'Deploying...'
                 sh 'shutdown -r now'
             }
         }
