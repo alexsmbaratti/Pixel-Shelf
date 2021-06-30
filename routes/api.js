@@ -25,7 +25,7 @@ router.get('/library', function (req, res, next) {
 router.get('/library/size', function (req, res, next) {
     let driver = new SQLite3Driver();
     if (req.query.by === 'platform') {
-        res.status(500).send({"status": 501, "msg": "Not implemented!"});
+        res.status(501).send({"status": 501, "msg": "Not implemented!"});
     } else {
         driver.getLibrarySize().then(result => {
             res.status(200).send({"status": 200, "size": result});
@@ -72,6 +72,35 @@ router.get('/wishlist', function (req, res, next) {
     }).catch(err => {
         sendError(res, err);
     });
+});
+
+router.get('/wishlist/size', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getWishlistSize().then(result => {
+        res.status(200).send({"status": 200, "size": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
+/*
+    Add query params to filter which games are returned
+    i.e. /api/games?title="Gex"
+ */
+router.get('/games', function (req, res, next) {
+    res.status(501).send({"status": 501, "msg": "Not implemented!"});
+});
+
+router.get('/games/:id', function (req, res, next) {
+    res.status(501).send({"status": 501, "msg": "Not implemented!"});
+});
+
+router.get('/editions', function (req, res, next) {
+    res.status(501).send({"status": 501, "msg": "Not implemented!"});
+});
+
+router.get('/editions/:id', function (req, res, next) {
+    res.status(501).send({"status": 501, "msg": "Not implemented!"});
 });
 
 router.post('/games', function (req, res) {
