@@ -60,6 +60,15 @@ router.delete('/library/:libraryId', function (req, res, next) {
     });
 });
 
+router.get('/wishlist', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getWishlist(req.query.sortBy).then(result => {
+        res.status(200).send({"status": 200, "library": result});
+    }).catch(err => {
+        res.status(500).send({"status": 500});
+    });
+});
+
 function sendError(res, err) {
     res.status(500).send({"status": 500, "error": err});
 }

@@ -1,17 +1,17 @@
 function fetchWishlist(sortBy = "title") {
     let request = new XMLHttpRequest();
-    request.open('GET', `/wishlist/games?sortBy=${sortBy}`);
+    request.open('GET', `/api/wishlist?sortBy=${sortBy}`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText);
+            let mainDiv = document.getElementById("main-div");
+            while (mainDiv.firstChild) {
+                mainDiv.removeChild(mainDiv.firstChild);
+            }
+
             if (request.status === 200) {
                 data = data.library;
-
-                let mainDiv = document.getElementById("main-div");
-                while (mainDiv.firstChild) {
-                    mainDiv.removeChild(mainDiv.firstChild);
-                }
 
                 if (data.length == 0) {
                     let noGamesText = document.createElement("p");
@@ -51,7 +51,10 @@ function fetchWishlist(sortBy = "title") {
                     tableBody.appendChild(row);
                 });
             } else {
-                // TODO: Handle error!
+                let noGamesText = document.createElement("p");
+                noGamesText.setAttribute("class", "title has-text-centered");
+                noGamesText.innerHTML = "Failed to Fetch Wishlist";
+                mainDiv.appendChild(noGamesText);
             }
         }
     }
