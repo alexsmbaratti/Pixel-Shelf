@@ -96,7 +96,21 @@ router.get('/games/:id', function (req, res, next) {
 });
 
 router.get('/editions', function (req, res, next) {
-    res.status(501).send({"status": 501, "msg": "Not implemented!"});
+    let upc = req.query.upc;
+    if (upc !== undefined) {
+        let driver = new SQLite3Driver();
+        driver.lookupByUPC(upc).then(result => {
+            if (result != undefined) {
+                res.status(200).send({"status": 200, "data": result});
+            } else {
+                sendError(res, "Could not find edition!");
+            }
+        }).catch(err => {
+            sendError(res, err);
+        });
+    } else {
+        res.status(501).send({"status": 501, "msg": "Not implemented!"});
+    }
 });
 
 router.get('/editions/:id', function (req, res, next) {
