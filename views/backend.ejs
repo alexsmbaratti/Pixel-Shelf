@@ -16,6 +16,37 @@
                     <h1 class="title">Backend Information</h1>
                     <h1 class="subtitle">Pixel Shelf v<%= version %></h1>
                 </article>
+                <div class="tile">
+                    <div class="tile is-child is-vertical pr-3">
+                        <article class="tile is-parent box is-vertical">
+                            <h1 class="title is-4">Status</h1>
+                            <div class="pl-3 pr-3">
+                                <nav class="level">
+                                    <p class="has-text-light">API</p>
+                                    <div class="loader"></div>
+                                </nav>
+                                <nav class="level">
+                                    <p class="has-text-light">Database</p>
+                                    <div class="loader"></div>
+                                </nav>
+                                <nav class="level">
+                                    <p class="has-text-light">IGDB</p>
+                                    <div class="loader"></div>
+                                </nav>
+                                <nav class="level">
+                                    <p class="has-text-light">E-Ink Display</p>
+                                    <div class="loader"></div>
+                                </nav>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="tile is-child is-vertical pl-3">
+                        <article class="tile is-parent box is-vertical">
+                            <h1 class="title is-4">Database</h1>
+                            <button class="button is-warning">Check Database Integrity</button>
+                        </article>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
