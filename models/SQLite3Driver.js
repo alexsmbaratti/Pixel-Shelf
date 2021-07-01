@@ -548,4 +548,16 @@ SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
         reject();
     });
 }
+
+SQLite3Driver.prototype.checkStatus = function checkStatus() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            resolve();
+        });
+    });
+}
+
 module.exports = SQLite3Driver;

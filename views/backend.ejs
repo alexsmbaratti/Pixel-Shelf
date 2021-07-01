@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script>
         pingEndpoint('/api/', 'api-level', 'api-loader');
+        pingEndpoint('/api/db', 'db-level', 'db-loader');
     </script>
 </head>
 <body>
@@ -29,9 +30,9 @@
                                     <p class="has-text-light">API</p>
                                     <div id="api-loader" class="loader"></div>
                                 </nav>
-                                <nav class="level">
+                                <nav id="db-level" class="level">
                                     <p class="has-text-light">Database</p>
-                                    <div class="loader"></div>
+                                    <div id="db-loader" class="loader"></div>
                                 </nav>
                                 <nav class="level">
                                     <p class="has-text-light">IGDB</p>

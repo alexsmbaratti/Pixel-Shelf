@@ -117,6 +117,15 @@ router.get('/editions/:id', function (req, res, next) {
     res.status(501).send({"status": 501, "msg": "Not implemented!"});
 });
 
+router.get('/db', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.checkStatus().then(result => {
+        res.status(200).send({"status": 200});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.post('/games', function (req, res) {
     let driver = new SQLite3Driver();
     driver.lookupGame(req.body.title, req.body.platform).then(gameResult => {
