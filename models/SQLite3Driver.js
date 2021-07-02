@@ -549,7 +549,7 @@ SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT platform.name, COUNT(library.id) FROM library, edition, game, platform WHERE library.editionid = edition.id AND edition.gameid = game.id AND game.platformid = platform.id GROUP BY platform.id';
+            let sql = 'SELECT platform.name, COUNT(library.id) FROM library, edition, game, platform WHERE library.editionid = edition.id AND edition.gameid = game.id AND game.platformid = platform.id GROUP BY platform.id ORDER BY COUNT(library.id) DESC';
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
