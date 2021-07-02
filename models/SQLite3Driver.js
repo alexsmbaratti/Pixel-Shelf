@@ -545,7 +545,19 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
 
 SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
     return new Promise(function (resolve, reject) {
-        reject();
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = 'SELECT platform.name, COUNT(library.id) FROM library, edition, game, platform WHERE library.editionid = edition.id AND edition.gameid = game.id AND game.platformid = platform.id GROUP BY platform.id';
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                SQLite3Driver.prototype.db.close();
+                resolve(res);
+            });
+        });
     });
 }
 

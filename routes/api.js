@@ -25,7 +25,11 @@ router.get('/library', function (req, res, next) {
 router.get('/library/size', function (req, res, next) {
     let driver = new SQLite3Driver();
     if (req.query.by === 'platform') {
-        res.status(501).send({"status": 501, "msg": "Not implemented!"});
+        driver.countByPlatform().then(result => {
+            res.status(200).send({"status": 200, "data": result});
+        }).catch(err => {
+            sendError(res, err);
+        });
     } else {
         driver.getLibrarySize().then(result => {
             res.status(200).send({"status": 200, "size": result});
