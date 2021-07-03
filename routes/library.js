@@ -9,15 +9,6 @@ router.get('/', function (req, res, next) {
     res.render('library', {title: 'Pixel Shelf'});
 });
 
-router.get('/add', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getPlatforms().then(result => {
-        res.render('add', {title: 'Pixel Shelf', platforms: result});
-    }).catch(err => {
-        res.render('error', {error: err});
-    });
-});
-
 router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
