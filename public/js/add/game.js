@@ -71,7 +71,6 @@ function submitEditionInfo() {
     let editionText = document.getElementById("edition-text").value;
     let upcText = document.getElementById("upc-text").value;
     let msrpText = document.getElementById("msrp-text").value;
-    let trackingLink = document.getElementById("amazon-text").value;
 
     if (isNaN(msrpText) && msrpText.length > 0) {
         return;
@@ -112,7 +111,6 @@ function submitEditionInfo() {
         "edition": editionText.length == 0 ? "Standard Edition" : editionText,
         "upc": upcText,
         "msrp": msrpText,
-        "trackingURL": trackingLink,
         "gameID": gameID
     }));
 }
