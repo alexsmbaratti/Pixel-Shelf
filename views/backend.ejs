@@ -9,6 +9,7 @@
     <script>
         pingEndpoint('/api/', 'api-level', 'api-loader');
         pingEndpoint('/api/db', 'db-level', 'db-loader');
+        pingEndpoint('/api/igdb', 'igdb-level', 'igdb-loader');
     </script>
 </head>
 <body>
@@ -34,9 +35,9 @@
                                     <p class="has-text-light">Database</p>
                                     <div id="db-loader" class="loader"></div>
                                 </nav>
-                                <nav class="level">
+                                <nav id="igdb-level" class="level">
                                     <p class="has-text-light">IGDB</p>
-                                    <div class="loader"></div>
+                                    <div id="igdb-loader" class="loader"></div>
                                 </nav>
                                 <nav class="level">
                                     <p class="has-text-light">E-Ink Display</p>

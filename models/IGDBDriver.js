@@ -124,4 +124,29 @@ IGDBDriver.prototype.getCoverArtByID = function getCoverArtByID(id) {
     });
 }
 
+IGDBDriver.prototype.checkStatus = function checkStatus() {
+    return new Promise(function (resolve, reject) {
+        axios({
+            method: 'post',
+            url: 'https://api.igdb.com/' + IGDBDriver.prototype.version + '/games',
+            headers: {
+                'Client-ID': IGDBDriver.prototype.clientID,
+                'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
+                'Content-Type': 'text/plain'
+            },
+            data: 'where url = "https://www.igdb.com/games/gex";'
+        })
+            .then(function (res) {
+                if (res.status === 200) {
+                    resolve();
+                } else {
+                    reject("Recieved non-200 status code");
+                }
+            })
+            .catch(function (e) {
+                reject(e);
+            });
+    });
+}
+
 module.exports = IGDBDriver;

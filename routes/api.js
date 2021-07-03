@@ -204,6 +204,15 @@ router.post('/wishlist', function (req, res) {
     })
 });
 
+router.get('/igdb', function (req, res) {
+    let driver = new IGDBDriver();
+    driver.checkStatus().then(result => {
+        res.status(200).send({"status": 200});
+    }).catch(err => {
+        sendError(res, err);
+    })
+});
+
 function sendError(res, err) {
     res.status(500).send({"status": 500, "error": err});
 }
