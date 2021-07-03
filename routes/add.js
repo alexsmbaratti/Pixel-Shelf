@@ -18,4 +18,8 @@ router.post('/mass', function (req, res) {
     });
 });
 
+router.get('/console', function (req, res, next) {
+    res.render('add/console', {title: 'Pixel Shelf'});
+});
+
 module.exports = router;

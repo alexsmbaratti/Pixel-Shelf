@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('../partials/metadata') %>
+    <script src="/js/add/console.js"></script>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<section class="hero is-primary is-small">
+    <div class="hero-body">
+        <p class="title">
+            Add a Console
+        </p>
+    </div>
+</section>
+
+<div class="container pt-5">
+    <ul class="steps has-content-centered">
+        <li id="game-info-segment" class="steps-segment is-active">
+            <span class="steps-marker"></span>
+            <div class="steps-content has-text-light">
+                <p class="is-size-5">Console Information</p>
+                <p>Name and Brand</p>
+            </div>
+        </li>
+        <li id="completion-segment" class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content has-text-light">
+                <p class="is-size-5">Complete</p>
+            </div>
+        </li>
+    </ul>
+
+    <div class="card">
+        <div id="add-card-div" class="card-content">
+            <div class="content">
+                <h1 class="title has-text-light">Console Information</h1>
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control">
+                        <input required id="name-text" class="input" type="text">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Brand</label>
+                    <div class="control">
+                        <input required id="brand-text" class="input" type="text">
+                    </div>
+                </div>
+
+                <div class="control">
+                    <button id="submit-button" class="button is-link" onclick="submitConsoleInfo()">Next</button>
+                </div>
+
+                <div id="warning-div"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
