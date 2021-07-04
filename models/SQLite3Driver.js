@@ -275,7 +275,7 @@ SQLite3Driver.prototype.addEdition = function addEdition(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO edition
-                                            VALUES (?, ?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${json.gameID}`, `${json.trackingURL}`], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${json.gameID}`], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
