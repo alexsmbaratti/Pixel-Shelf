@@ -53,6 +53,6 @@
 <script>
     let calendar = document.getElementById("calendar-input");
     let today = new Date(Date.now());
-    calendar.setAttribute("value", today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay());
+    calendar.value = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay();
     calendar.setAttribute("max", today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay());
 </script>
