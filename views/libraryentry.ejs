@@ -5,6 +5,7 @@
     <%- include('partials/metadata') %>
     <script src="/js/libraryEntry.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <% const months = ["N/A", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
 </head>
@@ -55,26 +56,46 @@
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Game Progress</h1>
                                 <ul class="steps has-content-centered">
-                                    <li id="game-info-segment" class="steps-segment <%= entry.progress == 0 ? "is-active": ""%>">
-                                        <span class="steps-marker"></span>
+                                    <li id="game-info-segment"
+                                        class="steps-segment <%= entry.progress == 0 ? "is-active" : "" %>">
+                                        <span class="steps-marker">
+                                            <span class="icon">
+                                                <i class="fa fa-money-bill-wave-alt"></i>
+                                             </span>
+                                        </span>
                                         <div class="steps-content has-text-light">
                                             <p class="is-size-6">Owned</p>
                                         </div>
                                     </li>
-                                    <li id="edition-info-segment" class="steps-segment <%= entry.progress == 1 ? "is-active": ""%>">
-                                        <span class="steps-marker"></span>
+                                    <li id="edition-info-segment"
+                                        class="steps-segment <%= entry.progress == 1 ? "is-active" : "" %>">
+                                        <span class="steps-marker">
+                                            <span class="icon">
+                                                <i class="fa fa-list"></i>
+                                             </span>
+                                        </span>
                                         <div class="steps-content has-text-light">
                                             <p class="is-size-6">In Backlog</p>
                                         </div>
                                     </li>
-                                    <li id="destination-segment" class="steps-segment <%= entry.progress == 2 ? "is-active": ""%>">
-                                        <span class="steps-marker"></span>
+                                    <li id="destination-segment"
+                                        class="steps-segment <%= entry.progress == 2 ? "is-active" : "" %>">
+                                        <span class="steps-marker">
+                                            <span class="icon">
+                                                <i class="fa fa-play"></i>
+                                             </span>
+                                        </span>
                                         <div class="steps-content has-text-light">
                                             <p class="is-size-6">Currently Playing</p>
                                         </div>
                                     </li>
-                                    <li id="purchase-info-segment" class="steps-segment <%= entry.progress == 3 ? "is-active": ""%>">
-                                        <span class="steps-marker"></span>
+                                    <li id="purchase-info-segment"
+                                        class="steps-segment <%= entry.progress == 3 ? "is-active" : "" %>">
+                                        <span class="steps-marker">
+                                            <span class="icon">
+                                                <i class="fa fa-check"></i>
+                                             </span>
+                                        </span>
                                         <div class="steps-content has-text-light">
                                             <p class="is-size-6">Completed</p>
                                         </div>
@@ -106,7 +127,9 @@
                                     <div class="container">
                                         <button class="button is-info">Edit</button>
                                         <button class="button is-warning">Sell</button>
-                                        <button id="delete-button" class="button is-danger" onclick="deleteGame(<%= id %>)">Delete</button>
+                                        <button id="delete-button" class="button is-danger"
+                                                onclick="deleteGame(<%= id %>)">Delete
+                                        </button>
                                     </div>
                                 </article>
                             </div>

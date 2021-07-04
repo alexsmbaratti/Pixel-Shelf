@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <%- include('../partials/metadata') %>
     <script src="/js/add/game.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
 </head>
 <body>
@@ -47,7 +48,11 @@
             </div>
         </li>
         <li id="completion-segment" class="steps-segment">
-            <span class="steps-marker"></span>
+            <span class="steps-marker">
+                <span class="icon">
+                    <i class="fa fa-check"></i>
+                </span>
+            </span>
             <div class="steps-content has-text-light">
                 <p class="is-size-5">Complete</p>
             </div>
