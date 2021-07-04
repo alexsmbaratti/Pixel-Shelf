@@ -24,12 +24,11 @@ display = Adafruit_SSD1680(122, 250, spi, cs_pin=ecs, dc_pin=dc, sramcs_pin=None
 display.rotation = 1
 
 display.fill(Adafruit_EPD.WHITE)
-image = Image.open("logo.png")
+image = Image.new("RGB", (display.width, display.height), color=WHITE)
 draw = ImageDraw.Draw(image)
 draw.text((5, 5), 'My Game Collection', font=medium_font, fill=BLACK,)
-draw.text((16, 112), 'Powered by Pixel Shelf', font=small_font, fill=BLACK,)
+draw.text((5, 112), 'Powered by Pixel Shelf', font=small_font, fill=BLACK,)
 draw.text((5, 25), sys.argv[1] + ' Games',font=large_font,fill=BLACK,)
 
 display.image(image)
-display.image(logo)
 display.display()
