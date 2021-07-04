@@ -15,6 +15,7 @@ busy = digitalio.DigitalInOut(board.D17)
 # Logo setup
 logo = Image.open("logo.png") # This should be a 1x1 image for proper scaling
 logo = logo.resize((11, 11), Image.BICUBIC)
+logo = logo.crop((5, 25, 127, 275)).convert("RGB")
 
 small_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
 medium_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
