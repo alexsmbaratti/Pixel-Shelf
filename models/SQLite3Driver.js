@@ -198,7 +198,8 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "new": row.new == 1,
                             "igdbURL": row.igdbURL.length == 0 ? null : row.igdbURL,
                             "date": row.year + '-' + month + '-' + day,
-                            "gameID": row.gameid
+                            "gameID": row.gameid,
+                            "progress": row.progress
                         };
                     });
                 } catch (e) {
@@ -254,7 +255,7 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO game
-                                            VALUES (?, ?, ?, ?)`, [`${json.title}`, `${json.platform}`, `${json['igdb-url']}`], function (err) {
+                                            VALUES (?, ?, ?, ?, ?)`, [`${json.title}`, `${json.platform}`, `${json['igdb-url']}`, 0], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);

@@ -3,6 +3,7 @@ CREATE TABLE game
     title      TEXT,
     platformid INTEGER,
     igdbURL    TEXT,
+    progress   INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (platformid) REFERENCES platform (id)
 );

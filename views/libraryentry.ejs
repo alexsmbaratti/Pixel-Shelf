@@ -55,25 +55,25 @@
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Game Progress</h1>
                                 <ul class="steps has-content-centered">
-                                    <li id="game-info-segment" class="steps-segment is-active">
+                                    <li id="game-info-segment" class="steps-segment <%= entry.progress == 0 ? "is-active": ""%>">
                                         <span class="steps-marker"></span>
                                         <div class="steps-content has-text-light">
                                             <p class="is-size-6">Owned</p>
                                         </div>
                                     </li>
-                                    <li id="edition-info-segment" class="steps-segment">
+                                    <li id="edition-info-segment" class="steps-segment <%= entry.progress == 1 ? "is-active": ""%>">
                                         <span class="steps-marker"></span>
                                         <div class="steps-content has-text-light">
                                             <p class="is-size-6">In Backlog</p>
                                         </div>
                                     </li>
-                                    <li id="destination-segment" class="steps-segment">
+                                    <li id="destination-segment" class="steps-segment <%= entry.progress == 2 ? "is-active": ""%>">
                                         <span class="steps-marker"></span>
                                         <div class="steps-content has-text-light">
                                             <p class="is-size-6">Currently Playing</p>
                                         </div>
                                     </li>
-                                    <li id="purchase-info-segment" class="steps-segment">
+                                    <li id="purchase-info-segment" class="steps-segment <%= entry.progress == 3 ? "is-active": ""%>">
                                         <span class="steps-marker"></span>
                                         <div class="steps-content has-text-light">
                                             <p class="is-size-6">Completed</p>
