@@ -21,6 +21,18 @@ router.get('/library', function (req, res, next) {
     });
 });
 
+router.get('/library/backlog', function (req, res, next) {
+    let sortBy = req.query.sortBy;
+    if (sortBy === null) {
+        sortBy = 'title';
+    }
+    let driver = new SQLite3Driver();
+    driver.getBacklog(sortBy).then(result => {
+        res.status(200).send({"status": 200, "backlog": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
 
 router.get('/library/size', function (req, res, next) {
     let driver = new SQLite3Driver();

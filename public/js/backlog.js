@@ -1,6 +1,6 @@
-function fetchLibrary(sortBy = "title") {
+function fetchBacklog(sortBy = "title") {
     let request = new XMLHttpRequest();
-    request.open('GET', `/api/library?sortBy=${sortBy}`);
+    request.open('GET', `/api/library/backlog?sortBy=${sortBy}`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
@@ -11,7 +11,7 @@ function fetchLibrary(sortBy = "title") {
             }
 
             if (request.status === 200) {
-                data = data.library;
+                data = data.backlog;
 
                 if (data.length == 0) {
                     let noGamesText = document.createElement("p");
