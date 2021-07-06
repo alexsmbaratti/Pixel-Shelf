@@ -9,6 +9,10 @@ router.get('/', function (req, res, next) {
     res.render('library', {title: 'Pixel Shelf'});
 });
 
+router.get('/backlog', function (req, res, next) {
+    res.render('backlog', {title: 'Pixel Shelf'});
+});
+
 router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
