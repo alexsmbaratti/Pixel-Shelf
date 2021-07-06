@@ -169,6 +169,45 @@ function deleteGame(id) {
     request.send(JSON.stringify(params));
 }
 
+function changeProgress(id, progress) {
+    let request = new XMLHttpRequest();
+    request.open('PUT', `/api/library/${id}/progress`);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    let button = document.getElementById("delete-button");
+    button.setAttribute("class", "button is-danger is-loading");
+    button.disabled = true;
+
+    let params = {
+        "progress": progress
+    };
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 204) {
+                switch (progress) {
+                    case 0:
+                        document.getElementById("owned-segment").setAttribute("class", "steps-segment is-active");
+                        break;
+                    case 1:
+                        document.getElementById("backlog-segment").setAttribute("class", "steps-segment is-active");
+                        break;
+                    case 2:
+                        document.getElementById("playing-segment").setAttribute("class", "steps-segment is-active");
+                        break;
+                    case 3:
+                        document.getElementById("completed-segment").setAttribute("class", "steps-segment is-active");
+                        break;
+                    default:
+                }
+            } else {
+            }
+        }
+    }
+
+    request.send(JSON.stringify(params));
+}
+
 function calculateSavings(msrp, cost) {
     return ((1 - (cost / msrp)) * 100).toFixed(2);
 }

@@ -56,8 +56,8 @@
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Game Progress</h1>
                                 <ul class="steps has-content-centered">
-                                    <li id="game-info-segment"
-                                        class="steps-segment <%= entry.progress == 0 ? "is-active" : "" %>">
+                                    <li id="owned-segment"
+                                        class="steps-segment <%= entry.progress == 0 ? "is-active" : "" %>" onclick="changeProgress(<%= id %>, 0)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-money-bill-wave-alt"></i>
@@ -67,8 +67,8 @@
                                             <p class="is-size-6">Owned</p>
                                         </div>
                                     </li>
-                                    <li id="edition-info-segment"
-                                        class="steps-segment <%= entry.progress == 1 ? "is-active" : "" %>">
+                                    <li id="backlog-segment"
+                                        class="steps-segment <%= entry.progress == 1 ? "is-active" : "" %>" onclick="changeProgress(<%= id %>, 1)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-list"></i>
@@ -78,8 +78,8 @@
                                             <p class="is-size-6">In Backlog</p>
                                         </div>
                                     </li>
-                                    <li id="destination-segment"
-                                        class="steps-segment <%= entry.progress == 2 ? "is-active" : "" %>">
+                                    <li id="playing-segment"
+                                        class="steps-segment <%= entry.progress == 2 ? "is-active" : "" %>" onclick="changeProgress(<%= id %>, 2)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-play"></i>
@@ -89,8 +89,8 @@
                                             <p class="is-size-6">Currently Playing</p>
                                         </div>
                                     </li>
-                                    <li id="purchase-info-segment"
-                                        class="steps-segment <%= entry.progress == 3 ? "is-active" : "" %>">
+                                    <li id="completed-segment"
+                                        class="steps-segment <%= entry.progress == 3 ? "is-active" : "" %>" onclick="changeProgress(<%= id %>, 3)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-check"></i>
