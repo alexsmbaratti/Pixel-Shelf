@@ -106,6 +106,7 @@ draw = ImageDraw.Draw(image)
 draw.text((5, 5), 'My Game Collection', font=medium_font, fill=BLACK,)
 draw.text((5, 25), sys.argv[1] + ' Games',font=large_font,fill=BLACK,)
 drawWatermark(draw, 5, 110)
+image = image.convert("1").convert("L")
 
 display.image(image)
 display.display()
