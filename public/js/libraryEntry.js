@@ -174,10 +174,6 @@ function changeProgress(id, progress) {
     request.open('PUT', `/api/library/${id}/progress`);
     request.setRequestHeader('Content-Type', 'application/json');
 
-    let button = document.getElementById("delete-button");
-    button.setAttribute("class", "button is-danger is-loading");
-    button.disabled = true;
-
     let params = {
         "progress": progress
     };
