@@ -99,6 +99,7 @@ def getLibraryCount():
         r = requests.get(url = api_url + '/api/library/size')
         data = r.json()
         count = data['size']
+        cached_count = count
         print('Fetched ' + str(count) + ' games from server')
     except requests.exceptions.ConnectionError:
         print('Could not fetch size from server!')
