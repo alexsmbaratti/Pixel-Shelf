@@ -68,6 +68,10 @@ router.get('/library/:libraryId/igdb', function (req, res, next) {
     });
 });
 
+router.put('/library/:libraryId/progress', function (req, res, next) {
+    res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+});
+
 router.delete('/library/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.deleteGame(req.params.libraryId).then(result => {
