@@ -1,1 +1,2 @@
 adafruit-circuitpython-lis3dh
+requests
