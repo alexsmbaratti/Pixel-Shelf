@@ -9,6 +9,9 @@ from PIL import Image, ImageDraw, ImageFont
 
 api_url = 'http://pixel-shelf.local:3000'
 
+# Cache
+cached_count = None
+
 def drawPixel(draw, x, y):
     draw.rectangle((x, y, x, y), fill=(0, 0, 0))
 
@@ -92,9 +95,20 @@ def drawLibrarySize(draw, count):
     drawWatermark(draw, 5, 110)
 
 def getLibraryCount():
-    r = requests.get(url = api_url + '/api/library/size')
-    data = r.json()
-    return data['size']
+    try:
+        r = requests.get(url = api_url + '/api/library/size')
+        data = r.json()
+        count = data['size']
+        print('Fetched ' + str(count) + ' games from server')
+    except requests.exceptions.ConnectionError:
+        print('Could not fetch size from server!')
+        # TODO: Display warning indicator on screen
+        if cached_count:
+            print('Falling back to cached count of ' + str(cached_count))
+            return cached_count
+        else:
+            return '?'
+    return count
 
 spi = busio.SPI(board.SCK, MOSI=board.MOSI, MISO=board.MISO)
 ecs = digitalio.DigitalInOut(board.CE0)
