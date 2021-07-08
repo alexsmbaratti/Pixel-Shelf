@@ -48,10 +48,12 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <h1 class="subtitle">Added on <%= months[parseInt(entry.date.split('-')[1])] %> <%= parseInt(entry.date.split('-')[2]) %>, <%= parseInt(entry.date.split('-')[0]) %></h1>
-
                             <table class="table has-background-grey">
                                 <tbody class="table-body has-background-grey">
+                                <tr>
+                                    <th>Date Added</th>
+                                    <td><%= months[parseInt(entry.date.split('-')[1])] %> <%= parseInt(entry.date.split('-')[2]) %>, <%= parseInt(entry.date.split('-')[0]) %></td>
+                                </tr>
                                 <tr>
                                     <th>Condition</th>
                                     <td><%= entry.new ? "New" : "Used" %></td>
@@ -64,10 +66,12 @@
                                     <th>Manual</th>
                                     <td><%= entry.manual ? "Yes" : "No" %></td>
                                 </tr>
+                                <tr>
+                                    <th>UPC</th>
+                                    <td><%= entry.upc %></td>
+                                </tr>
                                 </tbody>
                             </table>
-
-                            <h1 class="subtitle">UPC: <%= entry.upc %></h1>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
