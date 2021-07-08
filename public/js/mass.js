@@ -101,6 +101,8 @@ function submit() {
             if (obj["condition"] == null) {
                 obj["condition"] = true; // Default to new copy
             }
+            obj["box"] = true; // Default to boxed copy
+            obj["manual"] = false; // Default to no manual
             console.log(obj);
             parsed.push(obj);
         });
