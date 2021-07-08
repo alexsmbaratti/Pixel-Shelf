@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <% const months = ["N/A", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
+    <%
+    const months = ["N/A", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var parsedDate = months[parseInt(entry.date.split('-')[1])] + ' ' + parseInt(entry.date.split('-')[2]) + ', ' + parseInt(entry.date.split('-')[0]);
+    if (parsedDate == 'undefined NaN, NaN') {
+        parsedDate = 'Unknown';
+    }
+    %>
 </head>
 <body>
 <%- include('partials/navbar') %>
@@ -48,11 +54,11 @@
                     <div class="tile is-child is-vertical pr-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
-                            <table class="table has-background-grey">
-                                <tbody class="table-body has-background-grey">
+                            <table class="table has-background-grey mr-6 ml-6">
+                                <tbody class="table-body has-background-grey has-text-centered">
                                 <tr>
                                     <th>Date Added</th>
-                                    <td><%= months[parseInt(entry.date.split('-')[1])] %> <%= parseInt(entry.date.split('-')[2]) %>, <%= parseInt(entry.date.split('-')[0]) %></td>
+                                    <td><%= parsedDate %></td>
                                 </tr>
                                 <tr>
                                     <th>Condition</th>
@@ -60,11 +66,31 @@
                                 </tr>
                                 <tr>
                                     <th>Box</th>
-                                    <td><%= entry.box ? "Yes" : "No" %></td>
+                                    <td>
+                                        <% if (entry.box) { %>
+                                            <span class="icon">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        <% } else { %>
+                                            <span class="icon">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        <% } %>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Manual</th>
-                                    <td><%= entry.manual ? "Yes" : "No" %></td>
+                                    <td>
+                                        <% if (entry.manual) { %>
+                                            <span class="icon">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        <% } else { %>
+                                            <span class="icon">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        <% } %>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>UPC</th>
@@ -78,7 +104,8 @@
                                 <h1 class="title is-4">Game Progress</h1>
                                 <ul class="steps has-content-centered">
                                     <li id="owned-segment"
-                                        class="steps-segment <%= entry.progress == 0 ? "is-active" : "" %>" onclick="changeProgress(<%= id %>, 0)">
+                                        class="steps-segment <%= entry.progress == 0 ? "is-active" : "" %>"
+                                        onclick="changeProgress(<%= id %>, 0)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-money-bill-wave-alt"></i>
@@ -89,7 +116,8 @@
                                         </div>
                                     </li>
                                     <li id="backlog-segment"
-                                        class="steps-segment <%= entry.progress == 1 ? "is-active" : "" %>" onclick="changeProgress(<%= id %>, 1)">
+                                        class="steps-segment <%= entry.progress == 1 ? "is-active" : "" %>"
+                                        onclick="changeProgress(<%= id %>, 1)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-list"></i>
@@ -100,7 +128,8 @@
                                         </div>
                                     </li>
                                     <li id="playing-segment"
-                                        class="steps-segment <%= entry.progress == 2 ? "is-active" : "" %>" onclick="changeProgress(<%= id %>, 2)">
+                                        class="steps-segment <%= entry.progress == 2 ? "is-active" : "" %>"
+                                        onclick="changeProgress(<%= id %>, 2)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-play"></i>
@@ -111,7 +140,8 @@
                                         </div>
                                     </li>
                                     <li id="completed-segment"
-                                        class="steps-segment <%= entry.progress == 3 ? "is-active" : "" %>" onclick="changeProgress(<%= id %>, 3)">
+                                        class="steps-segment <%= entry.progress == 3 ? "is-active" : "" %>"
+                                        onclick="changeProgress(<%= id %>, 3)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-check"></i>
