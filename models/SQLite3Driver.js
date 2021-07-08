@@ -354,7 +354,7 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${json.editionID}`, `${json.retailerID}`, json.condition ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${json.editionID}`, `${json.retailerID}`, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);

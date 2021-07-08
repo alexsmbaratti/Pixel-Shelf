@@ -49,7 +49,7 @@
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Copy Information</h1>
                             <h1 class="subtitle">Added on <%= months[parseInt(entry.date.split('-')[1])] %> <%= parseInt(entry.date.split('-')[2]) %>, <%= parseInt(entry.date.split('-')[0]) %></h1>
-                            <h1 class="subtitle">Condition: <%= entry.condition ? "New" : "Used" %></h1>
+                            <h1 class="subtitle">Condition: <%= entry.new ? "New" : "Used" %></h1>
                             <h1 class="subtitle">Box: <%= entry.box ? "Yes" : "No" %></h1>
                             <h1 class="subtitle">Manual: <%= entry.manual ? "Yes" : "No" %></h1>
                             <h1 class="subtitle">UPC: <%= entry.upc %></h1>
