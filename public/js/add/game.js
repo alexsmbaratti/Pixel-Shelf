@@ -147,6 +147,8 @@ function submitPurchaseInfo() {
     let day = parseInt(document.getElementById("calendar-input").value.split('-')[2]);
 
     let conditionSelect = document.getElementById("condition-selection");
+    let hasBox = document.getElementById("box-check").checked;
+    let hasManual = document.getElementById("manual-check").checked;
 
     let button = document.getElementById("submit-button");
     button.setAttribute("class", "button is-link is-loading");
@@ -185,6 +187,8 @@ function submitPurchaseInfo() {
         "day": day,
         "year": year,
         "condition": conditionSelect.selectedIndex == 0,
+        "box": hasBox,
+        "manual": hasManual,
         "retailerID": null,
         "editionID": editionID
     }));

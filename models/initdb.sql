@@ -36,8 +36,37 @@ CREATE TABLE library
     editionid  INTEGER,
     retailerid INTEGER,
     new        INTEGER,
+    box        INTEGER,
+    manual     INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id),
+    FOREIGN KEY (retailerid) REFERENCES retailer (id)
+);
+
+CREATE TABLE amiibo
+(
+    title    TEXT,
+    seriesid INTEGER,
+    id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    FOREIGN KEY (seriesid) REFERENCES series (id)
+);
+
+CREATE TABLE series
+(
+    title TEXT,
+    id    INTEGER PRIMARY KEY AUTOINCREMENT
+);
+
+CREATE TABLE figure
+(
+    cost       REAL,
+    month      INTEGER,
+    day        INTEGER,
+    year       INTEGER,
+    retailerid INTEGER,
+    new        INTEGER,
+    box        INTEGER,
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (retailerid) REFERENCES retailer (id)
 );
 
