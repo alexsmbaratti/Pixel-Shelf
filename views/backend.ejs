@@ -14,13 +14,20 @@
 </head>
 <body>
 <%- include('partials/navbar') %>
+<section class="hero is-primary is-small">
+    <div class="hero-body">
+        <p class="title">
+            Backend Information
+        </p>
+    </div>
+</section>
 <div class="container">
     <div class="tile is-ancestor">
         <div class="tile pt-5">
             <div class="tile is-parent is-vertical">
                 <article class="tile is-child box">
-                    <h1 class="title">Backend Information</h1>
-                    <h1 class="subtitle">Pixel Shelf v<%= version %></h1>
+                    <h1 class="title">Pixel Shelf</h1>
+                    <h1 class="subtitle">v<%= version %></h1>
                 </article>
                 <div class="tile">
                     <div class="tile is-child is-vertical pr-3">
@@ -45,7 +52,11 @@
                     <div class="tile is-child is-vertical pl-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Database</h1>
-                            <button class="button is-warning">Check Database Integrity</button>
+                            <a href="/export">
+                                <button class="button is-success">Create Backup</button>
+                            </a>
+                            <button class="button is-info">Check Database Integrity</button>
+                            <button class="button is-warning">Clear Cover Art Caches</button>
                         </article>
                     </div>
                 </div>
