@@ -124,15 +124,13 @@ function submitDestinationInfo() {
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;
 
-    document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment is-active");
     document.getElementById("destination-segment").setAttribute("class", "steps-segment");
-
     if (document.getElementById('collection-radio').checked) {
+        document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment is-active");
         updateCard('/html/purchase_info.html');
     } else if (document.getElementById('wishlist-radio').checked) {
-        document.getElementById('purchase-text').innerHTML = "Wishlist Information";
-        document.getElementById('purchase-description').innerHTML = "Price Tracking";
-        updateCard('/html/wishlist_info.html');
+        document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
+        updateCard('/html/wishlist_completion.html');
     }
 }
 
