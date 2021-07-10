@@ -4,10 +4,16 @@ var SQLite3Driver = require('../models/SQLite3Driver');
 var IGDBDriver = require('../models/IGDBDriver');
 var EInkDriver = require('../eink/EInkDriver');
 
+/**
+ * Returns status code 200 if the server is online
+ */
 router.get('/', function (req, res, next) {
     res.status(200).send({"status": 200});
 });
 
+/**
+ * Returns status code 200 with an array of library entries
+ */
 router.get('/library', function (req, res, next) {
     let sortBy = req.query.sortBy;
     if (sortBy === null) {
@@ -29,6 +35,19 @@ router.get('/library/backlog', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getBacklog(sortBy).then(result => {
         res.status(200).send({"status": 200, "backlog": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
+router.get('/library/playing', function (req, res, next) {
+    let sortBy = req.query.sortBy;
+    if (sortBy === null) {
+        sortBy = 'title';
+    }
+    let driver = new SQLite3Driver();
+    driver.getCurrentlyPlaying(sortBy).then(result => {
+        res.status(200).send({"status": 200, "currentlyPlaying": result});
     }).catch(err => {
         sendError(res, err);
     });

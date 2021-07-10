@@ -34,8 +34,30 @@ function getSizeByPlatforms() {
                         }
                     }
                 });
+                getRandomPlayingGame();
             } else {
                 document.getElementById('game-count-text').innerHTML = '? Games';
+            }
+        }
+    }
+
+    request.send();
+}
+
+function getRandomPlayingGame() {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/library/playing`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                let data = JSON.parse(request.responseText)['currentlyPlaying'];
+                if (data.length > 0) {
+                    let randomIndex = Math.floor(Math.random() * data.length);
+                    let url = '/library/' + data[randomIndex]['id'] + '/cover';
+                    document.getElementById('currently-playing-cover').setAttribute('src', url);
+                }
+            } else {
             }
         }
     }

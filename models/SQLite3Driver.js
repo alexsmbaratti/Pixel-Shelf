@@ -57,6 +57,59 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
     });
 }
 
+SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortBy) {
+    let parsedSortBy;
+    switch (sortBy) {
+        case 'title':
+            parsedSortBy = "game.title";
+            break;
+        case 'platform':
+            parsedSortBy = "platform.name ASC, game.title";
+            break;
+        case 'dateAdded':
+            parsedSortBy = "library.year ASC, library.month ASC, library.day";
+            break;
+        case 'cost':
+            parsedSortBy = "library.cost";
+            break;
+        case 'edition':
+            parsedSortBy = "edition.edition";
+            break;
+        default:
+            parsedSortBy = "game.title";
+    }
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT game.id, game.title, platform.name, library.month, library.day, library.year, library.cost, edition.edition FROM game, platform, edition, library WHERE editionid = edition.id AND game.progress = 2 AND gameid = game.id AND platform.id = platformid ORDER BY ${parsedSortBy} ASC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                let result = [];
+                rows.forEach((row) => {
+                    let date = row.month + '-' + row.day + '-' + row.year;
+                    if (row.month == 'null' || row.day == 'null' || row.year == 'null') {
+                        date = 'Unknown';
+                    }
+                    result.push({
+                        "id": row.id,
+                        "title": row.title,
+                        "platform": row.name,
+                        "dateAdded": date,
+                        "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
+                        "edition": row.edition
+                    });
+                });
+                SQLite3Driver.prototype.db.close();
+                resolve(result);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
     let parsedSortBy;
     switch (sortBy) {
