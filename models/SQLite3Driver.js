@@ -420,6 +420,27 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
     });
 }
 
+SQLite3Driver.prototype.updateProgress = function updateProgress(gameID = -1, progress = 0) {
+    return new Promise(function (resolve, reject) {
+        if (gameID == -1) {
+            reject({"msg": "Please supply a game ID"});
+        }
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, (err) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            let sql = `UPDATE game SET progress = ${progress} WHERE id = ${gameID}`;
+            SQLite3Driver.prototype.db.run(sql, [], function (err) {
+                if (err) {
+                    reject(err);
+                }
+                resolve();
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.massImport = function massImport(json) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
@@ -550,15 +571,18 @@ SQLite3Driver.prototype.getWishlistSize = function getWishlistSize() {
 
 SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
     return new Promise(function (resolve, reject) {
-        if (title.includes("'")) { // TODO: Find a better way to do this
+        if (title.includes("’") || title.includes("'")) { // TODO: Find a better way to do this
             resolve({"found": false});
+        }
+        if (platformID == undefined) {
+            platformID = '\'undefined\'';
         }
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
             if (err) {
                 console.log(err);
                 reject(err);
             }
-            let sql = `SELECT * FROM game WHERE title = '${title}' AND platformid = '${platformID}'`;
+            let sql = `SELECT * FROM game WHERE title = '${title}' AND platformid = ${platformID}`;
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     console.log(err);
@@ -582,14 +606,17 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
                 console.log(err);
                 reject(err);
             }
-            let sql = `SELECT * FROM edition WHERE edition = "${edition}" AND gameid = '${gameID}'`;
+            if (gameID == undefined) {
+                gameID = '\'undefined\'';
+            }
+            let sql = `SELECT * FROM edition WHERE edition = "${edition}" AND gameid = ${gameID}`;
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
                 SQLite3Driver.prototype.db.close();
-                if (res.length < 1) {
+                if (res == null || res.length < 1) {
                     resolve({"found": false});
                 } else {
                     resolve({"found": true, "id": res[0].id});

@@ -24,7 +24,7 @@ function getSizeByPlatforms() {
                         labels: labels,
                         datasets: [{
                             scaleFontColor: "#FFFFFF",
-                            backgroundColor: ['red', 'yellow', 'green', 'blue', 'purple', 'orange', 'grey'],
+                            backgroundColor: ['red', 'yellow', 'green', 'blue', 'purple', 'orange', '#00FFFF'],
                             data: values
                         }]
                     },

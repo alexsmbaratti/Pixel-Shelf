@@ -46,5 +46,7 @@ file to `true`. At the moment, the [Adafruit 2.13" Monochrome E-Ink Bonnet for R
 Enabling support will allow the application to display the size of your game collection on the screen, as well as allowing a USB barcode scanner to display
 the name of a scanned game (provided the UPC is in the database).
 
+E-ink clients can also be setup to fetch data from the API.
+
 ## Attributions
 Auto-generated cover art, tags, ratings, and descriptions are from IGDB's API.

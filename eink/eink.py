@@ -94,7 +94,7 @@ def drawLibrarySize(draw, count):
     draw.text((5, 25), str(count) + ' Games',font=large_font,fill=BLACK,)
     drawWatermark(draw, 5, 110)
 
-def getLibraryCount():
+def getLibraryCount(draw):
     try:
         r = requests.get(url = api_url + '/api/library/size')
         data = r.json()
@@ -131,7 +131,7 @@ display.rotation = 1
 display.fill(Adafruit_EPD.WHITE)
 image = Image.new("RGB", (display.width, display.height), color=WHITE)
 draw = ImageDraw.Draw(image)
-count = getLibraryCount()
+count = getLibraryCount(draw)
 drawLibrarySize(draw, count)
 image = image.convert("1").convert("L")
 

@@ -169,9 +169,9 @@ function deleteGame(id) {
     request.send(JSON.stringify(params));
 }
 
-function changeProgress(id, progress) {
+function changeProgress(gameID, progress) {
     let request = new XMLHttpRequest();
-    request.open('PUT', `/api/library/${id}/progress`);
+    request.open('PUT', `/api/library/${gameID}/progress`);
     request.setRequestHeader('Content-Type', 'application/json');
 
     let params = {
@@ -181,6 +181,10 @@ function changeProgress(id, progress) {
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
             if (request.status === 204) {
+                document.getElementById("owned-segment").setAttribute("class", "steps-segment");
+                document.getElementById("backlog-segment").setAttribute("class", "steps-segment");
+                document.getElementById("playing-segment").setAttribute("class", "steps-segment");
+                document.getElementById("completed-segment").setAttribute("class", "steps-segment");
                 switch (progress) {
                     case 0:
                         document.getElementById("owned-segment").setAttribute("class", "steps-segment is-active");

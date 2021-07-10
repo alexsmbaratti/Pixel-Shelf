@@ -105,7 +105,7 @@
                                 <ul class="steps has-content-centered">
                                     <li id="owned-segment"
                                         class="steps-segment <%= entry.progress == 0 ? "is-active" : "" %>"
-                                        onclick="changeProgress(<%= id %>, 0)">
+                                        onclick="changeProgress(<%= entry.gameID %>, 0)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-money-bill-wave-alt"></i>
@@ -117,7 +117,7 @@
                                     </li>
                                     <li id="backlog-segment"
                                         class="steps-segment <%= entry.progress == 1 ? "is-active" : "" %>"
-                                        onclick="changeProgress(<%= id %>, 1)">
+                                        onclick="changeProgress(<%= entry.gameID %>, 1)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-list"></i>
@@ -129,7 +129,7 @@
                                     </li>
                                     <li id="playing-segment"
                                         class="steps-segment <%= entry.progress == 2 ? "is-active" : "" %>"
-                                        onclick="changeProgress(<%= id %>, 2)">
+                                        onclick="changeProgress(<%= entry.gameID %>, 2)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-play"></i>
@@ -141,7 +141,7 @@
                                     </li>
                                     <li id="completed-segment"
                                         class="steps-segment <%= entry.progress == 3 ? "is-active" : "" %>"
-                                        onclick="changeProgress(<%= id %>, 3)">
+                                        onclick="changeProgress(<%= entry.gameID %>, 3)">
                                         <span class="steps-marker">
                                             <span class="icon">
                                                 <i class="fa fa-check"></i>

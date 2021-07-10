@@ -68,8 +68,14 @@ router.get('/library/:libraryId/igdb', function (req, res, next) {
     });
 });
 
-router.put('/library/:libraryId/progress', function (req, res, next) {
-    res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+router.put('/library/:gameId/progress', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.updateProgress(req.params.gameId, req.body['progress']).then(result => {
+        res.status(204).send({"status": 204});
+    }).catch(err => {
+        console.log(err);
+        sendError(res, err);
+    });
 });
 
 router.get('/amiibo', function (req, res, next) {
