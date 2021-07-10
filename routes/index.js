@@ -11,4 +11,8 @@ router.get('/backend', function(req, res, next) {
   res.render('backend', { title: 'Pixel Shelf', version: version });
 });
 
+router.get('/export', function(req, res, next) {
+  res.render('export', { title: 'Pixel Shelf' });
+});
+
 module.exports = router;

@@ -40,6 +40,10 @@ router.get('/library/backlog', function (req, res, next) {
     });
 });
 
+router.get('/export', function (req, res, next) {
+    res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+});
+
 router.get('/library/playing', function (req, res, next) {
     let sortBy = req.query.sortBy;
     if (sortBy === null) {

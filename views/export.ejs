@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('partials/metadata') %>
+    <script src="/js/export.js"></script>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+<body>
+<%- include('partials/navbar') %>
+<section class="hero is-primary is-small">
+    <div class="hero-body">
+        <p class="title">
+            Export
+        </p>
+    </div>
+</section>
+<div class="container pt-5">
+    <div class="card">
+        <div class="card-content">
+            <div class="content">
+                <h1 class="title has-text-light">Download a Backup</h1>
+
+                <p>You can request a backup of your information for safe keeping or to easily import into other instances of Pixel Shelf.</p>
+
+                <div class="field">
+                    <div class="control pt-3">
+                        <button id="submit" class="button is-link" onclick="requestBackup()">Request Backup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

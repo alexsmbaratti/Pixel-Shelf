@@ -115,7 +115,6 @@ function submit() {
                 if (request.status === 200) {
                     window.location.href = `/library/`;
                 } else {
-                    console.log("TODO: Handle error!");
                     button.setAttribute("class", "button is-link");
                     button.disabled = false;
                 }
