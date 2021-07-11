@@ -10,6 +10,7 @@
         pingEndpoint('/api/', 'api-level', 'api-loader');
         pingEndpoint('/api/db', 'db-level', 'db-loader');
         pingEndpoint('/api/igdb', 'igdb-level', 'igdb-loader');
+        fetchSystemInformation();
     </script>
 </head>
 <body>
@@ -32,6 +33,10 @@
                         <tr>
                             <th>Version</th>
                             <td>v<%= version %></td>
+                        </tr>
+                        <tr>
+                            <th>OS</th>
+                            <td id="os-text"></td>
                         </tr>
                         <tr>
                             <th>Currency</th>

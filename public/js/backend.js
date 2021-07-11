@@ -33,3 +33,26 @@ function pingEndpoint(url, levelID, loaderID) {
 
     request.send();
 }
+
+function fetchSystemInformation() {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/system/platform`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let data = JSON.parse(request.responseText)['data'];
+            console.log(data);
+            if (request.status === 200) {
+                let distro = data['distro'];
+                if (distro == 'raspbian') {
+                    distro = '<i class="fab fa-raspberry-pi"></i> Raspbian';
+                }
+                document.getElementById('os-text').innerHTML = distro;
+            } else {
+                document.getElementById('os-text').innerHTML = "<i class=\"fas fa-exclamation-triangle\"></i>";
+            }
+        }
+    }
+
+    request.send();
+}
