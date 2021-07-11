@@ -30,7 +30,10 @@ router.get('/library', function (req, res, next) {
 
 router.get('/system/platform', function (req, res, next) {
     si.osInfo().then(data => {
-        res.status(200).send({"status": 200, "platform": data['platform']});
+        res.status(200).send({
+            "status": 200,
+            "data": {"platform": data['platform'], "distro": data['distro'], "release": data['release']}
+        });
     }).catch(err => {
         sendError(res, err);
     });
