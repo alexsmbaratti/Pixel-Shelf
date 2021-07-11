@@ -18,7 +18,8 @@
     "morgan": "~1.9.1",
     "prompt": "^1.1.0",
     "python-shell": "^3.0.0",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "systeminformation": "^5.7.7"
   },
   "devDependencies": {
     "bulma": "^0.9.2",

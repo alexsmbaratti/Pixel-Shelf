@@ -3,6 +3,7 @@ var router = express.Router();
 var SQLite3Driver = require('../models/SQLite3Driver');
 var IGDBDriver = require('../models/IGDBDriver');
 var EInkDriver = require('../eink/EInkDriver');
+const si = require('systeminformation');
 
 /**
  * Returns status code 200 if the server is online
@@ -22,6 +23,14 @@ router.get('/library', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getLibrary(sortBy).then(result => {
         res.status(200).send({"status": 200, "library": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
+router.get('/system/platform', function (req, res, next) {
+    si.osInfo().then(data => {
+        res.status(200).send({"status": 200, "platform": data['platform']});
     }).catch(err => {
         sendError(res, err);
     });
