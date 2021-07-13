@@ -247,12 +247,20 @@ SQLite3Driver.prototype.getGame = function getGame(id) {
                     reject(err);
                 }
                 let result = {};
+
                 try {
                     rows.forEach((row) => {
+                        let igdbURL;
+                        if (row.igdbURL === undefined) {
+                            igdbURL = null;
+                        } else {
+                            igdbURL = row.igdbURL;
+                        }
+
                         result = {
                             "title": row.title,
                             "platform": row.name,
-                            "igdbURL": row.igdbURL.length == 0 ? null : row.igdbURL
+                            "igdbURL": igdbURL
                         };
                     });
                 } catch (e) {
@@ -278,6 +286,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                     reject(err);
                 }
                 let result = {};
+
                 try {
                     rows.forEach((row) => {
                         let month;
@@ -294,6 +303,13 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             day = row.day;
                         }
 
+                        let igdbURL;
+                        if (row.igdbURL === undefined) {
+                            igdbURL = null;
+                        } else {
+                            igdbURL = row.igdbURL;
+                        }
+
                         result = {
                             "title": row.title,
                             "platform": row.name,
@@ -304,7 +320,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "new": row.new == 1,
                             "box": row.box == 1,
                             "manual": row.manual == 1,
-                            "igdbURL": row.igdbURL.length == 0 ? null : row.igdbURL,
+                            "igdbURL": igdbURL,
                             "date": row.year + '-' + month + '-' + day,
                             "gameID": row.gameid,
                             "progress": row.progress
@@ -363,7 +379,7 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO game
-                                            VALUES (?, ?, ?, ?, ?)`, [`${json.title}`, `${json.platform}`, `${json['igdb-url']}`, 0], function (err) {
+                                            VALUES (?, ?, ?, ?, ?)`, [json.title, json.platform, json['igdb-url'], 0], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -384,12 +400,13 @@ SQLite3Driver.prototype.addEdition = function addEdition(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO edition
-                                            VALUES (?, ?, ?, ?, ?, ?)`, [`${json.edition}`, `${json.upc}`, `${json.msrp}`, `${json.gameID}`], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?)`, [json.edition, json.upc, json.msrp, json.gameID], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
                 let editionID = this.lastID;
+                console.log(`${json.edition} was inserted with ID ${editionID}`);
                 resolve(editionID);
             });
         });
@@ -407,13 +424,14 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
                 reject(err);
             }
             SQLite3Driver.prototype.db.run(`INSERT INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [`${json.cost}`, `${json.month}`, `${json.day}`, `${json.year}`, `${json.editionID}`, `${json.retailerID}`, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.month, json.day, json.year, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
-                let editionID = this.lastID;
-                resolve(editionID);
+                let libraryID = this.lastID;
+                console.log(`A library entry was inserted with ID ${libraryID}`);
+                resolve(libraryID);
             });
         });
     });

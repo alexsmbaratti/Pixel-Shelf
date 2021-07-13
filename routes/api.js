@@ -199,7 +199,6 @@ router.post('/games', function (req, res) {
         } else {
             let igdbDriver = new IGDBDriver();
             igdbDriver.getGameByName(req.body.title).then(result => {
-                console.log(result)
                 let igdbLink;
                 if (result.length < 1) {
                     igdbLink = null;
@@ -229,7 +228,6 @@ router.post('/games', function (req, res) {
 
 router.post('/editions', function (req, res) {
     let driver = new SQLite3Driver();
-    console.log(req.body);
     driver.lookupEdition(req.body.edition, req.body.gameID).then(result => {
         if (result.found === true) {
             res.status(200).send({"status": 200, "id": result.id});
@@ -247,7 +245,6 @@ router.post('/editions', function (req, res) {
 
 router.post('/library', function (req, res) {
     let driver = new SQLite3Driver();
-    console.log(req.body);
     driver.addLibrary(req.body).then(addResult => {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
@@ -257,7 +254,6 @@ router.post('/library', function (req, res) {
 
 router.post('/consoles', function (req, res) {
     let driver = new SQLite3Driver();
-    console.log(req.body);
     driver.lookupBrand(req.body.brand).then(result => {
         if (result.found === true) {
             let consoleData = {
@@ -291,7 +287,6 @@ router.post('/consoles', function (req, res) {
 
 router.post('/wishlist', function (req, res) {
     let driver = new SQLite3Driver();
-    console.log(req.body);
     driver.addWishlist(req.body).then(addResult => {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
