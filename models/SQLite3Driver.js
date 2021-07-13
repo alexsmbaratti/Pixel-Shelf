@@ -270,7 +270,11 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT platform.*, brand.brand FROM platform, brand WHERE platform.brandid = brand.id ORDER BY platform.name ASC';
+            let sql = `SELECT platform.*, brand.brand
+                       FROM platform,
+                            brand
+                       WHERE platform.brandid = brand.id
+                       ORDER BY platform.name ASC`;
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -296,7 +300,12 @@ SQLite3Driver.prototype.getGame = function getGame(id) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.* FROM game, platform WHERE game.id = ? AND platform.id = platformid LIMIT 1';
+            let sql = `SELECT game.*, platform.*
+                       FROM game,
+                            platform
+                       WHERE game.id = ?
+                         AND platform.id = platformid
+                       LIMIT 1`;
             SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
@@ -330,7 +339,16 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.*, edition.*, library.* FROM library, game, platform, edition WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid AND library.id = ? LIMIT 1';
+            let sql = `SELECT game.*, platform.*, edition.*, library.*
+                       FROM library,
+                            game,
+                            platform,
+                            edition
+                       WHERE editionid = edition.id
+                         AND gameid = game.id
+                         AND platform.id = platformid
+                         AND library.id = ?
+                       LIMIT 1`;
             SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -393,7 +411,20 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.*, edition.*, wishlist.* FROM wishlist, game, platform, edition WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid AND wishlist.id = ? LIMIT 1';
+            let sql = `
+                SELECT game.*,
+                       platform.*,
+                       edition.*,
+                       wishlist.*
+                FROM wishlist,
+                     game,
+                     platform,
+                     edition
+                WHERE editionid = edition.id
+                  AND gameid = game.id
+                  AND platform.id = platformid
+                  AND wishlist.id = ?
+                LIMIT 1`;
             SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -435,8 +466,10 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
                 console.log(err);
                 reject(err);
             }
-            SQLite3Driver.prototype.db.run(`INSERT INTO game
-                                            VALUES (?, ?, ?, ?, ?)`, [json.title, json.platform, json['igdb-url'], 0], function (err) {
+            SQLite3Driver.prototype.db.run(`
+                INSERT
+                INTO game
+                VALUES (?, ?, ?, ?, ?)`, [json.title, json.platform, json['igdb-url'], 0], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -456,7 +489,8 @@ SQLite3Driver.prototype.addEdition = function addEdition(json) {
                 console.log(err);
                 reject(err);
             }
-            SQLite3Driver.prototype.db.run(`INSERT INTO edition
+            SQLite3Driver.prototype.db.run(`INSERT
+                                            INTO edition
                                             VALUES (?, ?, ?, ?, ?, ?)`, [json.edition, json.upc, json.msrp, json.gameID], function (err) {
                 if (err) {
                     console.log(err);
@@ -480,7 +514,8 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
                 console.log(err);
                 reject(err);
             }
-            SQLite3Driver.prototype.db.run(`INSERT INTO library
+            SQLite3Driver.prototype.db.run(`INSERT
+                                            INTO library
                                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.month, json.day, json.year, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0], function (err) {
                 if (err) {
                     console.log(err);
@@ -501,7 +536,8 @@ SQLite3Driver.prototype.addConsole = function addConsole(json) {
                 console.log(err);
                 reject(err);
             }
-            SQLite3Driver.prototype.db.run(`INSERT INTO platform
+            SQLite3Driver.prototype.db.run(`INSERT
+                                            INTO platform
                                             VALUES (?, ?, ?)`, [`${json.name}`, `${json.brandID}`], function (err) {
                 if (err) {
                     console.log(err);
@@ -521,8 +557,10 @@ SQLite3Driver.prototype.addBrand = function addBrand(json) {
                 console.log(err);
                 reject(err);
             }
-            SQLite3Driver.prototype.db.run(`INSERT INTO brand
-                                            VALUES (?, ?)`, [json.brand], function (err) {
+            SQLite3Driver.prototype.db.run(`
+                INSERT
+                INTO brand
+                VALUES (?, ?)`, [json.brand], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -541,9 +579,10 @@ SQLite3Driver.prototype.lookupBrand = function lookupBrand(name) {
                 console.log(err);
                 reject(err);
             }
-            let sql = `SELECT *
-                       FROM brand
-                       WHERE brand = ?`;
+            let sql = `
+                SELECT *
+                FROM brand
+                WHERE brand = ? `;
             SQLite3Driver.prototype.db.get(sql, [name], (err, row) => {
                 if (err) {
                     reject(err);
@@ -565,7 +604,8 @@ SQLite3Driver.prototype.addWishlist = function addWishlist(json) {
                 console.log(err);
                 reject(err);
             }
-            SQLite3Driver.prototype.db.run(`INSERT INTO wishlist
+            SQLite3Driver.prototype.db.run(`INSERT
+                                            INTO wishlist
                                             VALUES (?, ?)`, [`${json.editionID}`], function (err) {
                 if (err) {
                     console.log(err);
@@ -586,7 +626,14 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.*, edition.* FROM game, platform, edition WHERE gameid = game.id AND platform.id = platformid AND edition.upc = ? LIMIT 1';
+            let sql = `SELECT game.*, platform.*, edition.*
+                       FROM game,
+                            platform,
+                            edition
+                       WHERE gameid = game.id
+                         AND platform.id = platformid
+                         AND edition.upc = ?
+                       LIMIT 1`;
             SQLite3Driver.prototype.db.all(sql, [upc], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -624,9 +671,10 @@ SQLite3Driver.prototype.updateProgress = function updateProgress(gameID = -1, pr
                 console.log(err);
                 reject(err);
             }
-            let sql = `UPDATE game
+            let sql = `UPDATE
+                           game
                        SET progress = ?
-                       WHERE id = ?`;
+                       WHERE id = ? `;
             SQLite3Driver.prototype.db.run(sql, [progress, gameID], function (err) {
                 if (err) {
                     reject(err);
@@ -643,7 +691,8 @@ SQLite3Driver.prototype.massImport = function massImport(json) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT platform.* FROM platform';
+            let sql = `SELECT platform.*
+                       FROM platform`;
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -713,7 +762,9 @@ SQLite3Driver.prototype.deleteGame = function deleteGame(id) {
                 console.log(err);
                 reject(err);
             }
-            let sql = 'DELETE FROM library WHERE id = ?';
+            let sql = `DELETE
+                       FROM library
+                       WHERE id = ?`;
             SQLite3Driver.prototype.db.all(sql, [id], (err) => {
                 if (err) {
                     console.log(err);
@@ -732,7 +783,8 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT COUNT(id) FROM library';
+            let sql = `SELECT COUNT(id)
+                       FROM library`;
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
@@ -753,7 +805,8 @@ SQLite3Driver.prototype.getWishlistSize = function getWishlistSize() {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT COUNT(id) FROM wishlist';
+            let sql = `SELECT COUNT(id)
+                       FROM wishlist`;
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
@@ -781,10 +834,11 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
                 console.log(err);
                 reject(err);
             }
-            let sql = `SELECT *
-                       FROM game
-                       WHERE title = ?
-                         AND platformid = ?`;
+            let sql = `
+                SELECT *
+                FROM game
+                WHERE title = ?
+                  AND platformid = ? `;
             SQLite3Driver.prototype.db.all(sql, [title, platformID], (err, res) => {
                 if (err) {
                     console.log(err);
@@ -814,7 +868,7 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
             let sql = `SELECT *
                        FROM edition
                        WHERE edition = ?
-                         AND gameid = ?`;
+                         AND gameid = ? `;
             SQLite3Driver.prototype.db.all(sql, [edition, gameID], (err, res) => {
                 if (err) {
                     console.log(err);
@@ -837,7 +891,16 @@ SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT platform.name, COUNT(library.id) FROM library, edition, game, platform WHERE library.editionid = edition.id AND edition.gameid = game.id AND game.platformid = platform.id GROUP BY platform.id ORDER BY COUNT(library.id) DESC';
+            let sql = `SELECT platform.name, COUNT(library.id)
+                       FROM library,
+                            edition,
+                            game,
+                            platform
+                       WHERE library.editionid = edition.id
+                         AND edition.gameid = game.id
+                         AND game.platformid = platform.id
+                       GROUP BY platform.id
+                       ORDER BY COUNT(library.id) DESC`;
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
