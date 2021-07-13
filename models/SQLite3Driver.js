@@ -30,8 +30,23 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
             if (err) {
                 reject(err);
             }
-            let sql = `SELECT library.id, game.title, platform.name, library.month, library.day, library.year, library.cost, edition.edition FROM game, platform, edition, library WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid ORDER BY ${parsedSortBy} ASC`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+            let sql = `SELECT library.id,
+                              game.title,
+                              platform.name,
+                              library.month,
+                              library.day,
+                              library.year,
+                              library.cost,
+                              edition.edition
+                       FROM game,
+                            platform,
+                            edition,
+                            library
+                       WHERE editionid = edition.id
+                         AND gameid = game.id
+                         AND platform.id = platformid
+                       ORDER BY ? ASC`;
+            SQLite3Driver.prototype.db.all(sql, [parsedSortBy], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -83,8 +98,24 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
             if (err) {
                 reject(err);
             }
-            let sql = `SELECT game.id, game.title, platform.name, library.month, library.day, library.year, library.cost, edition.edition FROM game, platform, edition, library WHERE editionid = edition.id AND game.progress = 2 AND gameid = game.id AND platform.id = platformid ORDER BY ${parsedSortBy} ASC`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+            let sql = `SELECT game.id,
+                              game.title,
+                              platform.name,
+                              library.month,
+                              library.day,
+                              library.year,
+                              library.cost,
+                              edition.edition
+                       FROM game,
+                            platform,
+                            edition,
+                            library
+                       WHERE editionid = edition.id
+                         AND game.progress = 2
+                         AND gameid = game.id
+                         AND platform.id = platformid
+                       ORDER BY ? ASC`;
+            SQLite3Driver.prototype.db.all(sql, [parsedSortBy], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -136,8 +167,24 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
             if (err) {
                 reject(err);
             }
-            let sql = `SELECT library.id, game.title, platform.name, library.month, library.day, library.year, library.cost, edition.edition FROM game, platform, edition, library WHERE editionid = edition.id AND game.progress = 1 AND gameid = game.id AND platform.id = platformid ORDER BY ${parsedSortBy} ASC`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+            let sql = `SELECT library.id,
+                              game.title,
+                              platform.name,
+                              library.month,
+                              library.day,
+                              library.year,
+                              library.cost,
+                              edition.edition
+                       FROM game,
+                            platform,
+                            edition,
+                            library
+                       WHERE editionid = edition.id
+                         AND game.progress = 1
+                         AND gameid = game.id
+                         AND platform.id = platformid
+                       ORDER BY ? ASC`;
+            SQLite3Driver.prototype.db.all(sql, [parsedSortBy], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -187,8 +234,16 @@ SQLite3Driver.prototype.getWishlist = function getWishlist(sortBy) {
             if (err) {
                 reject(err);
             }
-            let sql = `SELECT wishlist.*, game.title, platform.name, edition.edition, edition.msrp FROM game, platform, edition, wishlist WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid ORDER BY ${parsedSortBy} ASC`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+            let sql = `SELECT wishlist.*, game.title, platform.name, edition.edition, edition.msrp
+                       FROM game,
+                            platform,
+                            edition,
+                            wishlist
+                       WHERE editionid = edition.id
+                         AND gameid = game.id
+                         AND platform.id = platformid
+                       ORDER BY ? ASC`;
+            SQLite3Driver.prototype.db.all(sql, [parsedSortBy], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -241,8 +296,8 @@ SQLite3Driver.prototype.getGame = function getGame(id) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.* FROM game, platform WHERE game.id = ' + id + ' AND platform.id = platformid LIMIT 1';
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+            let sql = 'SELECT game.*, platform.* FROM game, platform WHERE game.id = ? AND platform.id = platformid LIMIT 1';
+            SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -280,8 +335,8 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.*, edition.*, library.* FROM library, game, platform, edition WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid AND library.id = ' + id + ' LIMIT 1';
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+            let sql = 'SELECT game.*, platform.*, edition.*, library.* FROM library, game, platform, edition WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid AND library.id = ? LIMIT 1';
+            SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -343,8 +398,8 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.*, edition.*, wishlist.* FROM wishlist, game, platform, edition WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid AND wishlist.id = ' + id + ' LIMIT 1';
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+            let sql = 'SELECT game.*, platform.*, edition.*, wishlist.* FROM wishlist, game, platform, edition WHERE editionid = edition.id AND gameid = game.id AND platform.id = platformid AND wishlist.id = ? LIMIT 1';
+            SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -527,8 +582,8 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
             if (err) {
                 reject(err);
             }
-            let sql = 'SELECT game.*, platform.*, edition.* FROM game, platform, edition WHERE gameid = game.id AND platform.id = platformid AND edition.upc = ' + upc + ' LIMIT 1';
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+            let sql = 'SELECT game.*, platform.*, edition.* FROM game, platform, edition WHERE gameid = game.id AND platform.id = platformid AND edition.upc = ? LIMIT 1';
+            SQLite3Driver.prototype.db.all(sql, [upc], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -565,8 +620,10 @@ SQLite3Driver.prototype.updateProgress = function updateProgress(gameID = -1, pr
                 console.log(err);
                 reject(err);
             }
-            let sql = `UPDATE game SET progress = ${progress} WHERE id = ${gameID}`;
-            SQLite3Driver.prototype.db.run(sql, [], function (err) {
+            let sql = `UPDATE game
+                       SET progress = ?
+                       WHERE id = ?`;
+            SQLite3Driver.prototype.db.run(sql, [progress, gameID], function (err) {
                 if (err) {
                     reject(err);
                 }
@@ -644,13 +701,16 @@ SQLite3Driver.prototype.massImport = function massImport(json) {
 
 SQLite3Driver.prototype.deleteGame = function deleteGame(id) {
     return new Promise(function (resolve, reject) {
+        if (id == '*') {
+            reject();
+        }
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, (err) => {
             if (err) {
                 console.log(err);
                 reject(err);
             }
-            let sql = 'DELETE FROM library WHERE id = ' + id;
-            SQLite3Driver.prototype.db.all(sql, [], (err) => {
+            let sql = 'DELETE FROM library WHERE id = ?';
+            SQLite3Driver.prototype.db.all(sql, [id], (err) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -717,8 +777,11 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
                 console.log(err);
                 reject(err);
             }
-            let sql = `SELECT * FROM game WHERE title = '${title}' AND platformid = ${platformID}`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+            let sql = `SELECT *
+                       FROM game
+                       WHERE title = ?
+                         AND platformid = ?`;
+            SQLite3Driver.prototype.db.all(sql, [title, platformID], (err, res) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -744,8 +807,11 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
             if (gameID == undefined) {
                 gameID = '\'undefined\'';
             }
-            let sql = `SELECT * FROM edition WHERE edition = "${edition}" AND gameid = ${gameID}`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+            let sql = `SELECT *
+                       FROM edition
+                       WHERE edition = ?
+                         AND gameid = ?`;
+            SQLite3Driver.prototype.db.all(sql, [edition, gameID], (err, res) => {
                 if (err) {
                     console.log(err);
                     reject(err);
