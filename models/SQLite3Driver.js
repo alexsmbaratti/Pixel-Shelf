@@ -419,6 +419,70 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
     });
 }
 
+SQLite3Driver.prototype.addConsole = function addConsole(json) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            SQLite3Driver.prototype.db.run(`INSERT INTO platform
+                                            VALUES (?, ?, ?)`, [`${json.name}`, `${json.brandID}`], function (err) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                let platformID = this.lastID;
+                resolve(platformID);
+            });
+        });
+    });
+}
+
+SQLite3Driver.prototype.addBrand = function addBrand(json) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            SQLite3Driver.prototype.db.run(`INSERT INTO brand
+                                            VALUES (?, ?)`, [json.brand], function (err) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                let brandID = this.lastID;
+                resolve(brandID);
+            });
+        });
+    });
+}
+
+SQLite3Driver.prototype.lookupBrand = function lookupBrand(name) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            let sql = `SELECT *
+                       FROM brand
+                       WHERE brand = ?`;
+            SQLite3Driver.prototype.db.get(sql, [name], (err, row) => {
+                if (err) {
+                    reject(err);
+                }
+                if (row) {
+                    resolve({"found": true, "id": row.id});
+                } else {
+                    resolve({"found": false});
+                }
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.addWishlist = function addWishlist(json) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {

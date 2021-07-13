@@ -252,7 +252,41 @@ router.post('/library', function (req, res) {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
         sendError(res, err);
-    })
+    });
+});
+
+router.post('/consoles', function (req, res) {
+    let driver = new SQLite3Driver();
+    console.log(req.body);
+    driver.lookupBrand(req.body.brand).then(result => {
+        if (result.found === true) {
+            let consoleData = {
+                "name": req.body['name'],
+                "brandID": result['id']
+            };
+            driver.addConsole(consoleData).then(addResult => {
+                res.status(200).send({"status": 200, "id": addResult});
+            }).catch(err => {
+                sendError(res, err);
+            });
+        } else {
+            driver.addBrand(req.body).then(brandID => {
+                let consoleData = {
+                    "name": req.body['name'],
+                    "brandID": brandID
+                };
+                driver.addConsole(consoleData).then(addResult => {
+                    res.status(200).send({"status": 200, "id": addResult});
+                }).catch(err => {
+                    sendError(res, err);
+                });
+            }).catch(err => {
+                sendError(res, err);
+            });
+        }
+    }).catch(err => {
+        sendError(res, err);
+    });
 });
 
 router.post('/wishlist', function (req, res) {
