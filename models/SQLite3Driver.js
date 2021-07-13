@@ -297,31 +297,26 @@ SQLite3Driver.prototype.getGame = function getGame(id) {
                 reject(err);
             }
             let sql = 'SELECT game.*, platform.* FROM game, platform WHERE game.id = ? AND platform.id = platformid LIMIT 1';
-            SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
+            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
                 }
                 let result = {};
-
-                try {
-                    rows.forEach((row) => {
-                        let igdbURL;
-                        if (row.igdbURL === undefined) {
-                            igdbURL = null;
-                        } else {
-                            igdbURL = row.igdbURL;
-                        }
-
-                        result = {
-                            "title": row.title,
-                            "platform": row.name,
-                            "igdbURL": igdbURL
-                        };
-                    });
-                } catch (e) {
-                    SQLite3Driver.prototype.db.close();
-                    reject(e);
+                let igdbURL;
+                if (row.igdbURL === undefined) {
+                    igdbURL = null;
+                } else {
+                    igdbURL = row.igdbURL;
                 }
+
+                result = {
+                    "id": id,
+                    "title": row.title,
+                    "platform": row.name,
+                    "igdbURL": igdbURL,
+                    "progress": row.progress
+                };
+
                 SQLite3Driver.prototype.db.close();
                 resolve(result);
             });
