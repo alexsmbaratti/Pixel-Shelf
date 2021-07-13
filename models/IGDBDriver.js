@@ -61,6 +61,9 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url) {
 
 IGDBDriver.prototype.getCoverByURL = function getCoverByURL(url, gameID) {
     return new Promise(function (resolve, reject) {
+        if (url == undefined) {
+            reject();
+        }
         axios({
             method: 'post',
             url: 'https://api.igdb.com/' + IGDBDriver.prototype.version + '/games/',
