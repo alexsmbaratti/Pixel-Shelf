@@ -304,8 +304,7 @@ SQLite3Driver.prototype.getGame = function getGame(id) {
                        FROM game,
                             platform
                        WHERE game.id = ?
-                         AND platform.id = platformid
-                       LIMIT 1`;
+                         AND platform.id = platformid`;
             SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
@@ -349,6 +348,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                          AND platform.id = platformid
                          AND library.id = ?
                        LIMIT 1`;
+            // TODO: Change to get
             SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -425,6 +425,7 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
                   AND platform.id = platformid
                   AND wishlist.id = ?
                 LIMIT 1`;
+            // TODO: Change to get
             SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -634,6 +635,7 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
                          AND platform.id = platformid
                          AND edition.upc = ?
                        LIMIT 1`;
+            // TODO: Change to get
             SQLite3Driver.prototype.db.all(sql, [upc], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -765,6 +767,7 @@ SQLite3Driver.prototype.deleteGame = function deleteGame(id) {
             let sql = `DELETE
                        FROM library
                        WHERE id = ?`;
+            // TODO: Change to run
             SQLite3Driver.prototype.db.all(sql, [id], (err) => {
                 if (err) {
                     console.log(err);
@@ -785,6 +788,7 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
             }
             let sql = `SELECT COUNT(id)
                        FROM library`;
+            // TODO: Change to get
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
@@ -807,6 +811,7 @@ SQLite3Driver.prototype.getWishlistSize = function getWishlistSize() {
             }
             let sql = `SELECT COUNT(id)
                        FROM wishlist`;
+            // TODO: Change to get
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
@@ -839,6 +844,7 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
                 FROM game
                 WHERE title = ?
                   AND platformid = ? `;
+            // TODO: Change to get
             SQLite3Driver.prototype.db.all(sql, [title, platformID], (err, res) => {
                 if (err) {
                     console.log(err);
@@ -869,6 +875,7 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
                        FROM edition
                        WHERE edition = ?
                          AND gameid = ? `;
+            // TODO: Change to get
             SQLite3Driver.prototype.db.all(sql, [edition, gameID], (err, res) => {
                 if (err) {
                     console.log(err);
