@@ -45,8 +45,8 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                        WHERE editionid = edition.id
                          AND gameid = game.id
                          AND platform.id = platformid
-                       ORDER BY ? ASC`;
-            SQLite3Driver.prototype.db.all(sql, [parsedSortBy], (err, rows) => {
+                       ORDER BY ${parsedSortBy} ASC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -114,8 +114,8 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
                          AND game.progress = 2
                          AND gameid = game.id
                          AND platform.id = platformid
-                       ORDER BY ? ASC`;
-            SQLite3Driver.prototype.db.all(sql, [parsedSortBy], (err, rows) => {
+                       ORDER BY ${parsedSortBy} ASC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -183,8 +183,8 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
                          AND game.progress = 1
                          AND gameid = game.id
                          AND platform.id = platformid
-                       ORDER BY ? ASC`;
-            SQLite3Driver.prototype.db.all(sql, [parsedSortBy], (err, rows) => {
+                       ORDER BY ${parsedSortBy} ASC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
@@ -242,8 +242,8 @@ SQLite3Driver.prototype.getWishlist = function getWishlist(sortBy) {
                        WHERE editionid = edition.id
                          AND gameid = game.id
                          AND platform.id = platformid
-                       ORDER BY ? ASC`;
-            SQLite3Driver.prototype.db.all(sql, [parsedSortBy], (err, rows) => {
+                       ORDER BY ${parsedSortBy} ASC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
                 }
