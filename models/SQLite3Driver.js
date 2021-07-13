@@ -8,22 +8,22 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
     let parsedSortBy;
     switch (sortBy) {
         case 'title':
-            parsedSortBy = "game.title";
+            parsedSortBy = "game.title ASC";
             break;
         case 'platform':
-            parsedSortBy = "platform.name ASC, game.title";
+            parsedSortBy = "platform.name ASC, game.title ASC";
             break;
         case 'dateAdded':
-            parsedSortBy = "library.year ASC, library.month ASC, library.day";
+            parsedSortBy = "library.year ASC, library.month ASC, library.day ASC";
             break;
         case 'cost':
-            parsedSortBy = "library.cost";
+            parsedSortBy = "library.cost ASC";
             break;
         case 'edition':
-            parsedSortBy = "edition.edition";
+            parsedSortBy = "edition.edition ASC";
             break;
         default:
-            parsedSortBy = "game.title";
+            parsedSortBy = "game.title ASC";
     }
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
@@ -45,7 +45,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                        WHERE editionid = edition.id
                          AND gameid = game.id
                          AND platform.id = platformid
-                       ORDER BY ${parsedSortBy} ASC`;
+                       ORDER BY ${parsedSortBy}`;
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
