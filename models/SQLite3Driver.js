@@ -401,12 +401,19 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
                 let result = {};
                 try {
                     rows.forEach((row) => {
+                        let igdbURL;
+                        if (row.igdbURL === undefined) {
+                            igdbURL = null;
+                        } else {
+                            igdbURL = row.igdbURL;
+                        }
+
                         result = {
                             "title": row.title,
                             "platform": row.name,
                             "msrp": row.msrp,
                             "edition": row.edition,
-                            "igdbURL": row.igdbURL.length == 0 ? null : row.igdbURL,
+                            "igdbURL": igdbURL,
                             "gameID": row.gameid
                         };
                     });
@@ -564,7 +571,9 @@ SQLite3Driver.prototype.addWishlist = function addWishlist(json) {
                     console.log(err);
                     reject(err);
                 }
+
                 let wishlistID = this.lastID;
+                console.log(`A wishlist entry was inserted with ID ${wishlistID}`);
                 resolve(wishlistID);
             });
         });

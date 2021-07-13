@@ -130,7 +130,7 @@ function submitDestinationInfo() {
         updateCard('/html/purchase_info.html');
     } else if (document.getElementById('wishlist-radio').checked) {
         document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
-        updateCard('/html/wishlist_completion.html');
+        submitWishlistInfo();
     }
 }
 
