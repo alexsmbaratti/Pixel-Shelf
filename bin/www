@@ -8,10 +8,6 @@ var app = require('../app');
 var debug = require('debug')('pixel-shelf:server');
 var http = require('http');
 
-var EInkDriver = require('../eink/EInkDriver');
-const eInk = require('../config.json')['e-ink'];
-const prompt = require('prompt');
-
 /**
  * Get port from environment and store in Express.
  */
@@ -91,31 +87,4 @@ function onListening() {
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     debug('Listening on ' + bind);
-    if (eInk) {
-        let driver = new EInkDriver();
-        driver.drawLibrarySize();
-        readCode(driver);
-    }
-}
-
-function readCode(driver) {
-    new Promise(function (resolve, reject) {
-        prompt.start();
-        prompt.get([{
-            name: 'upc',
-            validator: /^[0-9]*$/,
-            warning: 'UPCs only consist of numbers'
-        }], function (err, result) {
-            if (err) {
-                console.log(err);
-                reject();
-            }
-            console.log(result.upc);
-            driver.drawGame(result.upc);
-            setTimeout(function () {
-                driver.drawLibrarySize(); // Return to default screen
-            }, 10000);
-            resolve();
-        });
-    });
 }
