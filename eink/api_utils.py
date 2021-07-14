@@ -6,6 +6,7 @@ api_url = 'http://pixel-shelf.local:3000'
 cached_count = None
 
 def getLibraryCount():
+    global cached_count
     print('Fetching library count from server...')
     try:
         r = requests.get(url = api_url + '/api/library/size')
