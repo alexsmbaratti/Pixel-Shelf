@@ -105,4 +105,5 @@ def drawLibrarySize(draw, connected, count):
     else:
         drawWatermark(draw, 5, 110)
 
+    last_drawn = (LIBRARY_SIZE, count, connected)
     return True
