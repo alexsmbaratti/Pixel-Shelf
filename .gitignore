@@ -7,5 +7,7 @@ public/images/covers
 public/images/ratings
 config.json
 eink/__pycache__
+eink/lib
+eink/font5x8.bin
 
 !public/images/covers/placeholder.jpg
