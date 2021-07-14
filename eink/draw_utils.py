@@ -87,6 +87,7 @@ def drawWatermark(draw, x, y):
     draw.text((x + 15, y - 2), 'Powered by Pixel Shelf', font=small_font, fill=BLACK,)
 
 def drawLibrarySize(draw, count):
+    print('Rendering library size screen...')
     draw.text((5, 5), 'My Game Collection', font=medium_font, fill=BLACK,)
     draw.text((5, 25), str(count) + ' Games',font=large_font,fill=BLACK,)
     drawWatermark(draw, 5, 110)
