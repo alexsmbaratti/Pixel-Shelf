@@ -19,15 +19,14 @@ rst = digitalio.DigitalInOut(board.D27)
 busy = digitalio.DigitalInOut(board.D17)
 
 display = Adafruit_SSD1680(122, 250, spi, cs_pin=ecs, dc_pin=dc, sramcs_pin=None, rst_pin=rst, busy_pin=busy, )
-
 display.rotation = 1
-
 display.fill(Adafruit_EPD.WHITE)
 image = Image.new("RGB", (display.width, display.height), color=WHITE)
 draw = ImageDraw.Draw(image)
-count = api_utils.getLibraryCount()
-draw_utils.drawLibrarySize(draw, count)
-image = image.convert("1").convert("L")
 
+connected, count = api_utils.getLibraryCount()
+draw_utils.drawLibrarySize(draw, connected, count)
+
+image = image.convert("1").convert("L")
 display.image(image)
 display.display()

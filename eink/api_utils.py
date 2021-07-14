@@ -18,7 +18,7 @@ def getLibraryCount():
         # TODO: Display warning indicator on screen
         if cached_count:
             print('Falling back to cached count of ' + str(cached_count))
-            return cached_count
+            return False, cached_count
         else:
-            return '?'
-    return count
+            return False, '?'
+    return True, count
