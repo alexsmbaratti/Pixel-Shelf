@@ -93,6 +93,7 @@ def drawLibrarySize(draw, connected, count):
     print('Rendering library size screen...')
     draw.text((5, 5), 'My Game Collection', font=medium_font, fill=BLACK,)
     draw.text((5, 25), str(count) + ' Games',font=large_font,fill=BLACK,)
-    drawWatermark(draw, 5, 110)
     if not connected:
-        drawConnectionError(draw, 5, 96)
+        drawConnectionError(draw, 5, 110)
+    else:
+        drawWatermark(draw, 5, 110)

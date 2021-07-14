@@ -15,7 +15,6 @@ def getLibraryCount():
         print('Fetched ' + str(count) + ' games from server')
     except requests.exceptions.ConnectionError:
         print('Could not fetch size from server!')
-        # TODO: Display warning indicator on screen
         if cached_count:
             print('Falling back to cached count of ' + str(cached_count))
             return False, cached_count

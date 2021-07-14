@@ -6,5 +6,6 @@ public/stylesheets
 public/images/covers
 public/images/ratings
 config.json
+eink/__pycache__
 
 !public/images/covers/placeholder.jpg
