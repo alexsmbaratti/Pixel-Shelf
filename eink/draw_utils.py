@@ -93,6 +93,7 @@ def drawConnectionError(draw, x, y):
     draw.text((x, y), 'Could not connect to server!', font=small_font, fill=BLACK,)
 
 def drawLibrarySize(draw, connected, count):
+    global last_drawn
     if last_drawn[0] == LIBRARY_SIZE and last_drawn[1] == count and last_drawn[2] == connected:
         print('No updates to screen needed')
         return False
