@@ -10,14 +10,16 @@
     <div class="field">
         <label class="label">MSRP</label>
         <div class="control">
-            <input required id="msrp-text" class="input" type="text" placeholder="How much does this normally cost?">
+            <input required id="msrp-text" class="input" type="number" min="0" step="any"
+                   placeholder="How much does this normally cost?">
         </div>
     </div>
 
     <div class="field">
         <label class="label">UPC</label>
         <div class="control">
-            <input required id="upc-text" class="input" type="text" placeholder="Type or scan the barcode on the package">
+            <input required id="upc-text" class="input" type="number"
+                   placeholder="Type or scan the barcode on the package">
         </div>
     </div>
 
