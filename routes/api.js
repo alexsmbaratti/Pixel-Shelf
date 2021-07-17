@@ -71,8 +71,15 @@ router.get('/library/playing', function (req, res, next) {
 
 router.get('/library/size', function (req, res, next) {
     let driver = new SQLite3Driver();
+    console.log(req.query.by)
     if (req.query.by === 'platform') {
         driver.countByPlatform().then(result => {
+            res.status(200).send({"status": 200, "data": result});
+        }).catch(err => {
+            sendError(res, err);
+        });
+    } else if (req.query.by === 'brand') {
+        driver.countByBrand().then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);

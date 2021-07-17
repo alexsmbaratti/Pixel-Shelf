@@ -1,3 +1,21 @@
+function getSize() {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/library/size`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let data = JSON.parse(request.responseText);
+            if (request.status === 200) {
+                document.getElementById('game-count-text').innerHTML = data.size + ' Games';
+            } else {
+                document.getElementById('game-count-text').innerHTML = '? Games';
+            }
+        }
+    }
+
+    request.send();
+}
+
 function getSizeByPlatforms() {
     let request = new XMLHttpRequest();
     request.open('GET', `/api/library/size?by=platform`);
@@ -15,8 +33,6 @@ function getSizeByPlatforms() {
                     values.push(platform['COUNT(library.id)']);
                     total += platform['COUNT(library.id)'];
                 });
-
-                document.getElementById('game-count-text').innerHTML = total + ' Games';
 
                 let chart = new Chart(document.getElementById('platforms-chart').getContext('2d'), {
                     type: 'pie',
@@ -56,9 +72,11 @@ function getRandomPlayingGame() {
                     let randomIndex = Math.floor(Math.random() * data.length);
                     let url = '/library/' + data[randomIndex]['id'] + '/cover';
                     document.getElementById('currently-playing-cover').setAttribute('src', url);
+
                 }
             } else {
             }
+            getSize();
         }
     }
 

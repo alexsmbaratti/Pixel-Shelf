@@ -919,6 +919,35 @@ SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
     });
 }
 
+SQLite3Driver.prototype.countByBrand = function countByBrand() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT brand.brand, COUNT(library.id)
+                       FROM library,
+                            edition,
+                            game,
+                            platform,
+                            brand
+                       WHERE library.editionid = edition.id
+                         AND edition.gameid = game.id
+                         AND game.platformid = platform.id
+                         AND platform.brandid = brand.id
+                       GROUP BY brand.id
+                       ORDER BY COUNT(library.id) DESC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                SQLite3Driver.prototype.db.close();
+                resolve(res);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.exportDB = function exportDB() {
     return new Promise(function (resolve, reject) {
         reject("Not implemented!");
