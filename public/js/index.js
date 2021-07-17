@@ -34,6 +34,8 @@ function getSizeByPlatforms() {
                     total += platform['COUNT(library.id)'];
                 });
 
+                document.getElementById('game-count-text').innerHTML = total + ' Games';
+
                 let chart = new Chart(document.getElementById('platforms-chart').getContext('2d'), {
                     type: 'pie',
                     data: {
@@ -76,7 +78,6 @@ function getRandomPlayingGame() {
                 }
             } else {
             }
-            getSize();
         }
     }
 
