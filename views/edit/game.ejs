@@ -2,8 +2,8 @@
 <html>
 <head>
     <title><%= title %></title>
-    <%- include('partials/metadata') %>
-    <script src="/js/libraryEntry.js"></script>
+    <%- include('../partials/metadata') %>
+    <script src="/js/edit/game.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -16,7 +16,7 @@
     %>
 </head>
 <body>
-<%- include('partials/navbar') %>
+<%- include('../partials/navbar') %>
 <div class="container">
     <div class="tile is-ancestor">
         <div class="tile pt-5">
@@ -94,7 +94,12 @@
                                 </tr>
                                 <tr>
                                     <th>UPC</th>
-                                    <td><%= entry.upc %></td>
+                                    <td>
+                                        <div class="control">
+                                            <input required id="upc-text" class="input"
+                                                   value="<%= entry.upc == '' ? null : entry.upc %>">
+                                        </div>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -157,10 +162,29 @@
                     </div>
                     <div class="tile is-child is-vertical pl-3">
                         <article class="tile is-parent box is-vertical">
-                            <h1 class="title is-4">Cost Breakdown</h1>
-                            <div class="mr-3 ml-3">
-                                <canvas id="cost-chart" width="350" height="100"></canvas>
-                            </div>
+                            <h1 class="title is-4">Cost Information</h1>
+                            <table class="table has-background-grey mr-6 ml-6">
+                                <tbody class="table-body has-background-grey has-text-centered">
+                                <tr>
+                                    <th>MSRP</th>
+                                    <td>
+                                        <div class="control">
+                                            <input required id="cost-text" class="input" type="number" min="0" step="any"
+                                            value="<%= entry.msrp == '' ? null : entry.msrp %>">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Cost</th>
+                                    <td>
+                                        <div class="control">
+                                            <input required id="cost-text" class="input" type="number" min="0" step="any"
+                                            value="<%= entry.cost == '' ? null : entry.cost %>">
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
@@ -171,12 +195,10 @@
                                 <article class="tile is-parent box is-vertical">
                                     <h1 class="title is-4">Manage Game</h1>
                                     <div class="container">
-                                        <a href="/library/<%= id %>/edit">
-                                            <button class="button is-info">Edit</button>
+                                        <a href="/library/<%= id %>">
+                                            <button class="button">Cancel</button>
                                         </a>
-                                        <button id="delete-button" class="button is-danger"
-                                                onclick="deleteGame(<%= id %>)">Delete
-                                        </button>
+                                        <button class="button is-success">Save</button>
                                     </div>
                                 </article>
                             </div>

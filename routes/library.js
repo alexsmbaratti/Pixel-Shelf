@@ -28,6 +28,21 @@ router.get('/:libraryId', function (req, res, next) {
     });
 });
 
+router.get('/:libraryId/edit', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    const libraryId = req.params.libraryId;
+    driver.getLibraryGame(libraryId).then(result => {
+        res.render('edit/game', {
+            title: result.title + ' - Pixel Shelf',
+            entry: result,
+            id: libraryId,
+            igdb: result.igdbURL
+        });
+    }).catch(err => {
+        res.render('error', {message: "Error", error: err});
+    });
+});
+
 router.get('/:gameId/cover', function (req, res, next) {
     let driver = new SQLite3Driver();
     const gameId = req.params.gameId;
