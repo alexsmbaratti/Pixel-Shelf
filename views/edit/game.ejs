@@ -29,6 +29,7 @@
                             </figure>
                         </div>
                         <div class="column">
+                            <h1 class="subtitle">Editing</h1>
                             <h1 class="title"><%= entry.title %></h1>
                             <div class="columns">
                                 <div class="column">
@@ -39,14 +40,6 @@
                                     <figure id="rating-figure" class="image is-48x48"></figure>
                                 </div>
                             </div>
-                            <div id="loading-div"></div>
-                            <div id="tags-div"></div>
-                            <br>
-                            <p id="description" class="has-text-light"></p>
-                            <br>
-                            <a href="<%= entry.igdbURL %>">
-                                <p id="igdb-link" class="has-text-link"></p>
-                            </a>
                         </div>
                     </div>
                 </article>
@@ -62,34 +55,27 @@
                                 </tr>
                                 <tr>
                                     <th>Condition</th>
-                                    <td><%= entry.new ? "New" : "Used" %></td>
+                                    <td>
+                                        <div class="control">
+                                            <div class="select">
+                                                <select id="condition-selection">
+                                                    <option id="new" <%= entry.new ? "selected" : "" %>>New</option>
+                                                    <option id="used" <%= entry.new ? "" : "selected" %>>Used</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Box</th>
                                     <td>
-                                        <% if (entry.box) { %>
-                                            <span class="icon">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                        <% } else { %>
-                                            <span class="icon">
-                                                <i class="fas fa-times"></i>
-                                            </span>
-                                        <% } %>
+                                        <input id="box-check" type="checkbox" <%= entry.box ? "checked" : "" %>>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Manual</th>
                                     <td>
-                                        <% if (entry.manual) { %>
-                                            <span class="icon">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                        <% } else { %>
-                                            <span class="icon">
-                                                <i class="fas fa-times"></i>
-                                            </span>
-                                        <% } %>
+                                        <input id="manual-check" type="checkbox" <%= entry.manual ? "checked" : "" %>>
                                     </td>
                                 </tr>
                                 <tr>
@@ -169,8 +155,9 @@
                                     <th>MSRP</th>
                                     <td>
                                         <div class="control">
-                                            <input required id="cost-text" class="input" type="number" min="0" step="any"
-                                            value="<%= entry.msrp == '' ? null : entry.msrp %>">
+                                            <input required id="cost-text" class="input" type="number" min="0"
+                                                   step="any"
+                                                   value="<%= entry.msrp == '' ? null : entry.msrp %>">
                                         </div>
                                     </td>
                                 </tr>
@@ -178,8 +165,9 @@
                                     <th>Cost</th>
                                     <td>
                                         <div class="control">
-                                            <input required id="cost-text" class="input" type="number" min="0" step="any"
-                                            value="<%= entry.cost == '' ? null : entry.cost %>">
+                                            <input required id="cost-text" class="input" type="number" min="0"
+                                                   step="any"
+                                                   value="<%= entry.cost == '' ? null : entry.cost %>">
                                         </div>
                                     </td>
                                 </tr>
