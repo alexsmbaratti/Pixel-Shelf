@@ -52,7 +52,6 @@ function getSizeByPlatforms() {
                         }
                     }
                 });
-                getRandomPlayingGame();
             } else {
                 document.getElementById('game-count-text').innerHTML = '? Games';
             }

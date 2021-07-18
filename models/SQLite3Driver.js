@@ -65,7 +65,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                         "edition": row.edition
                     });
                 });
-                SQLite3Driver.prototype.db.close();
+
                 resolve(result);
             });
         });
@@ -134,7 +134,7 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
                         "edition": row.edition
                     });
                 });
-                SQLite3Driver.prototype.db.close();
+
                 resolve(result);
             });
         });
@@ -203,7 +203,7 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
                         "edition": row.edition
                     });
                 });
-                SQLite3Driver.prototype.db.close();
+
                 resolve(result);
             });
         });
@@ -257,7 +257,7 @@ SQLite3Driver.prototype.getWishlist = function getWishlist(sortBy) {
                         "edition": row.edition
                     });
                 });
-                SQLite3Driver.prototype.db.close();
+
                 resolve(result);
             });
         });
@@ -287,7 +287,7 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
                         "brand": row.brand
                     });
                 });
-                SQLite3Driver.prototype.db.close();
+
                 resolve(result);
             });
         });
@@ -324,8 +324,6 @@ SQLite3Driver.prototype.getGame = function getGame(id) {
                     "igdbURL": igdbURL,
                     "progress": row.progress
                 };
-
-                SQLite3Driver.prototype.db.close();
                 resolve(result);
             });
         });
@@ -395,10 +393,8 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                         };
                     });
                 } catch (e) {
-                    SQLite3Driver.prototype.db.close();
                     reject(e);
                 }
-                SQLite3Driver.prototype.db.close();
                 resolve(result);
             });
         });
@@ -450,10 +446,8 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
                         };
                     });
                 } catch (e) {
-                    SQLite3Driver.prototype.db.close();
                     reject(e);
                 }
-                SQLite3Driver.prototype.db.close();
                 resolve(result);
             });
         });
@@ -653,10 +647,8 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
                         };
                     });
                 } catch (e) {
-                    SQLite3Driver.prototype.db.close();
                     reject(e);
                 }
-                SQLite3Driver.prototype.db.close();
                 resolve(result);
             });
         });
@@ -705,7 +697,6 @@ SQLite3Driver.prototype.massImport = function massImport(json) {
                 rows.forEach((row) => {
                     platforms[row.name] = row.id;
                 });
-                SQLite3Driver.prototype.db.close();
 
                 let run = function (arr, i) {
                     if (arr.length == i) {
@@ -773,7 +764,7 @@ SQLite3Driver.prototype.deleteGame = function deleteGame(id) {
                     console.log(err);
                     reject(err);
                 }
-                SQLite3Driver.prototype.db.close();
+
                 resolve();
             });
         });
@@ -796,7 +787,6 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
 
                 let num = res[0]['COUNT(id)'];
 
-                SQLite3Driver.prototype.db.close();
                 resolve(num);
             });
         });
@@ -819,7 +809,7 @@ SQLite3Driver.prototype.getWishlistSize = function getWishlistSize() {
 
                 let num = res[0]['COUNT(id)'];
 
-                SQLite3Driver.prototype.db.close();
+
                 resolve(num);
             });
         });
@@ -850,7 +840,7 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
                     console.log(err);
                     reject(err);
                 }
-                SQLite3Driver.prototype.db.close();
+
                 if (res == null || res.length < 1) {
                     resolve({"found": false});
                 } else {
@@ -881,7 +871,7 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
                     console.log(err);
                     reject(err);
                 }
-                SQLite3Driver.prototype.db.close();
+
                 if (res == null || res.length < 1) {
                     resolve({"found": false});
                 } else {
@@ -912,7 +902,7 @@ SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
                 if (err) {
                     reject(err);
                 }
-                SQLite3Driver.prototype.db.close();
+
                 resolve(res);
             });
         });
@@ -941,7 +931,7 @@ SQLite3Driver.prototype.countByBrand = function countByBrand() {
                 if (err) {
                     reject(err);
                 }
-                SQLite3Driver.prototype.db.close();
+
                 resolve(res);
             });
         });
