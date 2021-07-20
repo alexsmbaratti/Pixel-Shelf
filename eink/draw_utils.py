@@ -11,6 +11,7 @@ large_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bol
 
 last_drawn = (-1, None, False) # (screen, data, connected)
 LIBRARY_SIZE = 0
+WISHLIST_SIZE = 1
 
 def drawPixel(draw, x, y):
     draw.rectangle((x, y, x, y), fill=(0, 0, 0))
@@ -100,6 +101,23 @@ def drawLibrarySize(draw, connected, count):
 
     print('Rendering library size screen...')
     draw.text((5, 5), 'My Game Collection', font=medium_font, fill=BLACK,)
+    draw.text((5, 25), str(count) + ' Games',font=large_font,fill=BLACK,)
+    if not connected:
+        drawConnectionError(draw, 5, 110)
+    else:
+        drawWatermark(draw, 5, 110)
+
+    last_drawn = (LIBRARY_SIZE, count, connected)
+    return True
+
+def drawWishlistSize(draw, connected, count):
+    global last_drawn
+    if last_drawn[0] == WISHLIST_SIZE and last_drawn[1] == count and last_drawn[2] == connected:
+        print('No updates to screen needed')
+        return False
+
+    print('Rendering library size screen...')
+    draw.text((5, 5), 'My Wishlist', font=medium_font, fill=BLACK,)
     draw.text((5, 25), str(count) + ' Games',font=large_font,fill=BLACK,)
     if not connected:
         drawConnectionError(draw, 5, 110)

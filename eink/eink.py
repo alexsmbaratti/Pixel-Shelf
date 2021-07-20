@@ -15,6 +15,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
 LIBRARY_SIZE = 0
+WISHLIST_SIZE = 1
 
 screen = LIBRARY_SIZE
 
@@ -43,6 +44,17 @@ def update():
             image = image.convert("1").convert("L")
             display.image(image)
             display.display()
+    if screen == WISHLIST_SIZE:
+        connected, count = api_utils.getLibraryCount()
+        display.rotation = 1
+        display.fill(Adafruit_EPD.WHITE)
+        image = Image.new("RGB", (display.width, display.height), color=WHITE)
+        draw = ImageDraw.Draw(image)
+        if draw_utils.drawWishlistSize(draw, connected, count):
+           image = image.convert("1").convert("L")
+           display.image(image)
+           display.display()
+
 
 update()
 
