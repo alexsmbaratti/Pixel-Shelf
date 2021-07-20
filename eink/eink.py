@@ -14,6 +14,7 @@ import api_utils
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
+TOTAL = 2
 LIBRARY_SIZE = 0
 WISHLIST_SIZE = 1
 
@@ -36,7 +37,7 @@ draw = ImageDraw.Draw(image)
 
 def update():
     global draw, screen
-    if screen == LIBRARY_SIZE:
+    if abs(screen % TOTAL) == LIBRARY_SIZE:
         connected, count = api_utils.getLibraryCount()
         display.rotation = 1
         display.fill(Adafruit_EPD.WHITE)
@@ -46,7 +47,7 @@ def update():
             image = image.convert("1").convert("L")
             display.image(image)
             display.display()
-    if screen == WISHLIST_SIZE:
+    if abs(screen % TOTAL) == WISHLIST_SIZE:
         connected, count = api_utils.getWishlistCount()
         display.rotation = 1
         display.fill(Adafruit_EPD.WHITE)
@@ -66,10 +67,14 @@ while True:
     schedule.run_pending()
     if not switch1.value:
         print("Switch 1")
+        screen += 1
+        update()
         while not switch1.value: # Wait out extra inputs
             time.sleep(0.01)
     if not switch2.value:
         print("Switch 2")
+        screen -= 1
+        update()
         while not switch2.value: # Wait out extra inputs
             time.sleep(0.01)
     time.sleep(0.01)
