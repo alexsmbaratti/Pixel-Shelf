@@ -4,6 +4,7 @@ import schedule
 import digitalio
 import busio
 import board
+import threading
 from adafruit_epd.epd import Adafruit_EPD
 from adafruit_epd.ssd1680 import Adafruit_SSD1680
 from PIL import Image, ImageDraw, ImageFont
@@ -14,9 +15,10 @@ import api_utils
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-TOTAL = 2
+TOTAL = 3
 LIBRARY_SIZE = 0
 WISHLIST_SIZE = 1
+UPC_WAITING = 2
 
 screen = LIBRARY_SIZE
 
@@ -57,7 +59,22 @@ def update():
            image = image.convert("1").convert("L")
            display.image(image)
            display.display()
-
+    if abs(screen % TOTAL) == UPC_WAITING:
+        display.rotation = 1
+        display.fill(Adafruit_EPD.WHITE)
+        image = Image.new("RGB", (display.width, display.height), color=WHITE)
+        draw = ImageDraw.Draw(image)
+        draw_utils.drawUPCWaiting(draw)
+        image = image.convert("1").convert("L")
+        display.image(image)
+        display.display()
+        print("Awaiting UPC input...")
+        scanned_upc = input()
+        scanned_edition = api_utils.getGameByUPC(scanned_upc)
+        draw_utils.drawEditionInfo(draw, scanned_edition):
+        image = image.convert("1").convert("L")
+        display.image(image)
+        display.display()
 
 update()
 

@@ -12,6 +12,7 @@ large_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bol
 last_drawn = (-1, None, False) # (screen, data, connected)
 LIBRARY_SIZE = 0
 WISHLIST_SIZE = 1
+UPC_WAITING = 2
 
 def drawPixel(draw, x, y):
     draw.rectangle((x, y, x, y), fill=(0, 0, 0))
@@ -124,5 +125,33 @@ def drawWishlistSize(draw, connected, count):
     else:
         drawWatermark(draw, 5, 110)
 
-    last_drawn = (LIBRARY_SIZE, count, connected)
+    last_drawn = (WISHLIST_SIZE, count, connected)
+    return True
+
+def drawUPCWaiting(draw):
+    global last_drawn
+
+    print('Rendering awaiting UPC screen...')
+    draw.text((5, 5), 'UPC Lookup', font=medium_font, fill=BLACK,)
+    draw.text((5, 25), 'Scan a UPC',font=large_font,fill=BLACK,)
+    drawWatermark(draw, 5, 110)
+
+    last_drawn = (UPC_WAITING, None, False)
+    return True
+
+def drawEditionInfo(edition):
+    global last_drawn
+
+    print('Rendering edition info screen...')
+
+    if edition: # Placeholder; will change
+        draw.text((5, 5), '? Edition', font=medium_font, fill=BLACK,)
+        draw.text((5, 25), 'Unknown Game',font=large_font,fill=BLACK,)
+        drawWatermark(draw, 5, 110)
+    else:
+        draw.text((5, 5), '? Edition', font=medium_font, fill=BLACK,)
+        draw.text((5, 25), 'Unknown Game',font=large_font,fill=BLACK,)
+        drawWatermark(draw, 5, 110)
+
+    last_drawn = (UPC_WAITING, None, False)
     return True

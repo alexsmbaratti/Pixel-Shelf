@@ -175,7 +175,7 @@ router.get('/editions', function (req, res, next) {
             if (result != undefined) {
                 res.status(200).send({"status": 200, "data": result});
             } else {
-                sendError(res, "Could not find edition!");
+                res.status(404).send({"status": 404});
             }
         }).catch(err => {
             sendError(res, err);

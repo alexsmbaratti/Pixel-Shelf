@@ -41,3 +41,16 @@ def getWishlistCount():
         else:
             return False, '?'
     return True, count
+
+def getGameByUPC(upc):
+    print('Fetching game info from server...')
+    try:
+        r = requests.get(url = api_url + '/api/editions?upc=' + upc)
+        data = r.json()
+        result = data['result']
+        print(result)
+        return result
+    except requests.exceptions.ConnectionError:
+        print('Could not fetch game from server!')
+        return None
+    return None
