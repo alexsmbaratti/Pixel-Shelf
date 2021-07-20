@@ -47,10 +47,13 @@ def getGameByUPC(upc):
     try:
         r = requests.get(url = api_url + '/api/editions?upc=' + upc)
         data = r.json()
-        result = data['result']
+        result = data['data']
         print(result)
         return result
     except requests.exceptions.ConnectionError:
         print('Could not fetch game from server!')
+        return None
+    except KeyError:
+        print('Could not find game from server!')
         return None
     return None

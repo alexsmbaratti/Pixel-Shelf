@@ -71,7 +71,7 @@ def update():
         print("Awaiting UPC input...")
         scanned_upc = input()
         scanned_edition = api_utils.getGameByUPC(scanned_upc)
-        draw_utils.drawEditionInfo(draw, scanned_edition):
+        draw_utils.drawEditionInfo(draw, scanned_edition)
         image = image.convert("1").convert("L")
         display.image(image)
         display.display()
