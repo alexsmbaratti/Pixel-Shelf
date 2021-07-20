@@ -145,8 +145,8 @@ def drawEditionInfo(draw, edition):
     print('Rendering edition info screen...')
 
     if edition: # Placeholder; will change
-        draw.text((5, 5), '? Edition', font=medium_font, fill=BLACK,)
-        draw.text((5, 25), 'Unknown Game',font=large_font,fill=BLACK,)
+        draw.text((5, 5), edition['edition'], font=medium_font, fill=BLACK,)
+        draw.text((5, 25), edition['title'], font=large_font,fill=BLACK,)
         drawWatermark(draw, 5, 110)
     else:
         draw.text((5, 5), '? Edition', font=medium_font, fill=BLACK,)

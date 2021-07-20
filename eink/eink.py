@@ -70,7 +70,12 @@ def update():
         display.display()
         print("Awaiting UPC input...")
         scanned_upc = input()
+
         scanned_edition = api_utils.getGameByUPC(scanned_upc)
+        display.rotation = 1
+        display.fill(Adafruit_EPD.WHITE)
+        image = Image.new("RGB", (display.width, display.height), color=WHITE)
+        draw = ImageDraw.Draw(image)
         draw_utils.drawEditionInfo(draw, scanned_edition)
         image = image.convert("1").convert("L")
         display.image(image)
