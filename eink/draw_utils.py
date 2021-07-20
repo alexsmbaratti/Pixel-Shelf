@@ -139,7 +139,7 @@ def drawUPCWaiting(draw):
     last_drawn = (UPC_WAITING, None, False)
     return True
 
-def drawEditionInfo(edition):
+def drawEditionInfo(draw, edition):
     global last_drawn
 
     print('Rendering edition info screen...')
