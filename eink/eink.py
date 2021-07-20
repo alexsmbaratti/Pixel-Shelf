@@ -24,10 +24,8 @@ ecs = digitalio.DigitalInOut(board.CE0)
 dc = digitalio.DigitalInOut(board.D22)
 rst = digitalio.DigitalInOut(board.D27)
 busy = digitalio.DigitalInOut(board.D17)
-switch1 = DigitalInOut(board.D6)
-switch2 = DigitalInOut(board.D5)
-switch1.direction = Direction.INPUT
-switch2.direction = Direction.INPUT
+switch1 = digitalio.DigitalInOut(board.D6)
+switch2 = digitalio.DigitalInOut(board.D5)
 
 display = Adafruit_SSD1680(122, 250, spi, cs_pin=ecs, dc_pin=dc, sramcs_pin=None, rst_pin=rst, busy_pin=busy, )
 
@@ -68,6 +66,10 @@ while True:
     schedule.run_pending()
     if not switch1.value:
         print("Switch 1")
+        while not switch1.value: # Wait out extra inputs
+            time.sleep(0.01)
     if not switch2.value:
         print("Switch 2")
+        while not switch2.value: # Wait out extra inputs
+            time.sleep(0.01)
     time.sleep(0.01)
