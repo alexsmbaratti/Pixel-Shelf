@@ -1,7 +1,8 @@
 <script src="/js/navbar.js"></script>
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a id="burger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu" onclick="expandBurger()">
+        <a id="burger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+           data-target="navbar-menu" onclick="expandBurger()">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -15,17 +16,9 @@
             </a>
         </div>
         <div class="navbar-start">
-            <a href="/library" class="navbar-item">
-                Game Library
-            </a>
-
-            <a href="/platforms" class="navbar-item">
-                Consoles
-            </a>
-
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    More
+            <div id="library-dropdown" class="navbar-item has-dropdown is-hoverable" onclick="expandDropdown('library-dropdown')">
+                <a href="/library" class="navbar-item">
+                    Game Library
                 </a>
 
                 <div class="navbar-dropdown">
@@ -35,6 +28,19 @@
                     <a href="/library/backlog" class="navbar-item">
                         Backlog
                     </a>
+                </div>
+            </div>
+
+            <a href="/platforms" class="navbar-item">
+                Consoles
+            </a>
+
+            <div id="more-dropdown" class="navbar-item has-dropdown is-hoverable" onclick="expandDropdown('more-dropdown')">
+                <a class="navbar-item">
+                    More
+                </a>
+
+                <div class="navbar-dropdown">
                     <a href="/amiibo" class="navbar-item">
                         amiibo
                     </a>

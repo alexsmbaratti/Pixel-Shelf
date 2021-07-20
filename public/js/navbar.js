@@ -10,3 +10,13 @@ function expandBurger() {
         menu.setAttribute("class", "navbar-menu ");
     }
 }
+
+function expandDropdown(id) {
+    let dropdown = document.getElementById(id);
+
+    if (dropdown.getAttribute("class") == "navbar-item has-dropdown is-hoverable") {
+        dropdown.setAttribute("class", "navbar-item has-dropdown is-hoverable is-active");
+    } else {
+        dropdown.setAttribute("class", "navbar-item has-dropdown is-hoverable");
+    }
+}
