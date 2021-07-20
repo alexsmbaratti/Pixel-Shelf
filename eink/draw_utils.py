@@ -1,5 +1,6 @@
 from adafruit_epd.epd import Adafruit_EPD
 from adafruit_epd.ssd1680 import Adafruit_SSD1680
+import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
 WHITE = (255, 255, 255)
@@ -7,6 +8,7 @@ BLACK = (0, 0, 0)
 
 small_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 12)
 medium_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 20)
+title_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 30)
 large_font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 36)
 
 last_drawn = (-1, None, False) # (screen, data, connected)
@@ -146,11 +148,11 @@ def drawEditionInfo(draw, edition):
 
     if edition: # Placeholder; will change
         draw.text((5, 5), edition['edition'], font=medium_font, fill=BLACK,)
-        draw.text((5, 25), edition['title'], font=large_font,fill=BLACK,)
+        draw.text((5, 25), edition['title'], font=title_font,fill=BLACK,)
         drawWatermark(draw, 5, 110)
     else:
         draw.text((5, 5), '? Edition', font=medium_font, fill=BLACK,)
-        draw.text((5, 25), 'Unknown Game',font=large_font,fill=BLACK,)
+        draw.text((5, 25), 'Unknown Game',font=title_font,fill=BLACK,)
         drawWatermark(draw, 5, 110)
 
     last_drawn = (UPC_WAITING, None, False)
