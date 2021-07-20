@@ -33,7 +33,7 @@ image = Image.new("RGB", (display.width, display.height), color=WHITE)
 draw = ImageDraw.Draw(image)
 
 def update():
-    global draw
+    global draw, screen
     if screen == LIBRARY_SIZE:
         connected, count = api_utils.getLibraryCount()
         display.rotation = 1

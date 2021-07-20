@@ -116,7 +116,7 @@ def drawWishlistSize(draw, connected, count):
         print('No updates to screen needed')
         return False
 
-    print('Rendering library size screen...')
+    print('Rendering wishlist size screen...')
     draw.text((5, 5), 'My Wishlist', font=medium_font, fill=BLACK,)
     draw.text((5, 25), str(count) + ' Games',font=large_font,fill=BLACK,)
     if not connected:
