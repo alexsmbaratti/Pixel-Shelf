@@ -45,7 +45,7 @@ def update():
             display.image(image)
             display.display()
     if screen == WISHLIST_SIZE:
-        connected, count = api_utils.getLibraryCount()
+        connected, count = api_utils.getWishlistCount()
         display.rotation = 1
         display.fill(Adafruit_EPD.WHITE)
         image = Image.new("RGB", (display.width, display.height), color=WHITE)
