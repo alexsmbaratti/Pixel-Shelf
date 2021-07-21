@@ -1,6 +1,6 @@
 function fetchLibrary(sortBy = "title") {
     let request = new XMLHttpRequest();
-    request.open('GET', `/api/library/backlog?sortBy=${sortBy}`);
+    request.open('GET', `/api/library/playing?sortBy=${sortBy}`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
@@ -11,12 +11,12 @@ function fetchLibrary(sortBy = "title") {
             }
 
             if (request.status === 200) {
-                data = data['backlog'];
+                data = data['currentlyPlaying'];
 
                 if (data.length == 0) {
                     let noGamesText = document.createElement("p");
                     noGamesText.setAttribute("class", "title has-text-centered");
-                    noGamesText.innerHTML = "No Games in Backlog...";
+                    noGamesText.innerHTML = "No Games Marked as Currently Playing...";
                     mainDiv.appendChild(noGamesText);
                     return;
                 }

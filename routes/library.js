@@ -6,11 +6,27 @@ const axios = require('axios');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('library', {title: 'Pixel Shelf'});
+    res.render('library', {
+        title: 'Pixel Shelf',
+        header: 'Game Library',
+        jsSrc: '/js/library.js'
+    });
 });
 
 router.get('/backlog', function (req, res, next) {
-    res.render('backlog', {title: 'Pixel Shelf'});
+    res.render('library', {
+        title: 'Pixel Shelf',
+        header: 'Backlog',
+        jsSrc: '/js/backlog.js'
+    });
+});
+
+router.get('/playing', function (req, res, next) {
+    res.render('library', {
+        title: 'Pixel Shelf',
+        header: 'Currently Playing',
+        jsSrc: '/js/playing.js'
+    });
 });
 
 router.get('/:libraryId', function (req, res, next) {

@@ -10,7 +10,7 @@
     <%
     const months = ["N/A", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var parsedDate = months[parseInt(entry.date.split('-')[1])] + ' ' + parseInt(entry.date.split('-')[2]) + ', ' + parseInt(entry.date.split('-')[0]);
-    if (parsedDate == 'undefined NaN, NaN') {
+    if (parsedDate == 'undefined NaN, NaN' || parsedDate == 'N/A 0, NaN') {
         parsedDate = 'Unknown';
     }
     %>
