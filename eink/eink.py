@@ -15,10 +15,11 @@ import api_utils
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-TOTAL = 3
+TOTAL = 4
 LIBRARY_SIZE = 0
 WISHLIST_SIZE = 1
-UPC_WAITING = 2
+FIGURE_SIZE = 2
+UPC_WAITING = 3
 
 screen = LIBRARY_SIZE
 
@@ -59,6 +60,16 @@ def update():
            image = image.convert("1").convert("L")
            display.image(image)
            display.display()
+    if abs(screen % TOTAL) == FIGURE_SIZE:
+        connected, count = api_utils.getFigureCount()
+        display.rotation = 1
+        display.fill(Adafruit_EPD.WHITE)
+        image = Image.new("RGB", (display.width, display.height), color=WHITE)
+        draw = ImageDraw.Draw(image)
+        if draw_utils.drawFigureSize(draw, connected, count):
+            image = image.convert("1").convert("L")
+            display.image(image)
+            display.display()
     if abs(screen % TOTAL) == UPC_WAITING:
         display.rotation = 1
         display.fill(Adafruit_EPD.WHITE)

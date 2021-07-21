@@ -4,6 +4,7 @@ api_url = 'http://pixel-shelf.local:3000'
 
 # Cache
 cached_library_count = None
+cached_figure_count = None
 cached_wishlist_count = None
 
 def getLibraryCount():
@@ -20,6 +21,24 @@ def getLibraryCount():
         if cached_library_count:
             print('Falling back to cached count of ' + str(cached_library_count))
             return False, cached_library_count
+        else:
+            return False, '?'
+    return True, count
+
+def getFigureCount():
+    global cached_figure_count
+    print('Fetching figure count from server...')
+    try:
+        r = requests.get(url = api_url + '/api/amiibo/size')
+        data = r.json()
+        count = data['size']
+        cached_figure_count = count
+        print('Fetched ' + str(count) + ' figures from server')
+    except requests.exceptions.ConnectionError:
+        print('Could not fetch size from server!')
+        if cached_library_count:
+            print('Falling back to cached count of ' + str(cached_figure_count))
+            return False, cached_figure_count
         else:
             return False, '?'
     return True, count
