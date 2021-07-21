@@ -29,6 +29,14 @@ router.get('/playing', function (req, res, next) {
     });
 });
 
+router.get('/completed', function (req, res, next) {
+    res.render('library', {
+        title: 'Pixel Shelf',
+        header: 'Completed',
+        jsSrc: '/js/completed.js'
+    });
+});
+
 router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
