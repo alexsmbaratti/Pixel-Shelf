@@ -83,7 +83,8 @@
                                     <td>
                                         <div class="control">
                                             <input required id="upc-text" class="input"
-                                                   value="<%= entry.upc == '' ? null : entry.upc %>">
+                                                   value="<%= entry.upc == '' ? null : entry.upc %>"
+                                                   placeholder="<%= entry.upc == '' ? null : entry.upc %>">
                                         </div>
                                     </td>
                                 </tr>
@@ -155,9 +156,10 @@
                                     <th>MSRP</th>
                                     <td>
                                         <div class="control">
-                                            <input required id="cost-text" class="input" type="number" min="0"
+                                            <input required id="msrp-text" class="input" type="number" min="0"
                                                    step="any"
-                                                   value="<%= entry.msrp == '' ? null : entry.msrp %>">
+                                                   value="<%= entry.msrp == '' ? null : entry.msrp %>"
+                                                   placeholder="<%= entry.msrp == '' ? null : entry.msrp %>">
                                         </div>
                                     </td>
                                 </tr>
@@ -167,7 +169,8 @@
                                         <div class="control">
                                             <input required id="cost-text" class="input" type="number" min="0"
                                                    step="any"
-                                                   value="<%= entry.cost == '' ? null : entry.cost %>">
+                                                   value="<%= entry.cost == '' ? null : entry.cost %>"
+                                                   placeholder="<%= entry.cost == '' ? null : entry.cost %>">
                                         </div>
                                     </td>
                                 </tr>
