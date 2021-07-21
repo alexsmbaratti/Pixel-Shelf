@@ -124,6 +124,15 @@ router.get('/amiibo', function (req, res, next) {
     res.status(501).send({"status": 501, "msg": "Not Implemented!"});
 });
 
+router.get('/amiibo/size', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getFigureSize().then(result => {
+        res.status(200).send({"status": 200, "size": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.delete('/library/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.deleteGame(req.params.libraryId).then(result => {

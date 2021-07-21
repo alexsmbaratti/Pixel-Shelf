@@ -793,6 +793,27 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
     });
 }
 
+SQLite3Driver.prototype.getFigureSize = function getFigureSize() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT COUNT(id)
+                       FROM figure`;
+            // TODO: Change to get
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+
+                let num = res[0]['COUNT(id)'];
+                resolve(num);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getWishlistSize = function getWishlistSize() {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
