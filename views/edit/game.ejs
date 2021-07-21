@@ -186,7 +186,9 @@
                                         <a href="/library/<%= id %>">
                                             <button class="button">Cancel</button>
                                         </a>
-                                        <button class="button is-success">Save</button>
+                                        <button id="edit-button" class="button is-success"
+                                                onclick="updateGameInfo(<%= id %>)">Save
+                                        </button>
                                     </div>
                                 </article>
                             </div>
