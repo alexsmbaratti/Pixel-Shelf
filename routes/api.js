@@ -118,9 +118,9 @@ router.put('/library/:libraryId', function (req, res, next) {
     res.status(501).send({"status": 501, "msg": "Not Implemented!"});
 });
 
-router.put('/library/:gameId/progress', function (req, res, next) {
+router.put('/library/:libraryId/progress', function (req, res, next) {
     let driver = new SQLite3Driver();
-    driver.updateProgress(req.params.gameId, req.body['progress']).then(result => {
+    driver.updateProgress(req.params.libraryId, req.body['progress']).then(result => {
         res.status(204).send({"status": 204});
     }).catch(err => {
         console.log(err);

@@ -71,9 +71,10 @@ function getRandomPlayingGame() {
                 let data = JSON.parse(request.responseText)['currentlyPlaying'];
                 if (data.length > 0) {
                     let randomIndex = Math.floor(Math.random() * data.length);
-                    let url = '/library/' + data[randomIndex]['id'] + '/cover';
-                    document.getElementById('currently-playing-cover').setAttribute('src', url);
-
+                    let url = '/library/' + data[randomIndex]['id'];
+                    document.getElementById('currently-playing-cover').setAttribute('src', url + '/cover');
+                    document.getElementById('currently-playing-cover').setAttribute('title', data[randomIndex]['title']);
+                    document.getElementById('currently-playing-link').setAttribute('href', url);
                 }
             } else {
             }

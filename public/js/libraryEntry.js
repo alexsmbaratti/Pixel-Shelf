@@ -169,9 +169,9 @@ function deleteGame(id) {
     request.send(JSON.stringify(params));
 }
 
-function changeProgress(gameID, progress) {
+function changeProgress(libraryID, progress) {
     let request = new XMLHttpRequest();
-    request.open('PUT', `/api/library/${gameID}/progress`);
+    request.open('PUT', `/api/library/${libraryID}/progress`);
     request.setRequestHeader('Content-Type', 'application/json');
 
     let params = {

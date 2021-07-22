@@ -3,7 +3,6 @@ CREATE TABLE game
     title      TEXT,
     platformid INTEGER,
     igdbURL    TEXT,
-    progress   INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (platformid) REFERENCES platform (id)
 );
@@ -38,6 +37,7 @@ CREATE TABLE library
     new        INTEGER,
     box        INTEGER,
     manual     INTEGER,
+    progress   INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id),
     FOREIGN KEY (retailerid) REFERENCES retailer (id)

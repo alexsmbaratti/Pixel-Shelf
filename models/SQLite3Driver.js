@@ -111,7 +111,7 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
                             edition,
                             library
                        WHERE editionid = edition.id
-                         AND game.progress = 1
+                         AND library.progress = 1
                          AND gameid = game.id
                          AND platform.id = platformid
                        ORDER BY ${parsedSortBy} ASC`;
@@ -252,8 +252,7 @@ SQLite3Driver.prototype.getGame = function getGame(id) {
                     "id": id,
                     "title": row.title,
                     "platform": row.name,
-                    "igdbURL": igdbURL,
-                    "progress": row.progress
+                    "igdbURL": igdbURL
                 };
                 resolve(result);
             });
@@ -395,7 +394,7 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
             SQLite3Driver.prototype.db.run(`
                 INSERT
                 INTO game
-                VALUES (?, ?, ?, ?, ?)`, [json.title, json.platform, json['igdb-url'], 0], function (err) {
+                VALUES (?, ?, ?, ?)`, [json.title, json.platform, json['igdb-url']], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -442,7 +441,7 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
             }
             SQLite3Driver.prototype.db.run(`INSERT
                                             INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.month, json.day, json.year, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.month, json.day, json.year, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0, 0], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -586,10 +585,10 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
     });
 }
 
-SQLite3Driver.prototype.updateProgress = function updateProgress(gameID = -1, progress = 0) {
+SQLite3Driver.prototype.updateProgress = function updateProgress(libraryID = -1, progress = 0) {
     return new Promise(function (resolve, reject) {
-        if (gameID == -1) {
-            reject({"msg": "Please supply a game ID"});
+        if (libraryID == -1) {
+            reject({"msg": "Please supply a library ID"});
         }
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, (err) => {
             if (err) {
@@ -597,10 +596,10 @@ SQLite3Driver.prototype.updateProgress = function updateProgress(gameID = -1, pr
                 reject(err);
             }
             let sql = `UPDATE
-                           game
+                           library
                        SET progress = ?
                        WHERE id = ? `;
-            SQLite3Driver.prototype.db.run(sql, [progress, gameID], function (err) {
+            SQLite3Driver.prototype.db.run(sql, [progress, libraryID], function (err) {
                 if (err) {
                     reject(err);
                 }
@@ -763,7 +762,7 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
                              edition,
                              library
                         WHERE editionid = edition.id
-                          AND game.progress = 2
+                          AND library.progress = 2
                           AND gameid = game.id
                           AND platform.id = platformid
                         ORDER BY ${parsedSortBy} ASC`;
