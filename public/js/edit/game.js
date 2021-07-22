@@ -14,6 +14,9 @@ function updateGameInfo(id) {
     let editedCost = document.getElementById("cost-text").value;
     let originalCost = document.getElementById("cost-text").getAttribute("placeholder");
 
+    let editedBox = document.getElementById("box-check").checked;
+    let originalBox = Boolean(document.getElementById("box-check").getAttribute("data-original"));
+
     if (editedMSRP !== originalMSRP) {
         data['msrp'] = editedMSRP;
     }
@@ -22,6 +25,9 @@ function updateGameInfo(id) {
     }
     if (editedUPC !== originalUPC) {
         data['upc'] = editedUPC;
+    }
+    if (editedBox !== originalBox) {
+        data['box'] = editedUPC;
     }
 
     let request = new XMLHttpRequest();
