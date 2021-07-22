@@ -595,10 +595,9 @@ SQLite3Driver.prototype.updateProgress = function updateProgress(libraryID = -1,
                 console.log(err);
                 reject(err);
             }
-            let sql = `UPDATE
-                           library
+            let sql = `UPDATE library
                        SET progress = ?
-                       WHERE id = ? `;
+                       WHERE id = ?`;
             SQLite3Driver.prototype.db.run(sql, [progress, libraryID], function (err) {
                 if (err) {
                     reject(err);
