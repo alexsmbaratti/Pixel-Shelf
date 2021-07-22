@@ -17,7 +17,7 @@ router.get('/backlog', function (req, res, next) {
     res.render('library', {
         title: 'Pixel Shelf',
         header: 'Backlog',
-        jsSrc: '/js/backlog.js'
+        jsSrc: '/js/library/backlog.js'
     });
 });
 
@@ -25,7 +25,7 @@ router.get('/playing', function (req, res, next) {
     res.render('library', {
         title: 'Pixel Shelf',
         header: 'Currently Playing',
-        jsSrc: '/js/playing.js'
+        jsSrc: '/js/library/playing.js'
     });
 });
 
@@ -33,7 +33,7 @@ router.get('/completed', function (req, res, next) {
     res.render('library', {
         title: 'Pixel Shelf',
         header: 'Completed',
-        jsSrc: '/js/completed.js'
+        jsSrc: '/js/library/completed.js'
     });
 });
 
