@@ -748,14 +748,15 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
             if (err) {
                 reject(err);
             }
-            let sql = `SELECT game.id,
+            let sql = `SELECT library.id,
                                game.title,
                                platform.name,
                                library.month,
                                library.day,
                                library.year,
                                library.cost,
-                               edition.edition
+                               edition.edition,
+                               edition.gameid
                         FROM game,
                              platform,
                              edition,
@@ -781,7 +782,8 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
                         "platform": row.name,
                         "dateAdded": date,
                         "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
-                        "edition": row.edition
+                        "edition": row.edition,
+                        "gameID": row.gameid
                     });
                 });
 

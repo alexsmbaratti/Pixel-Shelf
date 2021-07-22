@@ -72,7 +72,8 @@ function getRandomPlayingGame() {
                 if (data.length > 0) {
                     let randomIndex = Math.floor(Math.random() * data.length);
                     let url = '/library/' + data[randomIndex]['id'];
-                    document.getElementById('currently-playing-cover').setAttribute('src', url + '/cover');
+                    let coverURL = '/library/' + data[randomIndex]['gameID'] + '/cover';
+                    document.getElementById('currently-playing-cover').setAttribute('src', coverURL);
                     document.getElementById('currently-playing-cover').setAttribute('title', data[randomIndex]['title']);
                     document.getElementById('currently-playing-link').setAttribute('href', url);
                 }
