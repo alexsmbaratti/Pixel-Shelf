@@ -123,6 +123,16 @@ router.get('/library/:libraryId/igdb', function (req, res, next) {
     });
 });
 
+router.get('/library/:libraryId/', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    const libraryId = req.params.libraryId;
+    driver.getLibraryGame(libraryId).then(result => {
+        res.status(200).send({"status": 200, "data": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.put('/library/:libraryId', function (req, res, next) {
     res.status(501).send({"status": 501, "msg": "Not Implemented!"});
 });

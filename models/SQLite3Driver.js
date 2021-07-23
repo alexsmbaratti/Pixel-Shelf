@@ -318,6 +318,9 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "manual": row.manual == 1,
                             "igdbURL": igdbURL,
                             "date": row.year + '-' + month + '-' + day,
+                            "month": row.month,
+                            "day": row.day,
+                            "year": row.year,
                             "gameID": row.gameid,
                             "progress": row.progress
                         };
