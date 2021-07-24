@@ -86,7 +86,6 @@ router.get('/library/completed', function (req, res, next) {
 
 router.get('/library/size', function (req, res, next) {
     let driver = new SQLite3Driver();
-    console.log(req.query.by)
     if (req.query.by === 'platform') {
         driver.countByPlatform().then(result => {
             res.status(200).send({"status": 200, "data": result});
@@ -144,7 +143,6 @@ router.put('/library/:libraryId/progress', function (req, res, next) {
     driver.updateProgress(req.params.libraryId, req.body['progress']).then(result => {
         res.status(204).send({"status": 204});
     }).catch(err => {
-        console.log(err);
         sendError(res, err);
     });
 });
@@ -257,7 +255,7 @@ router.post('/games', function (req, res) {
                 }).then(addResult => {
                     res.status(200).send({"status": 200, "id": addResult, "igdb": igdbLink});
                     igdbDriver.getCoverByURL(igdbLink, addResult).catch(err => {
-                        console.log(err);
+                        sendError(res, err);
                     });
                 }).catch(err => {
                     sendError(res, err);

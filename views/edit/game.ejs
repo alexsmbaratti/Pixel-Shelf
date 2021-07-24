@@ -35,6 +35,11 @@
                                 <div class="column">
                                     <h1 class="title is-5"><%= entry.platform %></h1>
                                     <h1 class="subtitle"><%= entry.edition %></h1>
+                                    <div class="control">
+                                        <input required id="igdb-text" class="input"
+                                               value="<%= entry.igdbURL == '' ? null : entry.igdbURL %>"
+                                               placeholder="<%= entry.igdbURL == '' ? null : entry.igdbURL %>">
+                                    </div>
                                 </div>
                                 <div class="column is-one-fifth">
                                     <figure id="rating-figure" class="image is-48x48"></figure>
@@ -69,7 +74,8 @@
                                 <tr>
                                     <th>Box</th>
                                     <td>
-                                        <input id="box-check" type="checkbox" data-original=<%= entry.box ? true : false %> <%= entry.box ? "checked" : "" %>>
+                                        <input id="box-check" type="checkbox"
+                                               data-original=<%= entry.box ? true : false %> <%= entry.box ? "checked" : "" %>>
                                     </td>
                                 </tr>
                                 <tr>

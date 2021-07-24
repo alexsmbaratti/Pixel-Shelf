@@ -225,6 +225,7 @@ function print(id) {
         if (request.readyState === 4) {
             if (request.status === 200) {
                 button.setAttribute("class", "button is-success");
+                button.innerHTML = 'Printed!';
             } else {
                 button.setAttribute("class", "button is-danger");
             }
