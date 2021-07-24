@@ -135,6 +135,7 @@ router.get('/library/:libraryId/', function (req, res, next) {
 });
 
 router.put('/library/:libraryId', function (req, res, next) {
+    console.log(req.body);
     res.status(501).send({"status": 501, "msg": "Not Implemented!"});
 });
 
@@ -366,6 +367,23 @@ router.post('/thermal-printer/:libraryId', function (req, res) {
     }
 });
 
+router.get('/thermal-printer', function (req, res) {
+    if (thermalPrinterEndpoint) {
+        axios({
+            method: 'get',
+            url: thermalPrinterEndpoint,
+            headers: {}
+        })
+            .then(function (result) {
+                res.status(result.status).send({"status": result.status});
+            })
+            .catch(function (err) {
+                sendError(res, err);
+            });
+    } else {
+        res.status(501).send({"status": 501, "error": "Thermal Printer not configured!"});
+    }
+});
 
 function sendError(res, err) {
     res.status(500).send({"status": 500, "error": err});

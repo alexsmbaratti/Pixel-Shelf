@@ -41,7 +41,6 @@ function fetchSystemInformation() {
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText)['data'];
-            console.log(data);
             if (request.status === 200) {
                 let distro = data['distro'];
                 document.getElementById('os-text').innerHTML = distro;

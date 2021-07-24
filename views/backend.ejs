@@ -10,6 +10,7 @@
         pingEndpoint('/api/', 'api-level', 'api-loader');
         pingEndpoint('/api/db', 'db-level', 'db-loader');
         pingEndpoint('/api/igdb', 'igdb-level', 'igdb-loader');
+        pingEndpoint('/api/thermal-printer', 'thermal-printer-level', 'thermal-printer-loader');
         fetchSystemInformation();
     </script>
 </head>
@@ -77,6 +78,10 @@
                                 <nav id="igdb-level" class="level">
                                     <p class="has-text-light">IGDB</p>
                                     <div id="igdb-loader" class="loader"></div>
+                                </nav>
+                                <nav id="thermal-printer-level" class="level">
+                                    <p class="has-text-light">Thermal Printer</p>
+                                    <div id="thermal-printer-loader" class="loader"></div>
                                 </nav>
                             </div>
                         </article>
