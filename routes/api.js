@@ -3,7 +3,9 @@ var router = express.Router();
 var SQLite3Driver = require('../models/SQLite3Driver');
 var IGDBDriver = require('../models/IGDBDriver');
 var EInkDriver = require('../eink/EInkDriver');
+const thermalPrinterEndpoint = require('../config.json')['thermal-printer-endpoint'];
 const si = require('systeminformation');
+var axios = require('axios');
 
 /**
  * Returns status code 200 if the server is online
@@ -345,6 +347,27 @@ router.get('/igdb', function (req, res) {
         sendError(res, err);
     })
 });
+
+router.post('/thermal-printer/:libraryId', function (req, res) {
+    const libraryId = req.params.libraryId;
+
+    if (thermalPrinterEndpoint) {
+        axios({
+            method: 'post',
+            url: thermalPrinterEndpoint + '/api/pixel-shelf/library/' + libraryId,
+            headers: {}
+        })
+            .then(function (result) {
+                res.status(200).send({"status": 200});
+            })
+            .catch(function (err) {
+                sendError(res, err);
+            });
+    } else {
+        res.status(501).send({"status": 501, "error": "Thermal Printer not configured!"});
+    }
+});
+
 
 function sendError(res, err) {
     res.status(500).send({"status": 500, "error": err});

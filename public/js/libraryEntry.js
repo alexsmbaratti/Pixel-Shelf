@@ -211,3 +211,25 @@ function changeProgress(libraryID, progress) {
 function calculateSavings(msrp, cost) {
     return ((1 - (cost / msrp)) * 100).toFixed(2);
 }
+
+function print(id) {
+    let request = new XMLHttpRequest();
+    request.open('POST', `/api/thermal-printer/${id}`);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    let button = document.getElementById("print-button");
+    button.setAttribute("class", "button is-success is-loading");
+    button.disabled = true;
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                button.setAttribute("class", "button is-success");
+            } else {
+                button.setAttribute("class", "button is-danger");
+            }
+        }
+    }
+
+    request.send();
+}
