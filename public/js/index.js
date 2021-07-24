@@ -84,3 +84,33 @@ function getRandomPlayingGame() {
 
     request.send();
 }
+
+function getBacklog() {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/library/backlog`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let tableBody = document.getElementById("table-body");
+            if (request.status === 200) {
+                let data = JSON.parse(request.responseText)['backlog'];
+                if (data.length > 0) {
+                    data.forEach(game => {
+                        let link = document.createElement("a");
+                        link.setAttribute("href", `/library/${game.id}`);
+                        let title = document.createElement("th");
+                        link.innerHTML = game.title;
+                        title.appendChild(link);
+
+                        let row = document.createElement("tr");
+                        row.appendChild(title);
+                        tableBody.appendChild(row);
+                    });
+                }
+            } else {
+            }
+        }
+    }
+
+    request.send();
+}
