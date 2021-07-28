@@ -61,6 +61,66 @@ function getSizeByPlatforms() {
     request.send();
 }
 
+function getSizeByProgress() {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/library/size?by=progress`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let data = JSON.parse(request.responseText)['data'];
+            if (request.status === 200) {
+                let labels = [];
+                let values = [];
+                let backgroundColors = [];
+
+                data.forEach(progress => {
+                    switch (progress['progress']) {
+                        case 0:
+                            labels.push('In Library');
+                            backgroundColors.push('white');
+                            break;
+                        case 1:
+                            labels.push('Backlog');
+                            backgroundColors.push('yellow');
+                            break;
+                        case 2:
+                            labels.push('In Progress');
+                            backgroundColors.push('blue');
+                            break;
+                        case 3:
+                            labels.push('Completed');
+                            backgroundColors.push('green');
+                            break;
+                        default:
+                            backgroundColors.push('#A0A0A0');
+                            labels.push('Unknown');
+                    }
+                    values.push(progress['COUNT(library.id)']);
+                });
+
+                let chart = new Chart(document.getElementById('progress-chart').getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            scaleFontColor: "#FFFFFF",
+                            backgroundColor: backgroundColors,
+                            data: values
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    request.send();
+}
+
 function getRandomPlayingGame() {
     let request = new XMLHttpRequest();
     request.open('GET', `/api/library/playing`);

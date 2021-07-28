@@ -98,6 +98,12 @@ router.get('/library/size', function (req, res, next) {
         }).catch(err => {
             sendError(res, err);
         });
+    } else if (req.query.by === 'progress') {
+        driver.countByProgress().then(result => {
+            res.status(200).send({"status": 200, "data": result});
+        }).catch(err => {
+            sendError(res, err);
+        });
     } else {
         driver.getLibrarySize().then(result => {
             res.status(200).send({"status": 200, "size": result});
