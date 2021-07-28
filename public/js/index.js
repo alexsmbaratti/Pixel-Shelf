@@ -77,7 +77,7 @@ function getSizeByProgress() {
                     switch (progress['progress']) {
                         case 0:
                             labels.push('In Library');
-                            backgroundColors.push('white');
+                            backgroundColors.push('#A0A0A0');
                             break;
                         case 1:
                             labels.push('Backlog');
@@ -85,11 +85,11 @@ function getSizeByProgress() {
                             break;
                         case 2:
                             labels.push('In Progress');
-                            backgroundColors.push('blue');
+                            backgroundColors.push('hsl(200, 100%, 39%)');
                             break;
                         case 3:
                             labels.push('Completed');
-                            backgroundColors.push('green');
+                            backgroundColors.push('hsl(146, 100%, 39%)');
                             break;
                         default:
                             backgroundColors.push('#A0A0A0');
