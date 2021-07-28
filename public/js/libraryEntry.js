@@ -23,13 +23,19 @@ function renderCostChart(msrp = null, cost = null, sold = null) {
         backgroundColor = 'hsla(146, 100%, 39%, .2)';
 
     }
+
+    let borderColors = [];
+    data.forEach(() => {
+        borderColors.push(borderColor);
+    });
+
     let chart = new Chart(document.getElementById('cost-chart').getContext('2d'), {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 scaleFontColor: "#FFFFFF",
-                borderColor: [borderColor],
+                borderColor: borderColor,
                 backgroundColor: [backgroundColor],
                 data: data
             }]
