@@ -2,5 +2,7 @@ node_modules
 npm-debug.log
 models/db
 identifier.sqlite
-public/images
+public/images/covers
 public/stylesheets
+
+!public/images/covers/placeholder.jpg
