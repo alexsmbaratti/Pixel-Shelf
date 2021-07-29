@@ -11,6 +11,39 @@ function IGDBDriver() {
     IGDBDriver.prototype.version = 'v4';
 }
 
+IGDBDriver.prototype.regenerateToken = function regenerateToken() {
+    return new Promise(function (resolve, reject) {
+        axios({
+            method: 'post',
+            url: `https://id.twitch.tv/oauth2/token?client_id=${IGDBDriver.prototype.clientID}&client_secret=${IGDBDriver.prototype.clientSecret}&grant_type=client_credentials`,
+            headers: {}
+        })
+            .then(function (response) {
+                let data = response.data;
+                IGDBDriver.prototype.token = data['access_token']; // Update the prototype's token
+                fs.readFile('config.json', 'utf8', function (err, configObject) { // Update the file's token
+                    if (err) {
+                        reject(err);
+                    } else {
+                        let temp = JSON.parse(configObject);
+                        temp['token'] = data['access_token'];
+                        let json = JSON.stringify(temp);
+                        fs.writeFile('config.json', json, 'utf8', function () {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    }
+                });
+            })
+            .catch(function (error) {
+                reject(error);
+            });
+    });
+}
+
 IGDBDriver.prototype.getGameByName = function getGameByName(name) {
     return new Promise(function (resolve, reject) {
         axios({

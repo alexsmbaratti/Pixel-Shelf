@@ -396,6 +396,23 @@ router.get('/thermal-printer', function (req, res) {
     }
 });
 
+router.get('/igdb/client-id', function (req, res) {
+    res.status(501).send({"status": 501});
+});
+
+router.get('/igdb/client-secret', function (req, res) {
+    res.status(501).send({"status": 501});
+});
+
+router.put('/igdb/regen-token', function (req, res) {
+    let driver = new IGDBDriver();
+    driver.regenerateToken().then(result => {
+        res.status(200).send({"status": 200});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 function sendError(res, err) {
     res.status(500).send({"status": 500, "error": err});
 }

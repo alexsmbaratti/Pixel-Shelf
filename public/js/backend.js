@@ -52,3 +52,26 @@ function fetchSystemInformation() {
 
     request.send();
 }
+
+function requestNewToken() {
+    let request = new XMLHttpRequest();
+    request.open('PUT', `/api/igdb/regen-token`);
+
+    let button = document.getElementById('request-token-button');
+    button.disabled = true;
+    button.setAttribute("class", "button is-warning is-loading");
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                button.innerHTML = "Success";
+                button.setAttribute("class", "button is-success");
+            } else {
+                button.innerHTML = "Failed";
+                button.setAttribute("class", "button is-danger");
+            }
+        }
+    }
+
+    request.send();
+}
