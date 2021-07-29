@@ -159,8 +159,27 @@
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">IGDB API</h1>
+
+                                <div class="field">
+                                    <label class="label">Client ID</label>
+                                    <div class="control">
+                                        <input disabled style="float:left; width:90%;" id="client-id-text" class="input" type="text" placeholder="">
+                                    </div>
+                                    <button style="float:right; width:10%;" class="button">Edit</button>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Client Secret</label>
+                                    <div class="control">
+                                        <input disabled style="float:left; width:90%;" id="client-secret-text" class="input" type="text" placeholder="">
+                                    </div>
+                                    <button style="float:right; width:10%;" class="button">Edit</button>
+                                </div>
+
                                 <button class="button is-warning is-fullwidth">Generate New Token</button>
-                                <button class="button is-info is-fullwidth">View Documentation</button>
+                                <a href="https://api-docs.igdb.com">
+                                    <button class="button is-info is-fullwidth">View Documentation</button>
+                                </a>
                             </article>
                         </div>
                     </div>
