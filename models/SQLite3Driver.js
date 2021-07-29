@@ -1025,6 +1025,27 @@ SQLite3Driver.prototype.countByProgress = function countByProgress() {
     });
 }
 
+SQLite3Driver.prototype.countByCondition = function countByCondition() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT library.new, COUNT(library.id)
+                       FROM library
+                       GROUP BY library.new
+                       ORDER BY library.new DESC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(res);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.countByBrand = function countByBrand() {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {

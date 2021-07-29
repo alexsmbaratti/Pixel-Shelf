@@ -36,8 +36,7 @@ sqlite3 pixelshelf.db
   "sql_path": "path/to/initialized/db",
   "client_id": "igdb_client_id",
   "client_secret": "igdb_client_secret",
-  "token": "igdb_token",
-  "e-ink": false
+  "token": "igdb_token"
 }
 ```
 
