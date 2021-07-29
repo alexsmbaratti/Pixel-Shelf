@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var SQLite3Driver = require('../models/SQLite3Driver');
 var IGDBDriver = require('../models/IGDBDriver');
-var EInkDriver = require('../eink/EInkDriver');
 const thermalPrinterEndpoint = require('../config.json')['thermal-printer-endpoint'];
 const si = require('systeminformation');
 var axios = require('axios');

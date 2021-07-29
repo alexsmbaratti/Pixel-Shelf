@@ -47,13 +47,17 @@ Note: You must provide your own icons for game ratings.
 
 ## E-Ink Support
 
-Enabling e-ink display support can be achieved by setting the `e-ink` attribute in the `config.json`
-file to `true`. At the moment,
-the [Adafruit 2.13" Monochrome E-Ink Bonnet for Raspberry Pi](https://www.adafruit.com/product/4687) is currently
-supported. Enabling support will allow the application to display the size of your game collection on the screen, as
-well as allowing a USB barcode scanner to display the name of a scanned game (provided the UPC is in the database).
+E-ink clients can be setup to fetch data from the API. All e-ink logic is contained within the eink folder. At the
+moment, the [Adafruit 2.13" Monochrome E-Ink Bonnet for Raspberry Pi](https://www.adafruit.com/product/4687) is
+currently supported. Running the eink.py script with Python on the e-ink client will allow the application to display
+the size of your game collection on the screen. The buttons with cycle through the different screens, including wishlist
+size and game identification mode, allowing a USB barcode scanner to display the name of a scanned game (provided the
+UPC is in the database). Note that using a lower-model Pi, such as a Raspberry Pi Zero, will cause refresh rates to be
+slow. At the moment, one screen change make take around ten seconds on these models.
 
-E-ink clients can also be setup to fetch data from the API.
+![E-Ink Client Running on a Raspberry Pi Zero](https://alexsmbaratti.com/images/pixel-shelf/e_ink_example.jpg)
+
+## Thermal Printer Support
 
 ## Attributions
 
