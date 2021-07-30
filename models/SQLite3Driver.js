@@ -1075,6 +1075,33 @@ SQLite3Driver.prototype.countByBrand = function countByBrand() {
     });
 }
 
+SQLite3Driver.prototype.getGamesWithoutLibrary = function getGamesWithoutLibrary() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT g.id, g.title
+                       FROM game AS g,
+                            edition AS e
+                       WHERE e.gameid = g.id
+                         AND NOT EXISTS
+                           (
+                               SELECT id
+                               FROM library AS l
+                               WHERE e.id = l.editionid
+                           );`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(res);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.exportDB = function exportDB() {
     return new Promise(function (resolve, reject) {
         reject("Not implemented!");
