@@ -457,6 +457,45 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
     });
 }
 
+SQLite3Driver.prototype.updateLibrary = function updateLibrary(id, json) {
+    return new Promise(function (resolve, reject) {
+        let transaction = [];
+        if (json['cost']) {
+            transaction.push("cost = " + json['cost']);
+        }
+        if (json['new']) {
+            transaction.push("new = " + json['new']);
+        }
+        if (json['box']) {
+            transaction.push("box = " + json['box']);
+        }
+        if (json['manual']) {
+            transaction.push("manual = " + json['manual']);
+        }
+
+        if (transaction.length == 0) {
+            resolve();
+        } else {
+            let sql = transaction.join(' AND ');
+            console.log(sql);
+            SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                SQLite3Driver.prototype.db.run(`UPDATE library
+                                                SET ${sql} WHERE id = ?`, [id], function (err) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    }
+                    resolve();
+                });
+            });
+        }
+    });
+}
+
 SQLite3Driver.prototype.addConsole = function addConsole(json) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {

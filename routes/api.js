@@ -147,7 +147,12 @@ router.get('/library/:libraryId/', function (req, res, next) {
 
 router.put('/library/:libraryId', function (req, res, next) {
     console.log(req.body);
-    res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+    let driver = new SQLite3Driver();
+    driver.updateLibrary(req.params.libraryId, req.body).then(result => {
+        res.status(204).send({"status": 204});
+    }).catch(err => {
+        sendError(res, err);
+    });
 });
 
 router.put('/library/:libraryId/progress', function (req, res, next) {

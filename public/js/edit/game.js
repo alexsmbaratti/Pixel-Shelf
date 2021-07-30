@@ -42,9 +42,8 @@ function updateGameInfo(id) {
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
-            let data = JSON.parse(request.responseText);
-            if (request.status === 200) {
-                location.href = "/library/" + id;
+            if (request.status === 204) {
+                window.location.href = "/library/" + id;
             } else {
                 console.log(data.err);
             }
