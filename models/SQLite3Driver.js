@@ -466,24 +466,58 @@ SQLite3Driver.prototype.updateLibrary = function updateLibrary(id, json) {
         if (json['new']) {
             transaction.push("new = " + json['new']);
         }
-        if (json['box']) {
-            transaction.push("box = " + json['box']);
+        if (json.hasOwnProperty('box')) {
+            let value = json['box'] === true ? 1 : 0;
+            transaction.push("box = " + value);
         }
-        if (json['manual']) {
-            transaction.push("manual = " + json['manual']);
+        if (json.hasOwnProperty('manual')) {
+            let value = json['manual'] === true ? 1 : 0;
+            transaction.push("manual = " + value);
         }
 
         if (transaction.length == 0) {
             resolve();
         } else {
-            let sql = transaction.join(' AND ');
-            console.log(sql);
+            let sql = transaction.join(', ');
             SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
                 SQLite3Driver.prototype.db.run(`UPDATE library
+                                                SET ${sql} WHERE id = ?`, [id], function (err) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    }
+                    resolve();
+                });
+            });
+        }
+    });
+}
+
+SQLite3Driver.prototype.updateEdition = function updateEdition(id, json) {
+    return new Promise(function (resolve, reject) {
+        let transaction = [];
+        if (json['upc']) {
+            transaction.push("upc = '" + json['cost'] + "'");
+        }
+        if (json['msrp']) {
+            transaction.push("msrp = " + json['msrp']);
+        }
+
+        if (transaction.length == 0) {
+            resolve();
+        } else {
+            let sql = transaction.join(', ');
+            console.log(sql);
+            SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                SQLite3Driver.prototype.db.run(`UPDATE edition
                                                 SET ${sql} WHERE id = ?`, [id], function (err) {
                     if (err) {
                         console.log(err);

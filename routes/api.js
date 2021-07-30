@@ -146,7 +146,6 @@ router.get('/library/:libraryId/', function (req, res, next) {
 });
 
 router.put('/library/:libraryId', function (req, res, next) {
-    console.log(req.body);
     let driver = new SQLite3Driver();
     driver.updateLibrary(req.params.libraryId, req.body).then(result => {
         res.status(204).send({"status": 204});

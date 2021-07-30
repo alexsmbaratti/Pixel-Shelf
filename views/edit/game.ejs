@@ -81,7 +81,8 @@
                                 <tr>
                                     <th>Manual</th>
                                     <td>
-                                        <input id="manual-check" type="checkbox" <%= entry.manual ? "checked" : "" %>>
+                                        <input id="manual-check" type="checkbox"
+                                               data-original=<%= entry.manual ? true : false %> <%= entry.manual ? "checked" : "" %>>
                                     </td>
                                 </tr>
                                 <tr>

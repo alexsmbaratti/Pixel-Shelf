@@ -18,7 +18,10 @@ function updateGameInfo(id) {
     let originalIGDB = document.getElementById("igdb-text").getAttribute("placeholder");
 
     let editedBox = document.getElementById("box-check").checked;
-    let originalBox = Boolean(document.getElementById("box-check").getAttribute("data-original"));
+    let originalBox = document.getElementById("box-check").getAttribute("data-original");
+
+    let editedManual = document.getElementById("manual-check").checked;
+    let originalManual = document.getElementById("manual-check").getAttribute("data-original");
 
     if (editedMSRP !== originalMSRP) {
         data['msrp'] = editedMSRP;
@@ -30,10 +33,13 @@ function updateGameInfo(id) {
         data['upc'] = editedUPC;
     }
     if (editedIGDB !== originalIGDB) {
-        data['upc'] = editedIGDB;
+        data['igdbURL'] = editedIGDB;
     }
-    if (editedBox !== originalBox) {
-        data['box'] = editedUPC;
+    if (String(editedBox) !== originalBox) {
+        data['box'] = editedBox;
+    }
+    if (String(editedManual) !== originalManual) {
+        data['manual'] = editedManual;
     }
 
     let request = new XMLHttpRequest();
@@ -52,6 +58,7 @@ function updateGameInfo(id) {
 
     if (data.constructor === Object && Object.keys(data).length === 0) {
         console.log("No changes detected.");
+        window.location.href = "/library/" + id;
     } else {
         request.send(JSON.stringify(data));
     }
