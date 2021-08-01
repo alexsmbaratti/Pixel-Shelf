@@ -31,10 +31,19 @@
                         <div class="column">
                             <h1 class="subtitle">Editing</h1>
                             <h1 class="title"><%= entry.title %></h1>
+                            <div class="control">
+                                <input required id="title-text" class="input"
+                                       value="<%= entry.title == '' ? null : entry.title %>"
+                                       placeholder="<%= entry.title == '' ? null : entry.title %>">
+                            </div>
                             <div class="columns">
                                 <div class="column">
                                     <h1 class="title is-5"><%= entry.platform %></h1>
-                                    <h1 class="subtitle"><%= entry.edition %></h1>
+                                    <div class="control">
+                                        <input required id="edition-text" class="input"
+                                               value="<%= entry.edition == '' ? null : entry.edition %>"
+                                               placeholder="<%= entry.edition == '' ? null : entry.edition %>">
+                                    </div>
                                     <div class="control">
                                         <input required id="igdb-text" class="input"
                                                value="<%= entry.igdbURL == '' ? null : entry.igdbURL %>"

@@ -5,6 +5,12 @@ function updateGameInfo(id) {
 
     let data = {};
 
+    let editedTitle = document.getElementById("title-text").value;
+    let originalTitle = document.getElementById("title-text").getAttribute("placeholder");
+
+    let editedEdition = document.getElementById("edition-text").value;
+    let originalEdition = document.getElementById("edition-text").getAttribute("placeholder");
+
     let editedUPC = document.getElementById("upc-text").value;
     let originalUPC = document.getElementById("upc-text").getAttribute("placeholder");
 
@@ -23,6 +29,12 @@ function updateGameInfo(id) {
     let editedManual = document.getElementById("manual-check").checked;
     let originalManual = document.getElementById("manual-check").getAttribute("data-original");
 
+    if (editedTitle !== originalTitle) {
+        data['title'] = editedTitle;
+    }
+    if (editedEdition !== originalEdition) {
+        data['edition'] = editedEdition;
+    }
     if (editedMSRP !== originalMSRP) {
         data['msrp'] = editedMSRP;
     }

@@ -148,11 +148,14 @@ router.get('/library/:libraryId/', function (req, res, next) {
 router.put('/library/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
-    console.log(req.body);
     driver.updateLibrary(libraryId, req.body).then(() => {
         driver.getLibraryGame(libraryId).then(result => {
             driver.updateEdition(result['editionID'], req.body).then(() => {
-                res.status(204).send({"status": 204});
+                driver.updateGame(result['gameID'], req.body).then(() => {
+                    res.status(204).send({"status": 204});
+                }).catch(err => {
+                    sendError(res, err);
+                });
             }).catch(err => {
                 sendError(res, err);
             });

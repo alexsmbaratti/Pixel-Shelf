@@ -501,6 +501,9 @@ SQLite3Driver.prototype.updateLibrary = function updateLibrary(id, json) {
 SQLite3Driver.prototype.updateEdition = function updateEdition(id, json) {
     return new Promise(function (resolve, reject) {
         let transaction = [];
+        if (json['edition']) {
+            transaction.push("edition = '" + json['edition'] + "'");
+        }
         if (json['upc']) {
             transaction.push("upc = '" + json['upc'] + "'");
         }
@@ -512,13 +515,44 @@ SQLite3Driver.prototype.updateEdition = function updateEdition(id, json) {
             resolve();
         } else {
             let sql = transaction.join(', ');
-            console.log(sql);
             SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
                 SQLite3Driver.prototype.db.run(`UPDATE edition
+                                                SET ${sql} WHERE id = ?`, [id], function (err) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    }
+                    resolve();
+                });
+            });
+        }
+    });
+}
+
+SQLite3Driver.prototype.updateGame = function updateGame(id, json) {
+    return new Promise(function (resolve, reject) {
+        let transaction = [];
+        if (json['title']) {
+            transaction.push("title = '" + json['title'] + "'");
+        }
+        if (json['igdbURL']) {
+            transaction.push("igdbURL = '" + json['igdbURL'] + "'");
+        }
+
+        if (transaction.length == 0) {
+            resolve();
+        } else {
+            let sql = transaction.join(', ');
+            SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                SQLite3Driver.prototype.db.run(`UPDATE game
                                                 SET ${sql} WHERE id = ?`, [id], function (err) {
                     if (err) {
                         console.log(err);
