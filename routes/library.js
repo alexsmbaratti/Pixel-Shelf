@@ -41,12 +41,17 @@ router.get('/:libraryId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
     driver.getLibraryGame(libraryId).then(result => {
-        res.render('libraryentry', {
-            title: result.title + ' - Pixel Shelf',
-            entry: result,
-            id: libraryId,
-            igdb: result.igdbURL
-        });
+        if (result && result.constructor === Object && Object.keys(result).length === 0) {
+            res.status(404);
+            res.render('entry/404', {});
+        } else {
+            res.render('libraryentry', {
+                title: result.title + ' - Pixel Shelf',
+                entry: result,
+                id: libraryId,
+                igdb: result.igdbURL
+            });
+        }
     }).catch(err => {
         res.render('error', {message: "Error", error: err});
     });
