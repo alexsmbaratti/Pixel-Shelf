@@ -12,7 +12,7 @@ router.get('/:wishlistId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const wishlistId = req.params.wishlistId;
     driver.getWishlistGame(wishlistId).then(result => {
-        res.render('wishlistentry', {
+        res.render('entry/wishlist', {
             title: result.title + ' - Pixel Shelf',
             entry: result,
             id: wishlistId,
