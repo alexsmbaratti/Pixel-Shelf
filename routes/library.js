@@ -45,7 +45,7 @@ router.get('/:libraryId', function (req, res, next) {
             res.status(404);
             res.render('entry/404', {});
         } else {
-            res.render('libraryentry', {
+            res.render('entry/library', {
                 title: result.title + ' - Pixel Shelf',
                 entry: result,
                 id: libraryId,
