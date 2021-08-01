@@ -12,6 +12,7 @@
         pingEndpoint('/api/igdb', 'igdb-level', 'igdb-loader');
         pingEndpoint('/api/thermal-printer', 'thermal-printer-level', 'thermal-printer-loader');
         fetchSystemInformation();
+        getGamesWithoutLibrary();
     </script>
 </head>
 <body>
@@ -126,8 +127,8 @@
                                     </tr>
                                     <tr>
                                         <th>Games without Library Entries</th>
-                                        <td>
-                                            <i title="Not Implemented" class="fas fa-exclamation-triangle"></i>
+                                        <td id="games-no-library-data">
+                                            <div id="games-no-library-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>

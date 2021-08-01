@@ -75,3 +75,32 @@ function requestNewToken() {
 
     request.send();
 }
+
+function getGamesWithoutLibrary() {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/games?where=no-library`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let rowData = document.getElementById('games-no-library-data');
+            let loader = document.getElementById('games-no-library-loader');
+
+            let data = JSON.parse(request.responseText);
+            loader.remove();
+            if (request.status === 200) {
+                let text = document.createElement("p");
+                text.innerHTML = data['data'].length;
+                rowData.appendChild(text);
+            } else {
+                let span = document.createElement("span");
+                let icon = document.createElement("icon");
+                span.setAttribute("class", 'icon has-text-warning');
+                icon.setAttribute("class", 'fas fa-exclamation-triangle fa-lg\'');
+                span.appendChild(icon);
+                rowData.appendChild(span);
+            }
+        }
+    }
+
+    request.send();
+}

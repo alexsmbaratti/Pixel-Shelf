@@ -226,7 +226,25 @@ router.get('/wishlist/size', function (req, res, next) {
     i.e. /api/games?title="Gex"
  */
 router.get('/games', function (req, res, next) {
-    res.status(501).send({"status": 501, "msg": "Not implemented!"});
+    let where = req.query.where;
+    if (where !== undefined) {
+        if (where === 'no-library') {
+            let driver = new SQLite3Driver();
+            driver.getGamesWithoutLibrary().then(result => {
+                if (result != undefined) {
+                    res.status(200).send({"status": 200, "data": result});
+                } else {
+                    sendError(res, err);
+                }
+            }).catch(err => {
+                sendError(res, err);
+            });
+        } else {
+            res.status(501).send({"status": 501, "msg": "Not implemented!"});
+        }
+    } else {
+        res.status(501).send({"status": 501, "msg": "Not implemented!"});
+    }
 });
 
 router.get('/games/:id', function (req, res, next) {
