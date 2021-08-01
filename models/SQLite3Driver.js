@@ -322,6 +322,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "day": row.day,
                             "year": row.year,
                             "gameID": row.gameid,
+                            "editionID": row.editionid,
                             "progress": row.progress
                         };
                     });
@@ -501,7 +502,7 @@ SQLite3Driver.prototype.updateEdition = function updateEdition(id, json) {
     return new Promise(function (resolve, reject) {
         let transaction = [];
         if (json['upc']) {
-            transaction.push("upc = '" + json['cost'] + "'");
+            transaction.push("upc = '" + json['upc'] + "'");
         }
         if (json['msrp']) {
             transaction.push("msrp = " + json['msrp']);
