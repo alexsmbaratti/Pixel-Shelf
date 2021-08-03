@@ -1198,7 +1198,27 @@ SQLite3Driver.prototype.getGamesWithoutLibrary = function getGamesWithoutLibrary
                                SELECT id
                                FROM library AS l
                                WHERE e.id = l.editionid
-                           );`;
+                           )`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(res);
+            });
+        });
+    });
+}
+
+SQLite3Driver.prototype.getGamesWithoutIGDBMetadata = function getGamesWithoutIGDBMetadata() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT id, title
+                       FROM game
+                       WHERE igdbURL IS NULL`;
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);

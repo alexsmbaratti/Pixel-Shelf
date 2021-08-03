@@ -234,7 +234,18 @@ router.get('/games', function (req, res, next) {
                 if (result != undefined) {
                     res.status(200).send({"status": 200, "data": result});
                 } else {
-                    sendError(res, err);
+                    sendError(res, "No result");
+                }
+            }).catch(err => {
+                sendError(res, err);
+            });
+        } else if (where === 'no-igdb') {
+            let driver = new SQLite3Driver();
+            driver.getGamesWithoutIGDBMetadata().then(result => {
+                if (result != undefined) {
+                    res.status(200).send({"status": 200, "data": result});
+                } else {
+                    sendError(res, "No result");
                 }
             }).catch(err => {
                 sendError(res, err);
