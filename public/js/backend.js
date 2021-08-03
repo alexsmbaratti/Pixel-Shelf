@@ -90,6 +90,8 @@ function maintenanceEndpointFetch(endpoint, id) {
             if (request.status === 200) {
                 let text = document.createElement("p");
                 text.innerHTML = data['data'].length;
+                let array = JSON.stringify(data['data']);
+                text.setAttribute('onclick', `toggleModal('${id}', ${array})`);
                 rowData.appendChild(text);
             } else {
                 let span = document.createElement("span");
@@ -103,4 +105,33 @@ function maintenanceEndpointFetch(endpoint, id) {
     }
 
     request.send();
+}
+
+function toggleModal(item, data) {
+    let modal = document.getElementById('maintenance-modal');
+    let tableBody = document.getElementById('maintenance-modal-table-body');
+    let modalTitle = document.getElementById('maintenance-modal-title');
+    if (modal.getAttribute('class') === 'modal is-active') {
+        modalTitle.innerHTML = '';
+        modal.setAttribute('class', 'modal');
+        while (tableBody.firstChild) {
+            tableBody.removeChild(tableBody.firstChild);
+        }
+    } else {
+        modalTitle.innerHTML = document.getElementById(item + '-title').innerHTML;
+        data.forEach(game => {
+            let titleData = document.createElement('th');
+            let data = document.createElement('td');
+            let tableRow = document.createElement('tr');
+            let link = document.createElement('a');
+            link.setAttribute('href', `/library/${game['id']}`);
+            link.innerHTML = game['title'];
+            data.innerHTML = game['edition'];
+            titleData.appendChild(link);
+            tableRow.appendChild(titleData);
+            tableRow.appendChild(data);
+            tableBody.appendChild(tableRow);
+        });
+        modal.setAttribute('class', 'modal is-active');
+    }
 }

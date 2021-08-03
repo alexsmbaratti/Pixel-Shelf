@@ -106,31 +106,31 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Library Entries without a Cost</th>
+                                        <th id="library-no-cost-title">Library Entries without a Cost</th>
                                         <td id="library-no-cost-data">
                                             <div id="library-no-cost-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Editions without a UPC Code</th>
+                                        <th id="editions-no-upc-title">Editions without a UPC Code</th>
                                         <td id="editions-no-upc-data">
                                             <div id="editions-no-upc-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Editions without an MSRP</th>
+                                        <th id="editions-no-msrp-title">Editions without an MSRP</th>
                                         <td id="editions-no-msrp-data">
                                             <div id="editions-no-msrp-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Games without IGDB Metadata</th>
+                                        <th  id="games-no-igdb-title">Games without IGDB Metadata</th>
                                         <td id="games-no-igdb-data">
                                             <div id="games-no-igdb-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>Games without Library Entries</th>
+                                        <th id="games-no-library-title">Games without Library Entries</th>
                                         <td id="games-no-library-data">
                                             <div id="games-no-library-loader" class="loader"></div>
                                         </td>
@@ -199,6 +199,30 @@
         </div>
     </div>
 </div>
+</div>
+<div id="maintenance-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p id="maintenance-modal-title" class="modal-card-title"></p>
+            <button class="delete" aria-label="close" onclick="toggleModal()"></button>
+        </header>
+        <section class="modal-card-body">
+            <table class="table is-fullwidth has-background-grey">
+                <thead class="has-background-grey">
+                <tr>
+                    <th>Game</th>
+                    <th>Edition</th>
+                </tr>
+                </thead>
+                <tbody id="maintenance-modal-table-body" class="table-body has-background-grey has-text-centered">
+                </tbody>
+            </table>
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button" onclick="toggleModal()">Close</button>
+        </footer>
+    </div>
 </div>
 </body>
 </html>
