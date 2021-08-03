@@ -18,15 +18,30 @@ router.get('/', function (req, res, next) {
  */
 router.get('/library', function (req, res, next) {
     let sortBy = req.query.sortBy;
+    let where = req.query.where;
     if (sortBy === null) {
         sortBy = 'title';
     }
     let driver = new SQLite3Driver();
-    driver.getLibrary(sortBy).then(result => {
-        res.status(200).send({"status": 200, "library": result});
-    }).catch(err => {
-        sendError(res, err);
-    });
+    if (where !== undefined) {
+        if (where === 'no-cost') {
+            driver.getLibraryEntriesWithoutCost().then(result => {
+                if (result != undefined) {
+                    res.status(200).send({"status": 200, "data": result});
+                } else {
+                    sendError(res, "No result");
+                }
+            }).catch(err => {
+                sendError(res, err);
+            });
+        }
+    } else {
+        driver.getLibrary(sortBy).then(result => {
+            res.status(200).send({"status": 200, "library": result});
+        }).catch(err => {
+            sendError(res, err);
+        });
+    }
 });
 
 router.get('/system/platform', function (req, res, next) {

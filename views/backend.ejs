@@ -16,6 +16,7 @@
         maintenanceEndpointFetch('/api/games?where=no-igdb', 'games-no-igdb');
         maintenanceEndpointFetch('/api/editions?where=no-upc', 'editions-no-upc');
         maintenanceEndpointFetch('/api/editions?where=no-msrp', 'editions-no-msrp');
+        maintenanceEndpointFetch('/api/library?where=no-cost', 'library-no-cost');
     </script>
 </head>
 <body>
@@ -106,8 +107,8 @@
                                     </tr>
                                     <tr>
                                         <th>Library Entries without a Cost</th>
-                                        <td>
-                                            <i title="Not Implemented" class="fas fa-exclamation-triangle"></i>
+                                        <td id="library-no-cost-data">
+                                            <div id="library-no-cost-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>
