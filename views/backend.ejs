@@ -12,8 +12,8 @@
         pingEndpoint('/api/igdb', 'igdb-level', 'igdb-loader');
         pingEndpoint('/api/thermal-printer', 'thermal-printer-level', 'thermal-printer-loader');
         fetchSystemInformation();
-        getGamesWithoutLibrary();
-        getGamesWithoutIGDB();
+        maintenanceEndpointFetch('/api/games?where=no-library', 'games-no-library');
+        maintenanceEndpointFetch('/api/games?where=no-igdb', 'games-no-igdb');
     </script>
 </head>
 <body>
