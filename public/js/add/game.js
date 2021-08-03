@@ -76,6 +76,13 @@ function submitEditionInfo() {
         return;
     }
 
+    if (msrpText.length === 0) {
+        msrpText = null;
+    }
+    if (upcText.length === 0) {
+        upcText = null;
+    }
+
     let button = document.getElementById("submit-button");
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;

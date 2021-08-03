@@ -14,6 +14,8 @@
         fetchSystemInformation();
         maintenanceEndpointFetch('/api/games?where=no-library', 'games-no-library');
         maintenanceEndpointFetch('/api/games?where=no-igdb', 'games-no-igdb');
+        maintenanceEndpointFetch('/api/editions?where=no-upc', 'editions-no-upc');
+        maintenanceEndpointFetch('/api/editions?where=no-msrp', 'editions-no-msrp');
     </script>
 </head>
 <body>
@@ -110,14 +112,14 @@
                                     </tr>
                                     <tr>
                                         <th>Editions without a UPC Code</th>
-                                        <td>
-                                            <i title="Not Implemented" class="fas fa-exclamation-triangle"></i>
+                                        <td id="editions-no-upc-data">
+                                            <div id="editions-no-upc-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Editions without an MSRP</th>
-                                        <td>
-                                            <i title="Not Implemented" class="fas fa-exclamation-triangle"></i>
+                                        <td id="editions-no-msrp-data">
+                                            <div id="editions-no-msrp-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>

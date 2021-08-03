@@ -1230,6 +1230,46 @@ SQLite3Driver.prototype.getGamesWithoutIGDBMetadata = function getGamesWithoutIG
     });
 }
 
+SQLite3Driver.prototype.getEditionsWithoutUPC = function getEditionsWithoutUPC() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT edition.id, game.title, edition.edition
+                       FROM edition, game
+                       WHERE edition.gameid = game.id AND edition.upc IS NULL`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(res);
+            });
+        });
+    });
+}
+
+SQLite3Driver.prototype.getEditionsWithoutMSRP = function getEditionsWithoutMSRP() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT edition.id, game.title, edition.edition
+                       FROM edition, game
+                       WHERE edition.gameid = game.id AND edition.msrp IS NULL`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(res);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.exportDB = function exportDB() {
     return new Promise(function (resolve, reject) {
         reject("Not implemented!");

@@ -264,7 +264,32 @@ router.get('/games/:id', function (req, res, next) {
 
 router.get('/editions', function (req, res, next) {
     let upc = req.query.upc;
-    if (upc !== undefined) {
+    let where = req.query.where;
+    if (where !== undefined) {
+        if (where === 'no-upc') {
+            let driver = new SQLite3Driver();
+            driver.getEditionsWithoutUPC().then(result => {
+                if (result != undefined) {
+                    res.status(200).send({"status": 200, "data": result});
+                } else {
+                    sendError(res, "No result");
+                }
+            }).catch(err => {
+                sendError(res, err);
+            });
+        } else if (where === 'no-msrp') {
+            let driver = new SQLite3Driver();
+            driver.getEditionsWithoutMSRP().then(result => {
+                if (result != undefined) {
+                    res.status(200).send({"status": 200, "data": result});
+                } else {
+                    sendError(res, "No result");
+                }
+            }).catch(err => {
+                sendError(res, err);
+            });
+        }
+    } else if (upc !== undefined) {
         let driver = new SQLite3Driver();
         driver.lookupByUPC(upc).then(result => {
             if (result != undefined) {
