@@ -43,7 +43,7 @@ router.get('/:libraryId', function (req, res, next) {
     driver.getLibraryGame(libraryId).then(result => {
         if (result && result.constructor === Object && Object.keys(result).length === 0) {
             res.status(404);
-            res.render('entry/404', {});
+            res.render('entry/404', {type: 'Library Entry'});
         } else {
             res.render('entry/library', {
                 title: result.title + ' - Pixel Shelf',

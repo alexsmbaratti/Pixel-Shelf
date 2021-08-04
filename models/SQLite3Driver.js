@@ -225,6 +225,32 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
     });
 }
 
+SQLite3Driver.prototype.getPlatform = function getPlatform(id) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT platform.*, brand.brand
+                       FROM platform,
+                            brand
+                       WHERE platform.brandid = brand.id
+                         AND platform.id = ?`;
+            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve({
+                    "id": row.id,
+                    "name": row.name,
+                    "brand": row.brand
+                });
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getGame = function getGame(id) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
