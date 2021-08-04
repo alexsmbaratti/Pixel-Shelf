@@ -29,9 +29,7 @@ CREATE TABLE edition
 CREATE TABLE library
 (
     cost       REAL,
-    month      INTEGER,
-    day        INTEGER,
-    year       INTEGER,
+    timestamp  TEXT,
     editionid  INTEGER,
     retailerid INTEGER,
     new        INTEGER,

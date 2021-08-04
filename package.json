@@ -1,6 +1,6 @@
 {
   "name": "pixel-shelf",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "scripts": {
     "start": "node ./bin/www & python3 ./eink/eink.py && fg",

@@ -14,7 +14,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
             parsedSortBy = "platform.name ASC, game.title ASC";
             break;
         case 'dateAdded':
-            parsedSortBy = "library.year ASC, library.month ASC, library.day ASC";
+            parsedSortBy = "library.timestamp ASC";
             break;
         case 'cost':
             parsedSortBy = "library.cost ASC";
@@ -33,9 +33,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
             let sql = `SELECT library.id,
                               game.title,
                               platform.name,
-                              library.month,
-                              library.day,
-                              library.year,
+                              library.timestamp,
                               library.cost,
                               edition.edition
                        FROM game,
@@ -52,15 +50,11 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                 }
                 let result = [];
                 rows.forEach((row) => {
-                    let date = row.month + '-' + row.day + '-' + row.year;
-                    if (row.month == 'null' || row.day == 'null' || row.year == 'null') {
-                        date = 'Unknown';
-                    }
                     result.push({
                         "id": row.id,
                         "title": row.title,
                         "platform": row.name,
-                        "dateAdded": date,
+                        "dateAdded": row.timestamp,
                         "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
                         "edition": row.edition
                     });
@@ -82,7 +76,7 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
             parsedSortBy = "platform.name ASC, game.title";
             break;
         case 'dateAdded':
-            parsedSortBy = "library.year ASC, library.month ASC, library.day";
+            parsedSortBy = "library.timestamp ASC";
             break;
         case 'cost':
             parsedSortBy = "library.cost";
@@ -101,9 +95,7 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
             let sql = `SELECT library.id,
                               game.title,
                               platform.name,
-                              library.month,
-                              library.day,
-                              library.year,
+                              library.timestamp,
                               library.cost,
                               edition.edition
                        FROM game,
@@ -121,15 +113,11 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
                 }
                 let result = [];
                 rows.forEach((row) => {
-                    let date = row.month + '-' + row.day + '-' + row.year;
-                    if (row.month == 'null' || row.day == 'null' || row.year == 'null') {
-                        date = 'Unknown';
-                    }
                     result.push({
                         "id": row.id,
                         "title": row.title,
                         "platform": row.name,
-                        "dateAdded": date,
+                        "dateAdded": row.timestamp,
                         "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
                         "edition": row.edition
                     });
@@ -311,19 +299,6 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
 
                 try {
                     rows.forEach((row) => {
-                        let month;
-                        if (row.month < 10) {
-                            month = '0' + row.month;
-                        } else {
-                            month = row.month;
-                        }
-
-                        let day;
-                        if (row.day < 10) {
-                            day = '0' + row.day;
-                        } else {
-                            day = row.day;
-                        }
 
                         let igdbURL;
                         if (row.igdbURL === undefined) {
@@ -343,10 +318,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "box": row.box == 1,
                             "manual": row.manual == 1,
                             "igdbURL": igdbURL,
-                            "date": row.year + '-' + month + '-' + day,
-                            "month": row.month,
-                            "day": row.day,
-                            "year": row.year,
+                            "date": row.timestamp,
                             "gameID": row.gameid,
                             "editionID": row.editionid,
                             "progress": row.progress
@@ -471,7 +443,7 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
             }
             SQLite3Driver.prototype.db.run(`INSERT
                                             INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.month, json.day, json.year, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0, 0], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0, 0], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -869,7 +841,7 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
             parsedSortBy = "platform.name ASC, game.title";
             break;
         case 'dateAdded':
-            parsedSortBy = "library.year ASC, library.month ASC, library.day";
+            parsedSortBy = "library.timestamp ASC";
             break;
         case 'cost':
             parsedSortBy = "library.cost";
@@ -888,9 +860,7 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
             let sql = `SELECT library.id,
                                game.title,
                                platform.name,
-                               library.month,
-                               library.day,
-                               library.year,
+                               library.timestamp,
                                library.cost,
                                edition.edition,
                                edition.gameid
@@ -909,15 +879,11 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
                 }
                 let result = [];
                 rows.forEach((row) => {
-                    let date = row.month + '-' + row.day + '-' + row.year;
-                    if (row.month == 'null' || row.day == 'null' || row.year == 'null') {
-                        date = 'Unknown';
-                    }
                     result.push({
                         "id": row.id,
                         "title": row.title,
                         "platform": row.name,
-                        "dateAdded": date,
+                        "dateAdded": row.timestamp,
                         "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
                         "edition": row.edition,
                         "gameID": row.gameid
@@ -940,7 +906,7 @@ SQLite3Driver.prototype.getCompleted = function getCompleted(sortBy) {
             parsedSortBy = "platform.name ASC, game.title";
             break;
         case 'dateAdded':
-            parsedSortBy = "library.year ASC, library.month ASC, library.day";
+            parsedSortBy = "library.timestamp ASC";
             break;
         case 'cost':
             parsedSortBy = "library.cost";
@@ -959,9 +925,7 @@ SQLite3Driver.prototype.getCompleted = function getCompleted(sortBy) {
             let sql = `SELECT library.id,
                                game.title,
                                platform.name,
-                               library.month,
-                               library.day,
-                               library.year,
+                               library.timestamp,
                                library.cost,
                                edition.edition,
                                edition.gameid
@@ -980,15 +944,11 @@ SQLite3Driver.prototype.getCompleted = function getCompleted(sortBy) {
                 }
                 let result = [];
                 rows.forEach((row) => {
-                    let date = row.month + '-' + row.day + '-' + row.year;
-                    if (row.month == 'null' || row.day == 'null' || row.year == 'null') {
-                        date = 'Unknown';
-                    }
                     result.push({
                         "id": row.id,
                         "title": row.title,
                         "platform": row.name,
-                        "dateAdded": date,
+                        "dateAdded": row.timestamp,
                         "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
                         "edition": row.edition,
                         "gameID": row.gameid

@@ -147,9 +147,11 @@ function submitPurchaseInfo() {
         cost = null;
     }
 
-    let year = parseInt(document.getElementById("calendar-input").value.split('-')[0]);
-    let month = parseInt(document.getElementById("calendar-input").value.split('-')[1]);
-    let day = parseInt(document.getElementById("calendar-input").value.split('-')[2]);
+    let timestamp = new Date(document.getElementById("calendar-input").value).toISOString();
+    let dateCheck = document.getElementById("date-check").checked;
+    if (dateCheck) {
+        timestamp = null;
+    }
 
     let conditionSelect = document.getElementById("condition-selection");
     let hasBox = document.getElementById("box-check").checked;
@@ -188,9 +190,7 @@ function submitPurchaseInfo() {
 
     request.send(JSON.stringify({
         "cost": cost,
-        "month": month,
-        "day": day,
-        "year": year,
+        "timestamp": timestamp,
         "condition": conditionSelect.selectedIndex == 0,
         "box": hasBox,
         "manual": hasManual,
