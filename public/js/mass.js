@@ -101,6 +101,15 @@ function submit() {
             if (obj["condition"] == null) {
                 obj["condition"] = true; // Default to new copy
             }
+
+            let timestamp;
+            if (obj["month"] === null && obj["day"] === null && obj["year"] === null) {
+                timestamp = null;
+            } else {
+                timestamp = new Date(obj["month"] + '-' + obj["day"] + '-' + obj["year"]).toISOString();
+            }
+            obj["timestamp"] = timestamp;
+
             obj["box"] = true; // Default to boxed copy
             obj["manual"] = false; // Default to no manual
             console.log(obj);

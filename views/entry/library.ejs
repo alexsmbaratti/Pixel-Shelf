@@ -195,7 +195,7 @@
 </div>
 <script>
     getIGDBInfo(<%= id %>);
-    renderCostChart(<%= entry.msrp == '' ? "null" : entry.msrp %>, <%= entry.cost == '' ? "null" : entry.cost %>, null);
+    renderCostChart(<%= entry.msrp %>, <%= entry.cost %>, null);
 </script>
 </body>
 </html>

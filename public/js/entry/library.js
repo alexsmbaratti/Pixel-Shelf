@@ -21,7 +21,6 @@ function renderCostChart(msrp = null, cost = null, sold = null) {
     } else {
         borderColor = 'hsl(146, 100%, 39%)';
         backgroundColor = 'hsla(146, 100%, 39%, .2)';
-
     }
 
     let borderColors = [];

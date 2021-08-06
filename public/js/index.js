@@ -121,6 +121,93 @@ function getSizeByProgress() {
     request.send();
 }
 
+function getSizeByDateAdded() {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/library/size?by=date-added`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let data = JSON.parse(request.responseText)['data'];
+            if (request.status === 200) {
+                let points = [];
+                let runningTotal = 0;
+                let earliestDate = null;
+
+                data.forEach(progress => {
+                    if (progress['timestamp'] === null) {
+                        runningTotal += progress['COUNT(library.id)'];
+                    } else {
+                        if (earliestDate === null) {
+                            earliestDate = new Date(progress['timestamp']);
+                        }
+                        runningTotal += progress['COUNT(library.id)'];
+                        points.push({
+                            x: new Date(progress['timestamp']),
+                            y: runningTotal
+                        });
+                    }
+                });
+
+                console.log(points);
+
+                let chart = new Chart(document.getElementById('size-chart').getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: "Games",
+                            scaleFontColor: "#FFFFFF",
+                            borderColor: 'hsl(146, 100%, 39%)',
+                            backgroundColor: 'hsla(146, 100%, 39%, .2)',
+                            data: points
+                        }]
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: "Library Size",
+                            fontColor: 'rgb(255, 255, 255)',
+                            fontSize: 24
+                        },
+                        animation: {
+                            tension: {
+                                duration: 1000,
+                                easing: 'linear',
+                                from: 1,
+                                to: 0,
+                                loop: true
+                            }
+                        },
+                        scales: {
+                            xAxes: [{
+                                type: 'time',
+                                distribution: 'linear',
+                                time: {
+                                    min: earliestDate,
+                                    max: Date.now()
+                                },
+                                ticks: {
+                                    fontColor: 'rgb(255, 255, 255)'
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontColor: 'rgb(255, 255, 255)'
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    request.send();
+}
+
 function getRandomPlayingGame() {
     let request = new XMLHttpRequest();
     request.open('GET', `/api/library/playing`);
