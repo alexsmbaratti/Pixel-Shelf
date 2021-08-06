@@ -8,10 +8,13 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <%
-    const months = ["N/A", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var parsedDate = months[parseInt(entry.date.split('-')[1])] + ' ' + parseInt(entry.date.split('-')[2]) + ', ' + parseInt(entry.date.split('-')[0]);
-    if (parsedDate == 'undefined NaN, NaN') {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var parsedDate;
+    if (entry.date === null) {
         parsedDate = 'Unknown';
+    } else {
+        let date = new Date(entry.date);
+        parsedDate = months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
     }
     %>
 </head>

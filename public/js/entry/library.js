@@ -23,11 +23,6 @@ function renderCostChart(msrp = null, cost = null, sold = null) {
         backgroundColor = 'hsla(146, 100%, 39%, .2)';
     }
 
-    let borderColors = [];
-    data.forEach(() => {
-        borderColors.push(borderColor);
-    });
-
     let chart = new Chart(document.getElementById('cost-chart').getContext('2d'), {
         type: 'line',
         data: {
@@ -35,7 +30,7 @@ function renderCostChart(msrp = null, cost = null, sold = null) {
             datasets: [{
                 scaleFontColor: "#FFFFFF",
                 borderColor: borderColor,
-                backgroundColor: [backgroundColor],
+                backgroundColor: backgroundColor,
                 data: data
             }]
         },
