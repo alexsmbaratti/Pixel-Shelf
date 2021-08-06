@@ -15,7 +15,11 @@ and the condition of the physical copy.
 
 ## Installation
 ### Docker
-The provided Dockerfile will allow you to run Pixel Shelf in a container. Note that you will still need to provide your own rating icons. 
+The provided Dockerfile will allow you to run Pixel Shelf in a container. Note that you will still need to provide your own rating icons.
+
+```sh
+docker build -t pixel-shelf . && docker run -p 0.0.0.0:3000:3000 pixel-shelf
+```
 
 ### Manual
 1. Clone or fork the repository
