@@ -167,7 +167,7 @@ function getSizeByDateAdded() {
                         },
                         title: {
                             display: true,
-                            text: "Library Size",
+                            text: "Library Growth",
                             fontColor: 'rgb(255, 255, 255)',
                             fontSize: 24
                         },
