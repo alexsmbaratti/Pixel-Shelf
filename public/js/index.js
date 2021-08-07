@@ -293,6 +293,9 @@ function getPlaces() {
 }
 
 function renderMap(places = []) {
+    if (places.length === 0) {
+        return;
+    }
     mapkit.init({
         authorizationCallback: function (done) {
             fetch('/api/maps/token')
