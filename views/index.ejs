@@ -40,10 +40,10 @@
                         <h1 id="game-count-text" class="subtitle">... Games</h1>
                         <canvas id="size-chart" width="300" height="100"></canvas>
                         <div class="tabs is-centered is-toggle pt-5">
-                            <ul>
-                                <li class="is-active"><a>Library Growth</a></li>
-                                <li><a>By Platform</a></li>
-                                <li><a>By Progress</a></li>
+                            <ul id="tabs">
+                                <li id="tab-growth" class="is-active" onclick="tabToggle('growth')"><a>Library Growth</a></li>
+                                <li id="tab-platform" onclick="tabToggle('platform')"><a>By Platform</a></li>
+                                <li id="tab-progress" onclick="tabToggle('progress')"><a>By Progress</a></li>
                             </ul>
                         </div>
                     </article>

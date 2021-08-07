@@ -260,3 +260,14 @@ function getBacklog() {
 
     request.send();
 }
+
+function tabToggle(id) {
+    let tabs = document.getElementById('tabs').children;
+    for (let tab of tabs) {
+        if (tab.getAttribute('id') === 'tab-' + id) {
+            tab.setAttribute('class', 'is-active');
+        } else {
+            tab.setAttribute('class', '');
+        }
+    }
+}
