@@ -237,7 +237,7 @@ function print(id) {
 
 function renderMap() {
     mapkit.init({
-        authorizationCallback: function(done) {
+        authorizationCallback: function (done) {
             fetch('/api/maps/token')
                 .then(res => res.json())
                 .then(data => {
@@ -252,8 +252,10 @@ function renderMap() {
         new mapkit.Coordinate(37.3319, -122.0302),
         new mapkit.CoordinateSpan(0.01, 0.01)
     );
-    let map = new mapkit.Map("map");
-    let pin = new MarkerAnnotation(location, { color: "#00c756", title: "Place Name" });
+    let map = new mapkit.Map("map", {
+        colorScheme: "dark"
+    });
+    let pin = new MarkerAnnotation(location, {color: "#00c756", title: "Place Name"});
     map.showItems([pin]);
     map.region = region;
 }

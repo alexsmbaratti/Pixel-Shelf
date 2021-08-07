@@ -18,6 +18,8 @@ RUN npx node-sass --omit-source-map-url sass/styles.scss public/stylesheets/styl
 RUN mkdir models/db
 RUN cat models/initdb.sql | sqlite3 models/db/pixelshelf.db
 
+RUN mkdir keys
+
 ENV PORT=3000
 EXPOSE 3000
 

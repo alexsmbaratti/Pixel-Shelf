@@ -14,14 +14,18 @@ and the condition of the physical copy.
 * IGDB API Access Credentials
 
 ## Installation
+
 ### Docker
-The provided Dockerfile will allow you to run Pixel Shelf in a container. Note that you will still need to provide your own rating icons.
+
+The provided Dockerfile will allow you to run Pixel Shelf in a container. Note that you will still need to provide your
+own rating icons.
 
 ```sh
 docker build -t pixel-shelf . && docker run -p 0.0.0.0:3000:3000 pixel-shelf
 ```
 
 ### Manual
+
 1. Clone or fork the repository
 2. Run `npm install`
 3. In the project folder, initialize the SQLite3 database with the following commands:
@@ -41,7 +45,10 @@ cat initdb.sql | sqlite3 db/pixelshelf.db
 {
   "client_id": "igdb_client_id",
   "client_secret": "igdb_client_secret",
-  "token": "igdb_token"
+  "token": "igdb_token",
+  "maps-key-path": "path/to/maps.p8",
+  "maps-key-id": "key_id",
+  "maps-team-id": "team_id"
 }
 ```
 

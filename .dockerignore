@@ -4,5 +4,6 @@ models/db
 identifier.sqlite
 public/images/covers
 public/stylesheets
+keys
 
 !public/images/covers/placeholder.jpg
