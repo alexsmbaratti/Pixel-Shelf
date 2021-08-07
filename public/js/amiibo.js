@@ -12,6 +12,11 @@ function fetchAmiibo(sortBy = "title") {
 
             if (request.status === 200) {
 
+            } else if (request.status === 501) {
+                let noAmiiboText = document.createElement("p");
+                noAmiiboText.setAttribute("class", "title has-text-centered");
+                noAmiiboText.innerHTML = "Coming Soon...";
+                mainDiv.appendChild(noAmiiboText);
             } else {
                 let noAmiiboText = document.createElement("p");
                 noAmiiboText.setAttribute("class", "title has-text-centered");
