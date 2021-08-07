@@ -235,7 +235,24 @@ function print(id) {
     request.send();
 }
 
-function renderMap() {
+function getRetailerInfo(retailerID) {
+    let igdbRequest = new XMLHttpRequest();
+    igdbRequest.open('GET', `/api/retailers/${retailerID}`);
+
+    igdbRequest.onreadystatechange = function () {
+        if (igdbRequest.readyState === 4) {
+            if (igdbRequest.status === 200) {
+                let data = JSON.parse(igdbRequest.responseText)['data'];
+                renderMap(data['retailer'], data['lat'], data['long']);
+            } else {
+            }
+        }
+    }
+
+    igdbRequest.send();
+}
+
+function renderMap(title, lat, long) {
     mapkit.init({
         authorizationCallback: function (done) {
             fetch('/api/maps/token')
@@ -247,15 +264,15 @@ function renderMap() {
     });
 
     let MarkerAnnotation = mapkit.MarkerAnnotation
-    let location = new mapkit.Coordinate(37.3319, -122.0302)
+    let location = new mapkit.Coordinate(lat, long)
     let region = new mapkit.CoordinateRegion(
-        new mapkit.Coordinate(37.3319, -122.0302),
+        new mapkit.Coordinate(lat, long),
         new mapkit.CoordinateSpan(0.01, 0.01)
     );
     let map = new mapkit.Map("map", {
         colorScheme: "dark"
     });
-    let pin = new MarkerAnnotation(location, {color: "#00c756", title: "Place Name"});
+    let pin = new MarkerAnnotation(location, {color: "#00c756", title: title});
     map.showItems([pin]);
     map.region = region;
 }

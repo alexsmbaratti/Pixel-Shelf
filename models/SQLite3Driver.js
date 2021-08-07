@@ -321,6 +321,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "date": row.timestamp,
                             "gameID": row.gameid,
                             "editionID": row.editionid,
+                            "retailerID": row.retailerid,
                             "progress": row.progress
                         };
                     });
@@ -626,6 +627,27 @@ SQLite3Driver.prototype.lookupBrand = function lookupBrand(name) {
                 } else {
                     resolve({"found": false});
                 }
+            });
+        });
+    });
+}
+
+SQLite3Driver.prototype.getRetailer = function getRetailer(id) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            let sql = `
+                SELECT *
+                FROM retailer
+                WHERE id = ?`;
+            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(row);
             });
         });
     });

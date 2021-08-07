@@ -169,10 +169,11 @@
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Retailer Information</h1>
+                                <% if (entry.retailerID != null) { %>
                                 <div id="map"></div>
-                                <script>
-                                    renderMap();
-                                </script>
+                                <% } else { %>
+                                    <h1 class="subtitle is-5">No Retailer Information</h1>
+                                <% } %>
                             </article>
                             <div class="tile is-child is-vertical">
                                 <article class="tile is-parent box is-vertical">
@@ -198,6 +199,9 @@
     </div>
 </div>
 <script>
+    <% if (entry.retailerID != null) { %>
+    getRetailerInfo(<%= entry.retailerID %>);
+    <% } %>
     getIGDBInfo(<%= id %>);
     renderCostChart(<%= entry.msrp %>, <%= entry.cost %>, null);
 </script>
