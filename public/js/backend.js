@@ -88,10 +88,12 @@ function maintenanceEndpointFetch(endpoint, id) {
             let data = JSON.parse(request.responseText);
             loader.remove();
             if (request.status === 200) {
+                let title = document.getElementById(id + '-title');
                 let text = document.createElement("p");
                 text.innerHTML = data['data'].length;
                 let array = JSON.stringify(data['data']);
                 text.setAttribute('onclick', `toggleModal('${id}', ${array})`);
+                title.setAttribute('onclick', `toggleModal('${id}', ${array})`);
                 rowData.appendChild(text);
             } else {
                 let span = document.createElement("span");
