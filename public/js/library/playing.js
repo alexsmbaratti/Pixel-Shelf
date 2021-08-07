@@ -37,7 +37,12 @@ function fetchLibrary(sortBy = "title") {
                     platform.innerHTML = game.platform;
 
                     let dateAdded = document.createElement("td");
-                    dateAdded.innerHTML = game.dateAdded;
+                    if (game.dateAdded === null) {
+                        dateAdded.innerHTML = 'Unknown';
+                    } else {
+                        let date = new Date(game.dateAdded);
+                        dateAdded.innerHTML = (date.getUTCMonth() + 1) + '-' + date.getUTCDate() + '-' + date.getUTCFullYear();
+                    }
 
                     let cost = document.createElement("td");
                     cost.innerHTML = game.cost;

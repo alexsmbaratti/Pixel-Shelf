@@ -205,7 +205,7 @@ function getSizeByDateAdded() {
                                 },
                                 label: function (tooltipItem, data) {
                                     return data['datasets'][0]['data'][tooltipItem['index']]['y'] + ' Games';
-                                },
+                                }
                             },
                             displayColors: false
                         }
