@@ -274,3 +274,70 @@ function tabToggle(id) {
         }
     }
 }
+
+function getPlaces() {
+    let igdbRequest = new XMLHttpRequest();
+    igdbRequest.open('GET', `/api/retailers?online=false`);
+
+    igdbRequest.onreadystatechange = function () {
+        if (igdbRequest.readyState === 4) {
+            if (igdbRequest.status === 200) {
+                let data = JSON.parse(igdbRequest.responseText)['data'];
+                renderMap(data);
+            } else {
+            }
+        }
+    }
+
+    igdbRequest.send();
+}
+
+function renderMap(places = []) {
+    mapkit.init({
+        authorizationCallback: function (done) {
+            fetch('/api/maps/token')
+                .then(res => res.json())
+                .then(data => {
+                    done(data.token)
+                })
+        }
+    });
+
+    let MarkerAnnotation = mapkit.MarkerAnnotation
+    let map = new mapkit.Map("index-map", {
+        colorScheme: "dark"
+    });
+    let pins = [];
+    let averageLat = 0.0;
+    let averageLong = 0.0;
+    let minLat = places[0]['lat'];
+    let maxLat = places[0]['lat'];
+    let minLong = places[0]['long'];
+    let maxLong = places[0]['long'];
+    places.forEach(place => {
+        let location = new mapkit.Coordinate(place['lat'], place['long']);
+        pins.push(new MarkerAnnotation(location, {color: "#00c756", title: place['retailer']}));
+        averageLat += place['lat'];
+        averageLong += place['long'];
+        if (place['lat'] < minLat) {
+            minLat = place['lat'];
+        }
+        if (place['lat'] > maxLat) {
+            maxLat = place['lat'];
+        }
+        if (place['long'] < minLong) {
+            minLong = place['long'];
+        }
+        if (place['long'] > maxLong) {
+            maxLong = place['long'];
+        }
+    });
+    let latRange = Math.abs(maxLat - minLat);
+    let longRange = Math.abs(maxLong - minLong);
+    let region = new mapkit.CoordinateRegion(
+        new mapkit.Coordinate(averageLat / places.length, averageLong / places.length),
+        new mapkit.CoordinateSpan(latRange + latRange / 10, longRange + longRange / 10)
+    );
+    map.showItems(pins);
+    map.region = region;
+}

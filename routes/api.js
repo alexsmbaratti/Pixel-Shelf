@@ -223,7 +223,21 @@ router.get('/amiibo', function (req, res, next) {
 });
 
 router.get('/retailers', function (req, res, next) {
-    res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+    let driver = new SQLite3Driver();
+    let online = req.query.online;
+    if (online !== undefined) {
+        if (online === 'false') {
+            driver.getPhysicalRetailers().then(result => {
+                res.status(200).send({"status": 200, "data": result});
+            }).catch(err => {
+                sendError(res, err);
+            });
+        } else {
+            res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+        }
+    } else {
+        res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+    }
 });
 
 router.get('/retailers/:retailerId', function (req, res, next) {

@@ -269,7 +269,7 @@ function renderMap(title, lat, long) {
         new mapkit.Coordinate(lat, long),
         new mapkit.CoordinateSpan(0.01, 0.01)
     );
-    let map = new mapkit.Map("map", {
+    let map = new mapkit.Map("library-map", {
         colorScheme: "dark"
     });
     let pin = new MarkerAnnotation(location, {color: "#00c756", title: title});
