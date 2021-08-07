@@ -148,8 +148,6 @@ function getSizeByDateAdded() {
                     }
                 });
 
-                console.log(points);
-
                 let chart = new Chart(document.getElementById('size-chart').getContext('2d'), {
                     type: 'line',
                     data: {
@@ -263,15 +261,16 @@ function getBacklog() {
 
 function tabToggle(id) {
     let tabs = document.getElementById('tabs').children;
+    let divs = document.getElementById('tab-divs').children;
+    for (let div of divs) {
+        div.setAttribute('class', 'is-hidden');
+    }
     for (let tab of tabs) {
-        let keyword = tab.getAttribute('id').split('-')[1];
-        let div = document.getElementById('div-' + keyword);
         if (tab.getAttribute('id') === 'tab-' + id) {
             tab.setAttribute('class', 'is-active');
-            div.setAttribute('class', '');
+            document.getElementById('div-' + id).setAttribute('class', '');
         } else {
             tab.setAttribute('class', '');
-            div.setAttribute('class', 'is-hidden');
         }
     }
 }
