@@ -34,6 +34,16 @@ router.get('/library', function (req, res, next) {
             }).catch(err => {
                 sendError(res, err);
             });
+        } else if (where === 'no-date-added') {
+            driver.getLibraryEntriesWithoutDateAdded().then(result => {
+                if (result != undefined) {
+                    res.status(200).send({"status": 200, "data": result});
+                } else {
+                    sendError(res, "No result");
+                }
+            }).catch(err => {
+                sendError(res, err);
+            });
         }
     } else {
         driver.getLibrary(sortBy).then(result => {
