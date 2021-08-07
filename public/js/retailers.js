@@ -37,8 +37,25 @@ function fetchRetailers(sortBy = "retailer") {
                     }
                     title.appendChild(link);
 
+                    let online = document.createElement("th");
+                    let iconText = document.createElement("span");
+                    iconText.setAttribute("class", "icon-text");
+                    let iconSpan = document.createElement("span");
+                    iconSpan.setAttribute("class", "icon");
+                    let icon = document.createElement("i");
+                    if (retailer['online']) {
+                        icon.setAttribute("class", "fas fa-check");
+                    } else {
+                        icon.setAttribute("class", "fas fa-times");
+                    }
+
+                    iconSpan.appendChild(icon);
+                    iconText.appendChild(iconSpan);
+                    online.appendChild(iconText);
+
                     let row = document.createElement("tr");
                     row.appendChild(title);
+                    row.appendChild(online);
                     tableBody.appendChild(row);
                 });
             } else if (request.status === 501) {

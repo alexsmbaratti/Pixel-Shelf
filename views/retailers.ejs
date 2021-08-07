@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <%- include('partials/metadata') %>
     <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="/js/retailers.js"></script>
     <script>fetchRetailers();</script>
 </head>
@@ -20,6 +21,7 @@
     <thead>
     <tr>
         <th onclick="fetchLibrary('retailer')">Retailer</th>
+        <th onclick="fetchLibrary('online')">Online Store?</th>
     </tr>
     </thead>
     <tbody id="table-body">

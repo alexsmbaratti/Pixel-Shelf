@@ -237,7 +237,6 @@ router.get('/retailers', function (req, res, next) {
         }
     } else {
         driver.getRetailers().then(result => {
-            console.log(result)
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
