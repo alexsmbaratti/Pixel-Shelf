@@ -71,6 +71,8 @@ CREATE TABLE figure
 CREATE TABLE retailer
 (
     retailer TEXT,
+    subtext  TEXT,
+    online   INTEGER,
     lat      REAL,
     long     REAL,
     id       INTEGER PRIMARY KEY AUTOINCREMENT
