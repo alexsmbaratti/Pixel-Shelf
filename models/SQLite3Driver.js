@@ -653,6 +653,35 @@ SQLite3Driver.prototype.getRetailer = function getRetailer(id) {
     });
 }
 
+SQLite3Driver.prototype.getRetailers = function getRetailers() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT *
+                       FROM retailer`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+                let result = [];
+                rows.forEach((row) => {
+                    result.push({
+                        "id": row.id,
+                        "retailer": row.retailer,
+                        "subtext": row.subtext,
+                        "online": row.online === 1,
+                        "lat": row.lat,
+                        "long": row.long
+                    });
+                });
+                resolve(result);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getPhysicalRetailers = function getPhysicalRetailers() {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {

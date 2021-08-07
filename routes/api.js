@@ -236,7 +236,12 @@ router.get('/retailers', function (req, res, next) {
             res.status(501).send({"status": 501, "msg": "Not Implemented!"});
         }
     } else {
-        res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+        driver.getRetailers().then(result => {
+            console.log(result)
+            res.status(200).send({"status": 200, "data": result});
+        }).catch(err => {
+            sendError(res, err);
+        });
     }
 });
 

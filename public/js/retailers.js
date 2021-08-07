@@ -30,7 +30,7 @@ function fetchRetailers(sortBy = "retailer") {
                     let link = document.createElement("a");
                     link.setAttribute("href", `/retailer/${retailer.id}`);
                     let title = document.createElement("th");
-                    link.innerHTML = retailer.title;
+                    link.innerHTML = retailer['retailer'];
                     title.appendChild(link);
 
                     let row = document.createElement("tr");
