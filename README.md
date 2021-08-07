@@ -18,7 +18,7 @@ and the condition of the physical copy.
 ### Docker
 
 The provided Dockerfile will allow you to run Pixel Shelf in a container. Note that you will still need to provide your
-own rating icons.
+own IGDB credentials, Apple Maps key, and game rating icons for full functionality.
 
 ```sh
 docker build -t pixel-shelf . && docker run -p 0.0.0.0:3000:3000 pixel-shelf
