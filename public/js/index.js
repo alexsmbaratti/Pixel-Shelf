@@ -202,7 +202,10 @@ function getSizeByDateAdded() {
                                     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                                     let date = new Date(tooltipItem[0]['label']);
                                     return months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
-                                }
+                                },
+                                label: function (tooltipItem, data) {
+                                    return data['datasets'][0]['data'][tooltipItem['index']]['y'] + ' Games';
+                                },
                             },
                             displayColors: false
                         }
