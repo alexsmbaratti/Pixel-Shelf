@@ -10,6 +10,7 @@ var addGameRouter = require('./routes/add');
 var identifyRouter = require('./routes/identify');
 var platformsRouter = require('./routes/platforms');
 var amiiboRouter = require('./routes/amiibo');
+var retailersRouter = require('./routes/retailers');
 var wishlistRouter = require('./routes/wishlist');
 var apiRouter = require('./routes/api');
 
@@ -31,6 +32,7 @@ app.use('/add', addGameRouter);
 app.use('/identify', identifyRouter);
 app.use('/platforms', platformsRouter);
 app.use('/amiibo', amiiboRouter);
+app.use('/retailers', retailersRouter);
 app.use('/wishlist', wishlistRouter);
 app.use('/api', apiRouter);
 

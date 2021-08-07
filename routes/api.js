@@ -222,6 +222,10 @@ router.get('/amiibo', function (req, res, next) {
     res.status(501).send({"status": 501, "msg": "Not Implemented!"});
 });
 
+router.get('/retailers', function (req, res, next) {
+    res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+});
+
 router.get('/amiibo/size', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getFigureSize().then(result => {

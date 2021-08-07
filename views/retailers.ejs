@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('partials/metadata') %>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script src="/js/retailers.js"></script>
+    <script>fetchRetailers();</script>
+</head>
+<body>
+<%- include('partials/navbar') %>
+<section class="hero is-primary is-small">
+    <div class="hero-body">
+        <p class="title">
+            Retailers
+        </p>
+    </div>
+</section>
+<table class="table is-hoverable is-striped is-fullwidth">
+    <thead>
+    <tr>
+        <th onclick="fetchLibrary('retailer')">Retailer</th>
+    </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+</table>
+<div id="main-div">
+    <div class="container pt-5">
+        <p class="title">Fetching retailers...</p>
+        <progress class="progress is-small is-primary" max="100"></progress>
+    </div>
+</div>
+</body>
+</html>
