@@ -9,5 +9,6 @@ config.json
 eink/__pycache__
 eink/lib
 eink/font5x8.bin
+keys/
 
 !public/images/covers/placeholder.jpg

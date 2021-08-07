@@ -234,3 +234,26 @@ function print(id) {
 
     request.send();
 }
+
+function renderMap() {
+    mapkit.init({
+        authorizationCallback: function(done) {
+            fetch('/api/maps/token')
+                .then(res => res.json())
+                .then(data => {
+                    done(data.token)
+                })
+        }
+    });
+
+    let MarkerAnnotation = mapkit.MarkerAnnotation
+    let location = new mapkit.Coordinate(37.3319, -122.0302)
+    let region = new mapkit.CoordinateRegion(
+        new mapkit.Coordinate(37.3319, -122.0302),
+        new mapkit.CoordinateSpan(0.01, 0.01)
+    );
+    let map = new mapkit.Map("map");
+    let pin = new MarkerAnnotation(location, { color: "#00c756", title: "Place Name" });
+    map.showItems([pin]);
+    map.region = region;
+}

@@ -1,10 +1,20 @@
 var express = require('express');
 var router = express.Router();
+const fs = require('fs');
+var jwt = require('jsonwebtoken');
 var SQLite3Driver = require('../models/SQLite3Driver');
 var IGDBDriver = require('../models/IGDBDriver');
-const thermalPrinterEndpoint = require('../config.json')['thermal-printer-endpoint'];
 const si = require('systeminformation');
 var axios = require('axios');
+
+const thermalPrinterEndpoint = require('../config.json')['thermal-printer-endpoint'];
+const mapsKey = require('../config.json')['maps-key-path'];
+const mapsID = require('../config.json')['maps-key-id'];
+const teamID = require('../config.json')['maps-team-id'];
+var key = null;
+if (mapsKey) {
+    key = fs.readFileSync(mapsKey);
+}
 
 /**
  * Returns status code 200 if the server is online
@@ -514,6 +524,25 @@ router.put('/igdb/regen-token', function (req, res) {
     }).catch(err => {
         sendError(res, err);
     });
+});
+
+router.get('/maps/token', function (req, res, next) {
+    if (mapsKey) {
+        var token = jwt.sign({
+            "iss": teamID,
+            "iat": Date.now() / 1000,
+            "exp": (Date.now() / 1000) + 86400,
+        }, key, {
+            header: {
+                "alg": "ES256",
+                "typ": "JWT",
+                "kid": mapsID
+            }
+        });
+        res.status(200).send({"status": 200, "token": token});
+    } else {
+        res.status(501).send({"status": 501});
+    }
 });
 
 function sendError(res, err) {
