@@ -38,10 +38,21 @@
                     <article class="tile is-child box">
                         <h1 class="title is-4">Library Statistics</h1>
                         <h1 id="game-count-text" class="subtitle">... Games</h1>
-                        <canvas id="size-chart" width="300" height="100"></canvas>
+                        <div id="tab-divs">
+                            <div id="div-growth">
+                                <canvas id="size-chart" width="300" height="100"></canvas>
+                            </div>
+                            <div id="div-platform" class="is-hidden">
+                                <canvas id="platforms-chart" width="300" height="100"></canvas>
+                            </div>
+                            <div id="div-progress" class="is-hidden">
+                                <canvas id="progress-chart" width="300" height="100"></canvas>
+                            </div>
+                        </div>
                         <div class="tabs is-centered is-toggle pt-5">
                             <ul id="tabs">
-                                <li id="tab-growth" class="is-active" onclick="tabToggle('growth')"><a>Library Growth</a></li>
+                                <li id="tab-growth" class="is-active" onclick="tabToggle('growth')"><a>Library
+                                        Growth</a></li>
                                 <li id="tab-platform" onclick="tabToggle('platform')"><a>By Platform</a></li>
                                 <li id="tab-progress" onclick="tabToggle('progress')"><a>By Progress</a></li>
                             </ul>
@@ -55,8 +66,7 @@
                 <div class="tile is-parent is-vertical">
                     <article class="tile is-child box">
                         <h1 class="title is-4">Game Collection</h1>
-                        <canvas id="platforms-chart" width="100" height="75"></canvas>
-                        <canvas id="progress-chart" width="100" height="75"></canvas>
+
                     </article>
                 </div>
             </div>

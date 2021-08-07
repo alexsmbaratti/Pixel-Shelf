@@ -264,10 +264,14 @@ function getBacklog() {
 function tabToggle(id) {
     let tabs = document.getElementById('tabs').children;
     for (let tab of tabs) {
+        let keyword = tab.getAttribute('id').split('-')[1];
+        let div = document.getElementById('div-' + keyword);
         if (tab.getAttribute('id') === 'tab-' + id) {
             tab.setAttribute('class', 'is-active');
+            div.setAttribute('class', '');
         } else {
             tab.setAttribute('class', '');
+            div.setAttribute('class', 'is-hidden');
         }
     }
 }
