@@ -195,6 +195,16 @@ function getSizeByDateAdded() {
                                     fontColor: 'rgb(255, 255, 255)'
                                 }
                             }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                title: function (tooltipItem, data) {
+                                    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                                    let date = new Date(tooltipItem[0]['label']);
+                                    return months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
+                                }
+                            },
+                            displayColors: false
                         }
                     }
                 });
