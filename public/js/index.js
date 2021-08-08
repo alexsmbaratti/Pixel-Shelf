@@ -351,7 +351,7 @@ function renderMap(places = []) {
     let latRange = Math.abs(maxLat - minLat);
     let longRange = Math.abs(maxLong - minLong);
     let region = new mapkit.CoordinateRegion(
-        new mapkit.Coordinate(averageLat / places.length, averageLong / places.length),
+        new mapkit.Coordinate(minLat + ((maxLat - minLat) / 2), minLong + ((maxLong - minLong) / 2)),
         new mapkit.CoordinateSpan(latRange + latRange / 10, longRange + longRange / 10)
     );
     map.showItems(pins);
