@@ -1,3 +1,25 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Not Found!</title>
+    <%- include('partials/metadata') %>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+<body>
+<%- include('partials/navbar') %>
+<div class="container">
+    <div class="tile is-ancestor">
+        <div class="tile pt-5">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <h1 class="subtitle">Error Code <%= status %></h1>
+                    <h1 class="title">I am Err̵o̵̘̓r̷̢͌</h1>
+                    <p class="has-text-light"><%= message %></p>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
