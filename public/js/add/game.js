@@ -251,6 +251,8 @@ function updateCard(url) {
                     document.getElementById('game-title').innerHTML = gameTitle;
                     document.getElementById('library-view').setAttribute("href", "/wishlist/" + libraryID);
                     document.getElementById('game-cover').setAttribute("src", "/library/" + gameID + "/cover");
+                } else if (url == '/html/purchase_info.html') {
+                    getRetailers();
                 }
             } else {
                 document.getElementById("add-card-div").innerText = "An error has occurred.";
@@ -276,4 +278,31 @@ function dateCheck() {
     } else {
         document.getElementById("calendar-input").disabled = false;
     }
+}
+
+function getRetailers() {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/retailers`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                let retailerSelect = document.getElementById("retailer-selection");
+                let data = JSON.parse(request.responseText)['data'];
+                data.forEach(retailer => {
+                    let option = document.createElement('option');
+                    option.setAttribute('id', retailer['id']);
+                    if (retailer['subtext']) {
+                        option.innerHTML = retailer['retailer'] + ' - ' + retailer['subtext'];
+                    } else {
+                        option.innerHTML = retailer['retailer'];
+                    }
+                    retailerSelect.appendChild(option);
+                });
+            } else {
+            }
+        }
+    }
+
+    request.send();
 }
