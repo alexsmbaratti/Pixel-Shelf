@@ -159,7 +159,7 @@ function submitPurchaseInfo() {
 
     let retailerSelect = document.getElementById("retailer-selection");
     let retailerID = retailerSelect.selectedIndex;
-    if (retailerID === -2) {
+    if (retailerID == 0) {
         retailerID = null;
     }
 
