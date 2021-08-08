@@ -2,19 +2,20 @@
 <html>
 <head>
     <title>Not Found!</title>
-    <%- include('../partials/metadata') %>
+    <%- include('partials/metadata') %>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 <body>
-<%- include('../partials/navbar') %>
+<%- include('partials/navbar') %>
 <div class="container">
     <div class="tile is-ancestor">
         <div class="tile pt-5">
             <div class="tile is-parent is-vertical">
                 <article class="tile is-child box">
-                    <h1 class="title"><%= type %> Does Not Exist</h1>
+                    <h1 class="subtitle">Error Code 404</h1>
+                    <h1 class="title">The <%= type %> you were looking for is in another castle</h1>
                 </article>
             </div>
         </div>
