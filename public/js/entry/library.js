@@ -243,7 +243,12 @@ function getRetailerInfo(retailerID) {
         if (igdbRequest.readyState === 4) {
             if (igdbRequest.status === 200) {
                 let data = JSON.parse(igdbRequest.responseText)['data'];
-                renderMap(data['retailer'], data['lat'], data['long']);
+                console.log(data)
+                if (!data['online']) {
+                    renderMap(data['retailer'], data['lat'], data['long']);
+                } else {
+                    document.getElementById('library-map').remove();
+                }
             } else {
             }
         }

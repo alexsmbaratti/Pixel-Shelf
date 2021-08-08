@@ -647,7 +647,14 @@ SQLite3Driver.prototype.getRetailer = function getRetailer(id) {
                 if (err) {
                     reject(err);
                 }
-                resolve(row);
+                resolve({
+                    "id": row.id,
+                    "retailer": row.retailer,
+                    "subtext": row.subtext,
+                    "online": row.online === 1,
+                    "lat": row.lat,
+                    "long": row.long
+                });
             });
         });
     });
