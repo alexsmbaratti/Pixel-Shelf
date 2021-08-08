@@ -157,6 +157,12 @@ function submitPurchaseInfo() {
     let hasBox = document.getElementById("box-check").checked;
     let hasManual = document.getElementById("manual-check").checked;
 
+    let retailerSelect = document.getElementById("retailer-selection");
+    let retailerID = retailerSelect.selectedIndex;
+    if (retailerID === -2) {
+        retailerID = null;
+    }
+
     let button = document.getElementById("submit-button");
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;
@@ -194,7 +200,7 @@ function submitPurchaseInfo() {
         "condition": conditionSelect.selectedIndex == 0,
         "box": hasBox,
         "manual": hasManual,
-        "retailerID": null,
+        "retailerID": retailerID,
         "editionID": editionID
     }));
 }
