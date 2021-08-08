@@ -324,8 +324,6 @@ function renderMap(places = []) {
         colorScheme: "dark"
     });
     let pins = [];
-    let averageLat = 0.0;
-    let averageLong = 0.0;
     let minLat = places[0]['lat'];
     let maxLat = places[0]['lat'];
     let minLong = places[0]['long'];
@@ -333,8 +331,6 @@ function renderMap(places = []) {
     places.forEach(place => {
         let location = new mapkit.Coordinate(place['lat'], place['long']);
         pins.push(new MarkerAnnotation(location, {color: "#00c756", title: place['retailer']}));
-        averageLat += place['lat'];
-        averageLong += place['long'];
         if (place['lat'] < minLat) {
             minLat = place['lat'];
         }
