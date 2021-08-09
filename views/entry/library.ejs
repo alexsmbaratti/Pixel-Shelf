@@ -170,6 +170,22 @@
                             <article class="tile is-parent box is-vertical">
                                 <h1 class="title is-4">Retailer Information</h1>
                                 <% if (entry.retailerID != null) { %>
+                                    <table class="table has-background-grey mr-6 ml-6">
+                                        <tbody class="table-body has-background-grey has-text-centered">
+                                        <tr>
+                                            <th>Retailer</th>
+                                            <td id="retailer-text"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Online Store</th>
+                                            <td>
+                                                <span class="icon">
+                                                    <i id="online-icon"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                     <div id="library-map"></div>
                                 <% } else { %>
                                     <h1 class="subtitle is-5">No Retailer Information</h1>

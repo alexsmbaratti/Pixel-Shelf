@@ -243,11 +243,13 @@ function getRetailerInfo(retailerID) {
         if (igdbRequest.readyState === 4) {
             if (igdbRequest.status === 200) {
                 let data = JSON.parse(igdbRequest.responseText)['data'];
-                console.log(data)
+                document.getElementById('retailer-text').innerHTML = data['retailer'];
                 if (!data['online']) {
+                    document.getElementById('online-icon').setAttribute('class', 'fas fa-times');
                     renderMap(data['retailer'], data['lat'], data['long']);
                 } else {
                     document.getElementById('library-map').remove();
+                    document.getElementById('online-icon').setAttribute('class', 'fas fa-check');
                 }
             } else {
             }
