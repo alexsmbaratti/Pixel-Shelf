@@ -457,6 +457,28 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
     });
 }
 
+SQLite3Driver.prototype.addRetailer = function addRetailer(json) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            SQLite3Driver.prototype.db.run(`INSERT
+                                            INTO retailer
+                                            VALUES (?, ?, ?, ?, ?, ?, ?)`, [json.retailer, json.subtext, json.online ? 1 : 0, json.lat, json.long, json.url], function (err) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                let retailerID = this.lastID;
+                console.log(`${json.retailer} was inserted with ID ${retailerID}`);
+                resolve(retailerID);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.updateLibrary = function updateLibrary(id, json) {
     return new Promise(function (resolve, reject) {
         let transaction = [];
@@ -653,7 +675,8 @@ SQLite3Driver.prototype.getRetailer = function getRetailer(id) {
                     "subtext": row.subtext,
                     "online": row.online === 1,
                     "lat": row.lat,
-                    "long": row.long
+                    "long": row.long,
+                    "url": row.url
                 });
             });
         });
@@ -680,7 +703,8 @@ SQLite3Driver.prototype.getRetailers = function getRetailers() {
                         "subtext": row.subtext,
                         "online": row.online === 1,
                         "lat": row.lat,
-                        "long": row.long
+                        "long": row.long,
+                        "url": row.url
                     });
                 });
                 resolve(result);
@@ -709,7 +733,8 @@ SQLite3Driver.prototype.getPhysicalRetailers = function getPhysicalRetailers() {
                         "retailer": row.retailer,
                         "subtext": row.subtext,
                         "lat": row.lat,
-                        "long": row.long
+                        "long": row.long,
+                        "url": row.url
                     });
                 });
                 resolve(result);

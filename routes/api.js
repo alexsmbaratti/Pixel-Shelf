@@ -411,7 +411,7 @@ router.post('/games', function (req, res) {
                 }).then(addResult => {
                     res.status(200).send({"status": 200, "id": addResult, "igdb": igdbLink});
                     igdbDriver.getCoverByURL(igdbLink, addResult).catch(err => {
-                        sendError(res, err);
+                        console.log(err);
                     });
                 }).catch(err => {
                     sendError(res, err);
@@ -445,6 +445,15 @@ router.post('/editions', function (req, res) {
 router.post('/library', function (req, res) {
     let driver = new SQLite3Driver();
     driver.addLibrary(req.body).then(addResult => {
+        res.status(200).send({"status": 200, "id": addResult});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
+router.post('/retailers', function (req, res) {
+    let driver = new SQLite3Driver();
+    driver.addRetailer(req.body).then(addResult => {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
         sendError(res, err);
