@@ -158,8 +158,8 @@ function submitPurchaseInfo() {
     let hasManual = document.getElementById("manual-check").checked;
 
     let retailerSelect = document.getElementById("retailer-selection");
-    let retailerID = retailerSelect.selectedIndex;
-    if (retailerID == 0) {
+    let retailerID = retailerSelect[retailerSelect.selectedIndex].value;
+    if (retailerID < 1) {
         retailerID = null;
     }
 
@@ -297,7 +297,7 @@ function getRetailers() {
                 let data = JSON.parse(request.responseText)['data'];
                 data.forEach(retailer => {
                     let option = document.createElement('option');
-                    option.setAttribute('id', retailer['id']);
+                    option.setAttribute('value', retailer['id']);
                     if (retailer['subtext']) {
                         option.innerHTML = retailer['retailer'] + ' - ' + retailer['subtext'];
                     } else {
@@ -307,7 +307,7 @@ function getRetailers() {
                 });
 
                 let newRetailerOption = document.createElement('option');
-                newRetailerOption.setAttribute('id', '-1');
+                newRetailerOption.setAttribute('value', '-1');
                 newRetailerOption.innerHTML = '-- New Retailer --';
                 retailerSelect.appendChild(newRetailerOption);
             } else {
@@ -325,7 +325,7 @@ function toggleRetailer() {
     }
 
     let retailerSelect = document.getElementById("retailer-selection");
-    let retailerID = retailerSelect[retailerSelect.selectedIndex].id;
+    let retailerID = retailerSelect[retailerSelect.selectedIndex].value;
     if (retailerID == -1) {
         let request = new XMLHttpRequest();
         request.open('GET', '/html/add_retailer.html');

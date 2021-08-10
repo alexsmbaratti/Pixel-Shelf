@@ -77,9 +77,9 @@
                             <select id="platform-selection">
                                 <option id="-2">Select Platform</option>
                                 <% platforms.forEach(function(platform) { %>
-                                    <option value="<%= platform.id %>"><%= platform.name %></option>
+                                    <option id="<%= platform.id %>"><%= platform.name %></option>
                                 <% }); %>
-                                <option value="-1">-- New Platform --</option>
+                                <option id="-1">-- New Platform --</option>
                             </select>
                         </div>
                     </div>
