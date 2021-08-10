@@ -75,6 +75,7 @@ CREATE TABLE retailer
     online   INTEGER,
     lat      REAL,
     long     REAL,
+    url      TEXT,
     id       INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
