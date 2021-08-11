@@ -16,7 +16,8 @@
             </a>
         </div>
         <div class="navbar-start">
-            <div id="library-dropdown" class="navbar-item has-dropdown is-hoverable" onclick="expandDropdown('library-dropdown')">
+            <div id="library-dropdown" class="navbar-item has-dropdown is-hoverable"
+                 onclick="expandDropdown('library-dropdown')">
                 <a href="/library" class="navbar-item">
                     Game Library
                 </a>
@@ -42,7 +43,8 @@
                 Consoles
             </a>
 
-            <div id="more-dropdown" class="navbar-item has-dropdown is-hoverable" onclick="expandDropdown('more-dropdown')">
+            <div id="more-dropdown" class="navbar-item has-dropdown is-hoverable"
+                 onclick="expandDropdown('more-dropdown')">
                 <a class="navbar-item">
                     More
                 </a>
@@ -74,10 +76,23 @@
         </div>
 
         <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a href="/add/console" class="button">
-                        <strong>Add a Console</strong>
+            <div id="add-dropdown" class="navbar-item has-dropdown is-hoverable"
+                 onclick="expandDropdown('add-dropdown')">
+                <div class="navbar-item">
+                    <a class="button">
+                        <strong>Add...</strong>
+                    </a>
+                </div>
+
+                <div class="navbar-dropdown">
+                    <a href="/add/console" class="navbar-item">
+                        Console
+                    </a>
+                    <a href="/add/retailer" class="navbar-item">
+                        Retailer
+                    </a>
+                    <a href="/add/amiibo" class="navbar-item">
+                        amiibo
                     </a>
                 </div>
             </div>
