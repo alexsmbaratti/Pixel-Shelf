@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('../partials/metadata') %>
+    <script src="/js/add/retailer.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<section class="hero is-primary is-small">
+    <div class="hero-body">
+        <p class="title">
+            Add a Retailer
+        </p>
+    </div>
+</section>
+
+<div class="container pt-5">
+    <ul class="steps has-content-centered">
+        <li id="console-info-segment" class="steps-segment is-active">
+            <span class="steps-marker"></span>
+            <div class="steps-content has-text-light">
+                <p class="is-size-5">Retailer Information</p>
+                <p>General Information</p>
+            </div>
+        </li>
+        <li id="completion-segment" class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content has-text-light">
+                <p class="is-size-5">Complete</p>
+            </div>
+        </li>
+    </ul>
+
+    <div class="card">
+        <div id="add-card-div" class="card-content">
+            <div class="content">
+                <h1 class="title has-text-light">Retailer Information</h1>
+                <div class="field">
+                    <label class="label">Retailer Name</label>
+                    <div class="control">
+                        <input required id="retailer-text" class="input" type="text" placeholder="">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Subtext</label>
+                    <div class="control">
+                        <input required id="subtext-text" class="input" type="text" placeholder="i.e. City name">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <input id="online-check" type="checkbox" onchange="toggleLocation()">
+                    <label class="checkbox has-text-light">Online Store</label>
+                </div>
+
+                <div class="field">
+                    <label class="label">Latitude</label>
+                    <div class="control">
+                        <input required id="latitude-text" class="input" type="number">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Longitude</label>
+                    <div class="control">
+                        <input required id="longitude-text" class="input" type="number">
+                    </div>
+                </div>
+
+                <div class="control">
+                    <button id="submit-button" class="button is-link" onclick="submitRetailerInfo()">Next</button>
+                </div>
+
+                <div id="warning-div"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -11,6 +11,10 @@ router.get('/game', function (req, res, next) {
     });
 });
 
+router.get('/retailer', function (req, res, next) {
+    res.render('add/retailer', {title: 'Pixel Shelf'});
+});
+
 router.get('/mass', function (req, res, next) {
     res.render('mass', {title: 'Pixel Shelf'});
 });
