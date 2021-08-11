@@ -28,7 +28,7 @@ function fetchRetailers(sortBy = "retailer") {
 
                 data.forEach(retailer => {
                     let link = document.createElement("a");
-                    link.setAttribute("href", `/retailer/${retailer.id}`);
+                    link.setAttribute("href", `/retailers/${retailer.id}`);
                     let title = document.createElement("th");
                     if (retailer['subtext']) {
                         link.innerHTML = retailer['retailer'] + ' - ' + retailer['subtext'];

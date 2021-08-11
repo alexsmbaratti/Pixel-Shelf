@@ -15,6 +15,14 @@ router.get('/retailer', function (req, res, next) {
     res.render('add/retailer', {title: 'Pixel Shelf'});
 });
 
+router.get('/amiibo', function (req, res, next) {
+    res.status(501);
+    res.render('error', {
+        status: 501,
+        message: 'This page has not been implemented yet but is planned to be added in a future build.'
+    });
+});
+
 router.get('/mass', function (req, res, next) {
     res.render('mass', {title: 'Pixel Shelf'});
 });
