@@ -1,15 +1,27 @@
 var express = require('express');
 var router = express.Router();
+var SQLite3Driver = require('../models/SQLite3Driver');
 
 router.get('/', function (req, res, next) {
     res.render('retailers', {title: 'Pixel Shelf'});
 });
 
 router.get('/:retailerId', function (req, res, next) {
-    res.status(501);
-    res.render('error', {
-        status: 501,
-        message: 'This page has not been implemented yet but is planned to be added in a future build.'
+    let driver = new SQLite3Driver();
+    const retailerId = req.params.retailerId;
+    driver.getRetailer(retailerId).then(result => {
+        if (result && result.constructor === Object && Object.keys(result).length === 0) {
+            res.status(404);
+            res.render('404', {title: 'Pixel Shelf', type: 'retailer'});
+        } else {
+            res.render('entry/retailer', {
+                title: result.retailer + ' - Pixel Shelf',
+                entry: result,
+                id: retailerId
+            });
+        }
+    }).catch(err => {
+        res.render('error', {message: "Error", error: err});
     });
 });
 

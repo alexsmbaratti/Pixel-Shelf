@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('../partials/metadata') %>
+    <script src="/js/entry/retailer.js"></script>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="container">
+    <div class="tile is-ancestor">
+        <div class="tile pt-5">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <h1 id="title-text" class="title"><%= entry.retailer %></h1>
+                    <h1 class="subtitle"><%= entry.subtext %></h1>
+                    <% if (!entry.online) { %>
+                        <div id="div-map">
+                            <div id="index-map"></div>
+                            <script>
+                                renderMap(<%= entry.lat == null ? 'null' : entry.lat %>, <%= entry.long == null ? 'null' : entry.long %>);
+                            </script>
+                        </div>
+                    <% } %>
+                    <br>
+                </article>
+                <div class="tile">
+                    <div class="tile is-child is-vertical pr-3">
+                        <article class="tile is-parent box is-vertical">
+                            <h1 class="title is-4">Games Purchased Here</h1>
+                        </article>
+                    </div>
+                    <div class="tile is-child is-vertical pl-3">
+                        <div class="tile is-child is-vertical">
+                            <article class="tile is-parent box is-vertical">
+                                <h1 class="title is-4">Manage Retailer</h1>
+                                <div class="container">
+                                    <button class="button is-info">Edit</button>
+                                    <button class="button is-danger">Delete</button>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
