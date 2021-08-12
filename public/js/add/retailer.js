@@ -1,6 +1,8 @@
 let retailerText;
 let subText;
 let id;
+let latitude;
+let longitude;
 
 function submitRetailerInfo() {
     let warningDiv = document.getElementById("warning-div");
@@ -13,6 +15,7 @@ function submitRetailerInfo() {
 
     retailerText = document.getElementById("retailer-text").value;
     subText = document.getElementById("subtext-text").value;
+    let isOnline = document.getElementById("online-check").checked;
     if (retailerText.length === 0) { // If left blank
         warningMessage.innerHTML = "You must enter a retailer name.";
         warningDiv.appendChild(warningMessage);
@@ -21,6 +24,11 @@ function submitRetailerInfo() {
 
     if (subText.length === 0) { // If left blank
         subText = null;
+    }
+
+    if (!isOnline) {
+        latitude = document.getElementById("latitude-text").value;
+        longitude = document.getElementById("longitude-text").value;
     }
 
     let button = document.getElementById("submit-button");
@@ -56,7 +64,10 @@ function submitRetailerInfo() {
 
     request.send(JSON.stringify({
         "retailer": retailerText,
-        "subtext": subText
+        "subtext": subText,
+        "online": isOnline,
+        "lat": latitude,
+        "long": longitude
     }));
 }
 
