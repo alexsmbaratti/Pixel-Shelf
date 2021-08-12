@@ -15,6 +15,7 @@ function submitRetailerInfo() {
 
     retailerText = document.getElementById("retailer-text").value;
     subText = document.getElementById("subtext-text").value;
+    let urlText = document.getElementById("url-text").value;
     let isOnline = document.getElementById("online-check").checked;
     if (retailerText.length === 0) { // If left blank
         warningMessage.innerHTML = "You must enter a retailer name.";
@@ -26,9 +27,20 @@ function submitRetailerInfo() {
         subText = null;
     }
 
+    if (urlText.length === 0) { // If left blank
+        urlText = null;
+    }
+
     if (!isOnline) {
         latitude = document.getElementById("latitude-text").value;
+        if (isNaN(latitude) || isNaN(parseFloat(latitude))) {
+            latitude = null;
+        }
+
         longitude = document.getElementById("longitude-text").value;
+        if (isNaN(longitude) || isNaN(parseFloat(longitude))) {
+            longitude = null;
+        }
     }
 
     let button = document.getElementById("submit-button");
@@ -67,7 +79,8 @@ function submitRetailerInfo() {
         "subtext": subText,
         "online": isOnline,
         "lat": latitude,
-        "long": longitude
+        "long": longitude,
+        "url": urlText
     }));
 }
 
@@ -91,4 +104,18 @@ function updateCard(url) {
         }
     }
     request.send();
+}
+
+function toggleOnline() {
+    let phyiscalDiv = document.getElementById("physical-div");
+    let onlineDiv = document.getElementById("online-div");
+    let isOnline = document.getElementById("online-check").checked;
+
+    if (isOnline) {
+        phyiscalDiv.setAttribute('class', 'is-hidden');
+        onlineDiv.setAttribute('class', '');
+    } else {
+        onlineDiv.setAttribute('class', 'is-hidden');
+        phyiscalDiv.setAttribute('class', '');
+    }
 }
