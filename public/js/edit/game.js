@@ -1,3 +1,5 @@
+let originalRetailerID = null;
+
 function updateGameInfo(id) {
     let button = document.getElementById("edit-button");
     button.setAttribute("class", "button is-link is-loading");
@@ -29,6 +31,9 @@ function updateGameInfo(id) {
     let editedManual = document.getElementById("manual-check").checked;
     let originalManual = document.getElementById("manual-check").getAttribute("data-original");
 
+    let retailerSelect = document.getElementById("retailer-selection");
+    let editedRetailerID = retailerSelect[retailerSelect.selectedIndex].value;
+
     if (editedTitle !== originalTitle) {
         data['title'] = editedTitle;
     }
@@ -53,6 +58,11 @@ function updateGameInfo(id) {
     if (String(editedManual) !== originalManual) {
         data['manual'] = editedManual;
     }
+    if (originalRetailerID === null && editedRetailerID === -2) {
+
+    } else if (editedRetailerID !== originalRetailerID) {
+        data['retailerid'] = editedRetailerID;
+    }
 
     let request = new XMLHttpRequest();
     request.open('PUT', `/api/library/${id}`);
@@ -74,4 +84,43 @@ function updateGameInfo(id) {
     } else {
         request.send(JSON.stringify(data));
     }
+}
+
+function getRetailers(id = null) {
+    originalRetailerID = id;
+
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/retailers`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                let retailerSelect = document.getElementById("retailer-selection");
+                let data = JSON.parse(request.responseText)['data'];
+                let unknownOption = document.createElement('option');
+                unknownOption.setAttribute('value', '-2');
+                unknownOption.innerHTML = 'Unknown';
+                if (id === null) {
+                    unknownOption.selected = true;
+                }
+                retailerSelect.appendChild(unknownOption);
+                data.forEach(retailer => {
+                    let option = document.createElement('option');
+                    option.setAttribute('value', retailer['id']);
+                    if (retailer['subtext']) {
+                        option.innerHTML = retailer['retailer'] + ' - ' + retailer['subtext'];
+                    } else {
+                        option.innerHTML = retailer['retailer'];
+                    }
+                    if (id === retailer['id']) {
+                        option.selected = true;
+                    }
+                    retailerSelect.appendChild(option);
+                });
+            } else {
+            }
+        }
+    }
+
+    request.send();
 }

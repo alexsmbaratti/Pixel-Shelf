@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        getRetailers(<%= entry.retailerID %>);
+    </script>
     <%
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var parsedDate;
@@ -198,8 +201,23 @@
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
-                                <h1 class="title is-4">Purchase Information</h1>
-                                <h1 class="subtitle">Purchased at: </h1>
+                                <h1 class="title is-4">Retailer Information</h1>
+                                <table class="table has-background-grey mr-6 ml-6">
+                                    <tbody class="table-body has-background-grey has-text-centered">
+                                    <tr>
+                                        <th>Retailer</th>
+                                        <td>
+                                            <div class="control">
+                                                <div class="select">
+                                                    <select id="retailer-selection" onchange="toggleRetailer()">
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </article>
                             <div class="tile is-child is-vertical">
                                 <article class="tile is-parent box is-vertical">
