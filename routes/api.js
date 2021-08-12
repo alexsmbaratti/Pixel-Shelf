@@ -54,6 +54,18 @@ router.get('/library', function (req, res, next) {
             }).catch(err => {
                 sendError(res, err);
             });
+        } else if (where === 'no-retailer') {
+            driver.getLibraryEntriesWithoutRetailer().then(result => {
+                if (result != undefined) {
+                    res.status(200).send({"status": 200, "data": result});
+                } else {
+                    sendError(res, "No result");
+                }
+            }).catch(err => {
+                sendError(res, err);
+            });
+        } else {
+            res.status(501).send({"status": 501, "msg": "Not Implemented!"});
         }
     } else {
         driver.getLibrary(sortBy).then(result => {

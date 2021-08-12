@@ -18,6 +18,7 @@
         maintenanceEndpointFetch('/api/editions?where=no-msrp', 'editions-no-msrp');
         maintenanceEndpointFetch('/api/library?where=no-cost', 'library-no-cost');
         maintenanceEndpointFetch('/api/library?where=no-date-added', 'library-no-date-added');
+        maintenanceEndpointFetch('/api/library?where=no-retailer', 'library-no-retailer');
     </script>
 </head>
 <body>
@@ -104,6 +105,12 @@
                                         <th id="library-no-date-added-title">Library Entries without a Date Added</th>
                                         <td id="library-no-date-added-data">
                                             <div id="library-no-date-added-loader" class="loader"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th id="library-no-retailer-title">Library Entries without a Retailer</th>
+                                        <td id="library-no-retailer-data">
+                                            <div id="library-no-retailer-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>
