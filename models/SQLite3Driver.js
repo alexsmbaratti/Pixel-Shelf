@@ -683,14 +683,26 @@ SQLite3Driver.prototype.getRetailer = function getRetailer(id) {
     });
 }
 
-SQLite3Driver.prototype.getRetailers = function getRetailers() {
+SQLite3Driver.prototype.getRetailers = function getRetailers(sortBy = 'retailer') {
+    let parsedSortBy;
+    switch (sortBy) {
+        case 'retailer':
+            parsedSortBy = "retailer.retailer";
+            break;
+        case 'online':
+            parsedSortBy = "retailer.online";
+            break;
+        default:
+            parsedSortBy = "retailer.retailer";
+    }
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
             if (err) {
                 reject(err);
             }
             let sql = `SELECT *
-                       FROM retailer`;
+                       FROM retailer
+                       ORDER BY ${parsedSortBy} ASC`;
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);

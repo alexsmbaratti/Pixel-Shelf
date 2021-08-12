@@ -225,6 +225,10 @@ router.get('/amiibo', function (req, res, next) {
 router.get('/retailers', function (req, res, next) {
     let driver = new SQLite3Driver();
     let online = req.query.online;
+    let sortBy = req.query.sortBy;
+    if (sortBy === null) {
+        sortBy = 'title';
+    }
     if (online !== undefined) {
         if (online === 'false') {
             driver.getPhysicalRetailers().then(result => {
@@ -236,7 +240,7 @@ router.get('/retailers', function (req, res, next) {
             res.status(501).send({"status": 501, "msg": "Not Implemented!"});
         }
     } else {
-        driver.getRetailers().then(result => {
+        driver.getRetailers(sortBy).then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
