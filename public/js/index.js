@@ -192,7 +192,8 @@ function getSizeByDateAdded() {
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true,
-                                    fontColor: 'rgb(255, 255, 255)'
+                                    fontColor: 'rgb(255, 255, 255)',
+                                    precision: 0
                                 }
                             }]
                         },
