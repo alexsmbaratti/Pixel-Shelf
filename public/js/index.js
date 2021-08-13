@@ -183,8 +183,7 @@ function getSizeByDateAdded() {
                                 distribution: 'linear',
                                 time: {
                                     min: earliestDate,
-                                    max: Date.now(),
-                                    unit: 'day'
+                                    max: Date.now()
                                 },
                                 ticks: {
                                     fontColor: 'rgb(255, 255, 255)'
