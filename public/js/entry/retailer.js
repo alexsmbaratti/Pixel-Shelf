@@ -30,9 +30,20 @@ function getGames(id) {
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
+            let tableBody = document.getElementById("table-body");
             if (request.status === 200) {
                 let data = JSON.parse(request.responseText)['data'];
-                console.log(data);
+                data.forEach(game => {
+                    let link = document.createElement("a");
+                    link.setAttribute("href", `/library/${game.id}`);
+                    let title = document.createElement("th");
+                    link.innerHTML = game.title;
+                    title.appendChild(link);
+
+                    let row = document.createElement("tr");
+                    row.appendChild(title);
+                    tableBody.appendChild(row);
+                });
             } else {
             }
         }

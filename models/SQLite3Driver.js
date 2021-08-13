@@ -1472,7 +1472,8 @@ SQLite3Driver.prototype.getLibraryEntriesFromRetailer = function getLibraryEntri
                        WHERE library.retailerid = ?
                          AND retailer.id = library.retailerid
                          AND library.editionid = edition.id
-                         AND edition.gameid = game.id`;
+                         AND edition.gameid = game.id
+                       ORDER BY game.title ASC`;
             SQLite3Driver.prototype.db.all(sql, [id], (err, res) => {
                 if (err) {
                     reject(err);
