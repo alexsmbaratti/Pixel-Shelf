@@ -269,6 +269,15 @@ router.get('/retailers/:retailerId', function (req, res, next) {
     });
 });
 
+router.get('/retailers/:retailerId/library', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getLibraryEntriesFromRetailer(req.params.retailerId).then(result => {
+        res.status(200).send({"status": 200, "data": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.get('/amiibo/size', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getFigureSize().then(result => {

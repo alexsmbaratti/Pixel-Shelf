@@ -1458,6 +1458,31 @@ SQLite3Driver.prototype.getLibraryEntriesWithoutDateAdded = function getLibraryE
     });
 }
 
+SQLite3Driver.prototype.getLibraryEntriesFromRetailer = function getLibraryEntriesFromRetailer(id) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT library.id, game.title, edition.edition
+                       FROM library,
+                            game,
+                            edition,
+                            retailer
+                       WHERE library.retailerid = ?
+                         AND retailer.id = library.retailerid
+                         AND library.editionid = edition.id
+                         AND edition.gameid = game.id`;
+            SQLite3Driver.prototype.db.all(sql, [id], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(res);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getLibraryEntriesWithoutRetailer = function getLibraryEntriesWithoutRetailer() {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {

@@ -1,6 +1,4 @@
 function renderMap(lat, long) {
-    console.log(lat)
-    console.log(long)
     mapkit.init({
         authorizationCallback: function (done) {
             fetch('/api/maps/token')
@@ -24,4 +22,21 @@ function renderMap(lat, long) {
     let pin = new MarkerAnnotation(location, {color: "#00c756", title: title});
     map.showItems([pin]);
     map.region = region;
+}
+
+function getGames(id) {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/retailers/${id}/library`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                let data = JSON.parse(request.responseText)['data'];
+                console.log(data);
+            } else {
+            }
+        }
+    }
+
+    request.send();
 }
