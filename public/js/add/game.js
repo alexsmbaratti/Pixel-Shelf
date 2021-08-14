@@ -252,11 +252,11 @@ function updateCard(url) {
                 if (url == '/html/completion.html') {
                     document.getElementById('game-title').innerHTML = gameTitle;
                     document.getElementById('library-view').setAttribute("href", "/library/" + libraryID);
-                    document.getElementById('game-cover').setAttribute("src", "/library/" + gameID + "/cover");
+                    document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover");
                 } else if (url == '/html/wishlist_completion.html') {
                     document.getElementById('game-title').innerHTML = gameTitle;
                     document.getElementById('library-view').setAttribute("href", "/wishlist/" + libraryID);
-                    document.getElementById('game-cover').setAttribute("src", "/library/" + gameID + "/cover");
+                    document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover");
                 } else if (url == '/html/purchase_info.html') {
                     getRetailers();
                 }

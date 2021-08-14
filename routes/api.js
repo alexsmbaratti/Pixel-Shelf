@@ -368,6 +368,36 @@ router.get('/games/:id', function (req, res, next) {
     res.status(501).send({"status": 501, "msg": "Not implemented!"});
 });
 
+router.get('/games/:gameId/cover', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    const gameId = req.params.gameId;
+    driver.getGame(gameId).then(result => {
+        coverArtExists(gameId, req).then(exists => {
+            if (!exists) {
+                if (result.igdbURL != null) { // Cache the IGDB cover
+                    let igdbDriver = new IGDBDriver();
+                    igdbDriver.getCoverByURL(result.igdbURL, gameId).then(igdbRes => {
+                        res.redirect('/images/covers/' + gameId + '.jpg');
+                    }).catch(err => {
+                        console.log(err);
+                        res.redirect('/images/covers/placeholder.jpg');
+                    });
+                } else { // No IGDB link
+                    res.redirect('/images/covers/placeholder.jpg');
+                }
+            } else { // Art is already cached or user-uploaded
+                res.redirect('/images/covers/' + gameId + '.jpg');
+            }
+        }).catch(err => {
+            console.log(err);
+            res.redirect('/images/covers/placeholder.jpg');
+        });
+    }).catch(err => {
+        console.log(err);
+        res.redirect('/images/covers/placeholder.jpg');
+    });
+});
+
 router.get('/editions', function (req, res, next) {
     let upc = req.query.upc;
     let where = req.query.where;
@@ -621,6 +651,22 @@ router.get('/maps/token', function (req, res, next) {
 
 function sendError(res, err) {
     res.status(500).send({"status": 500, "error": err});
+}
+
+function coverArtExists(id, req) {
+    return new Promise(function (resolve, reject) {
+        axios.get(`${req.protocol}://${req.get('host')}/images/covers/${id}.jpg`)
+            .then(response => {
+                resolve(true);
+            })
+            .catch(err => {
+                if (err.response.status == 404) {
+                    resolve(false);
+                } else {
+                    reject(err);
+                }
+            });
+    });
 }
 
 module.exports = router;
