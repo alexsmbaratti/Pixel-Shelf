@@ -244,6 +244,72 @@ SQLite3Driver.prototype.getFigures = function getFigures(sortBy) {
     });
 }
 
+SQLite3Driver.prototype.getFigure = function getFigure(id) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT figure.id,
+                              amiibo.title,
+                              series.series,
+                              figure.timestamp,
+                              amiibo.msrp,
+                              figure.cost,
+                              figure.new,
+                              figure.inbox,
+                              amiibo.type,
+                              figure.retailerid,
+                              amiibo.seriesid,
+                              figure.amiiboid
+                       FROM amiibo,
+                            series,
+                            figure
+                       WHERE seriesid = series.id
+                         AND amiiboid = amiibo.id
+                         AND figure.id = ?
+                       LIMIT 1`;
+
+            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    let type;
+                    switch (row.type) {
+                        case 0:
+                            type = 'Figure';
+                            break;
+                        case 1:
+                            type = 'Card';
+                            break;
+                        case 2:
+                            type = 'Plush';
+                            break;
+                        default:
+                            type = 'Unknown Type';
+                    }
+
+                    resolve({
+                        "id": row.id,
+                        "title": row.title,
+                        "series": row.series,
+                        "dateAdded": row.timestamp,
+                        "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
+                        "msrp": row.msrp,
+                        "new": row.new == 1,
+                        "inbox": row.inbox == 1,
+                        "date": row.timestamp,
+                        "type": type,
+                        "amiiboID": row.amiiboid,
+                        "seriesID": row.seriesid,
+                        "retailerID": row.retailerid
+                    });
+                }
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {

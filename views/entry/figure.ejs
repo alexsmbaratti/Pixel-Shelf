@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('../partials/metadata') %>
+    <script src="/js/entry/figure.js"></script>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
+    <%
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var parsedDate;
+    if (entry.date === null) {
+        parsedDate = 'Unknown';
+    } else {
+        let date = new Date(entry.date);
+        parsedDate = months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
+    }
+    %>
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<div class="container">
+    <div class="tile is-ancestor">
+        <div class="tile pt-5">
+            <div class="tile is-parent is-vertical">
+                <article class="tile is-child box">
+                    <div class="columns">
+                        <div class="column is-one-fifth">
+                            <figure class="image">
+                                <img src="/api/amiibo/<%= entry.amiiboID %>/cover">
+                            </figure>
+                        </div>
+                        <div class="column">
+                            <h1 class="title"><%= entry.title %></h1>
+                            <div class="columns">
+                                <div class="column">
+                                    <h1 class="title is-5"><%= entry.series %></h1>
+                                    <h1 class="subtitle"><%= entry.type %></h1>
+                                </div>
+                                <div class="column is-one-fifth">
+                                    <figure id="rating-figure" class="image is-48x48"></figure>
+                                </div>
+                            </div>
+                            <div id="loading-div"></div>
+                            <div id="tags-div"></div>
+                            <br>
+                            <p id="description" class="has-text-light"></p>
+                            <br>
+                            <a href="<%= entry.igdbURL %>">
+                                <p id="igdb-link" class="has-text-link"></p>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                <div class="tile">
+                    <div class="tile is-child is-vertical pr-3">
+                        <article class="tile is-parent box is-vertical">
+                            <h1 class="title is-4">Figure Information</h1>
+                            <table class="table has-background-grey mr-6 ml-6">
+                                <tbody class="table-body has-background-grey has-text-centered">
+                                <tr>
+                                    <th>Date Added</th>
+                                    <td><%= parsedDate %></td>
+                                </tr>
+                                <tr>
+                                    <th>Condition</th>
+                                    <td><%= entry.new ? "New" : "Used" %></td>
+                                </tr>
+                                <tr>
+                                    <th>In Box</th>
+                                    <td>
+                                        <% if (entry.inbox) { %>
+                                            <span class="icon">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        <% } else { %>
+                                            <span class="icon">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </article>
+                    </div>
+                    <div class="tile is-child is-vertical pl-3">
+                        <article class="tile is-parent box is-vertical">
+                            <h1 class="title is-4">Cost Breakdown</h1>
+                            <div class="mr-3 ml-3">
+                                <canvas id="cost-chart" width="350" height="100"></canvas>
+                            </div>
+                        </article>
+                        <div class="tile is-child is-vertical">
+                            <article class="tile is-parent box is-vertical">
+                                <h1 class="title is-4">Retailer Information</h1>
+                                <% if (entry.retailerID != null) { %>
+                                    <table class="table has-background-grey mr-6 ml-6">
+                                        <tbody class="table-body has-background-grey has-text-centered">
+                                        <tr>
+                                            <th>Retailer</th>
+                                            <td><a href="/retailers/<%= entry.retailerID %>" id="retailer-text"></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Online Store</th>
+                                            <td>
+                                                <span class="icon">
+                                                    <i id="online-icon"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div id="library-map"></div>
+                                <% } else { %>
+                                    <h1 class="subtitle is-5">No Retailer Information</h1>
+                                <% } %>
+                            </article>
+                            <div class="tile is-child is-vertical">
+                                <article class="tile is-parent box is-vertical">
+                                    <h1 class="title is-4">Manage amiiboz</h1>
+                                    <div class="container">
+                                        <a href="/library/<%= id %>/edit">
+                                            <button class="button is-info">Edit</button>
+                                        </a>
+                                        <button id="delete-button" class="button is-danger"
+                                                onclick="deleteGame(<%= id %>)">Delete
+                                        </button>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    <% if (entry.retailerID != null) { %>
+    getRetailerInfo(<%= entry.retailerID %>);
+    <% } %>
+    renderCostChart(<%= entry.msrp == null ? 'null' : entry.msrp %>, <%= entry.cost == null ? 'null' : entry.cost %>, null);
+</script>
+</body>
+</html>
