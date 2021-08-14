@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('../partials/metadata') %>
+    <script src="/js/add/figure.js"></script>
+    <link rel="stylesheet" href="/stylesheets/styles.css">
+</head>
+<body>
+<%- include('../partials/navbar') %>
+<section class="hero is-primary is-small">
+    <div class="hero-body">
+        <p class="title">
+            Add an amiibo
+        </p>
+    </div>
+</section>
+
+<div class="container pt-5">
+    <ul class="steps has-content-centered">
+        <li id="series-info-segment" class="steps-segment is-active">
+            <span class="steps-marker"></span>
+            <div class="steps-content has-text-light">
+                <p class="is-size-5">Series Information</p>
+            </div>
+        </li>
+        <li id="amiibo-info-segment" class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content has-text-light">
+                <p class="is-size-5">amiibo Information</p>
+            </div>
+        </li>
+        <li id="purchase-info-segment" class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content has-text-light">
+                <p class="is-size-5">Purchase Information</p>
+            </div>
+        </li>
+        <li id="completion-segment" class="steps-segment">
+            <span class="steps-marker"></span>
+            <div class="steps-content has-text-light">
+                <p class="is-size-5">Complete</p>
+            </div>
+        </li>
+    </ul>
+
+    <div class="card">
+        <div id="add-card-div" class="card-content">
+            <div class="content">
+                <h1 class="title has-text-light">Series Information</h1>
+                <div class="field">
+                    <label class="label">Series</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="series-selection" onchange="seriesSelect()">
+                                <option value="-2">Select Series</option>
+                                <% series.forEach(function(oneseries) { %>
+                                    <option value="<%= oneseries.id %>"><%= oneseries.series %></option>
+                                <% }); %>
+                                <option value="-1">-- New Series --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="add-series-div" class="is-hidden">
+                    <div class="field">
+                        <label class="label">New Series Name</label>
+                        <div class="control">
+                            <input required id="series-text" class="input" type="text" onKeyUp="seriesSelect()">
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="control">
+                    <button disabled id="submit-button" class="button is-link" onclick="submitSeriesInfo()">Next
+                    </button>
+                </div>
+
+                <div id="warning-div"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

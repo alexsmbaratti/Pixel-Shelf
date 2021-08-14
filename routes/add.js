@@ -16,10 +16,11 @@ router.get('/retailer', function (req, res, next) {
 });
 
 router.get('/amiibo', function (req, res, next) {
-    res.status(501);
-    res.render('error', {
-        status: 501,
-        message: 'This page has not been implemented yet but is planned to be added in a future build.'
+    let driver = new SQLite3Driver();
+    driver.getSeries().then(result => {
+        res.render('add/figure', {title: 'Pixel Shelf', series: result});
+    }).catch(err => {
+        res.render('error', {error: err});
     });
 });
 

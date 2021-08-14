@@ -1409,9 +1409,29 @@ SQLite3Driver.prototype.countFiguresByDateAdded = function countFiguresByDateAdd
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
+            });
+        });
+    });
+}
 
-                resolve(res);
+SQLite3Driver.prototype.getSeries = function getSeries() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT *
+                       FROM series
+                       ORDER BY series ASC`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res);
+                }
             });
         });
     });
