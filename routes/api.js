@@ -289,11 +289,19 @@ router.get('/retailers/:retailerId/library', function (req, res, next) {
 
 router.get('/figures/size', function (req, res, next) {
     let driver = new SQLite3Driver();
-    driver.getFigureSize().then(result => {
-        res.status(200).send({"status": 200, "size": result});
-    }).catch(err => {
-        sendError(res, err);
-    });
+    if (req.query.by === 'date-added') {
+        driver.countFiguresByDateAdded().then(result => {
+            res.status(200).send({"status": 200, "data": result});
+        }).catch(err => {
+            sendError(res, err);
+        });
+    } else {
+        driver.getFigureSize().then(result => {
+            res.status(200).send({"status": 200, "size": result});
+        }).catch(err => {
+            sendError(res, err);
+        });
+    }
 });
 
 router.delete('/library/:libraryId', function (req, res, next) {

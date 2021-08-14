@@ -5,6 +5,7 @@ node_modules
 public/stylesheets
 public/images/covers
 public/images/ratings
+public/images/amiibo/
 config.json
 eink/__pycache__
 eink/lib
