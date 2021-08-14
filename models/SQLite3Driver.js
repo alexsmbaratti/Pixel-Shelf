@@ -47,20 +47,20 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = [];
-                rows.forEach((row) => {
-                    result.push({
-                        "id": row.id,
-                        "title": row.title,
-                        "platform": row.name,
-                        "dateAdded": row.timestamp,
-                        "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
-                        "edition": row.edition
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "title": row.title,
+                            "platform": row.name,
+                            "dateAdded": row.timestamp,
+                            "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
+                            "edition": row.edition
+                        });
                     });
-                });
-
-                resolve(result);
+                    resolve(result);
+                }
             });
         });
     });
@@ -110,20 +110,21 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = [];
-                rows.forEach((row) => {
-                    result.push({
-                        "id": row.id,
-                        "title": row.title,
-                        "platform": row.name,
-                        "dateAdded": row.timestamp,
-                        "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
-                        "edition": row.edition
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "title": row.title,
+                            "platform": row.name,
+                            "dateAdded": row.timestamp,
+                            "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
+                            "edition": row.edition
+                        });
                     });
-                });
 
-                resolve(result);
+                    resolve(result);
+                }
             });
         });
     });
@@ -165,19 +166,79 @@ SQLite3Driver.prototype.getWishlist = function getWishlist(sortBy) {
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = [];
-                rows.forEach((row) => {
-                    result.push({
-                        "id": row.id,
-                        "title": row.title,
-                        "platform": row.name,
-                        "msrp": row.msrp,
-                        "edition": row.edition
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "title": row.title,
+                            "platform": row.name,
+                            "msrp": row.msrp,
+                            "edition": row.edition
+                        });
                     });
-                });
 
-                resolve(result);
+                    resolve(result);
+                }
+            });
+        });
+    });
+}
+
+SQLite3Driver.prototype.getFigures = function getFigures(sortBy) {
+    let parsedSortBy;
+    switch (sortBy) {
+        case 'title':
+            parsedSortBy = "amiibo.title ASC";
+            break;
+        case 'series':
+            parsedSortBy = "series.series ASC, amiibo.title ASC";
+            break;
+        case 'dateAdded':
+            parsedSortBy = "figure.timestamp ASC";
+            break;
+        case 'cost':
+            parsedSortBy = "figure.cost ASC";
+            break;
+        default:
+            parsedSortBy = "amiibo.title ASC";
+    }
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT figure.id,
+                              amiibo.title,
+                              series.series,
+                              figure.timestamp,
+                              amiibo.msrp,
+                              figure.cost,
+                              figure.new,
+                              figure.inbox
+                       FROM amiibo,
+                            series,
+                            figure
+                       WHERE seriesid = series.id
+                         AND amiiboid = amiibo.id
+                       ORDER BY ${parsedSortBy}`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "title": row.title,
+                            "series": row.series,
+                            "dateAdded": row.timestamp,
+                            "cost": (Math.round(row.cost * 100) / 100).toFixed(2)
+                        });
+                    });
+
+                    resolve(result);
+                }
             });
         });
     });

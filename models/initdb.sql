@@ -53,8 +53,8 @@ CREATE TABLE amiibo
 
 CREATE TABLE series
 (
-    title TEXT,
-    id    INTEGER PRIMARY KEY AUTOINCREMENT
+    series TEXT,
+    id     INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
 CREATE TABLE figure
@@ -63,9 +63,11 @@ CREATE TABLE figure
     timestamp  TEXT,
     retailerid INTEGER,
     new        INTEGER,
-    box        INTEGER,
+    inbox      INTEGER,
+    amiiboid   INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (retailerid) REFERENCES retailer (id)
+    FOREIGN KEY (retailerid) REFERENCES retailer (id),
+    FOREIGN KEY (amiiboid) REFERENCES amiibo (id)
 );
 
 CREATE TABLE retailer

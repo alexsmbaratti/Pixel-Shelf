@@ -230,8 +230,17 @@ router.put('/library/:libraryId/progress', function (req, res, next) {
     });
 });
 
-router.get('/amiibo', function (req, res, next) {
-    res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+router.get('/figures', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    let sortBy = req.query.sortBy;
+    if (sortBy === null) {
+        sortBy = 'title';
+    }
+    driver.getFigures(sortBy).then(result => {
+        res.status(200).send({"status": 200, "figures": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
 });
 
 router.get('/retailers', function (req, res, next) {
@@ -278,7 +287,7 @@ router.get('/retailers/:retailerId/library', function (req, res, next) {
     });
 });
 
-router.get('/amiibo/size', function (req, res, next) {
+router.get('/figures/size', function (req, res, next) {
     let driver = new SQLite3Driver();
     driver.getFigureSize().then(result => {
         res.status(200).send({"status": 200, "size": result});

@@ -29,7 +29,7 @@ def getFigureCount():
     global cached_figure_count
     print('Fetching figure count from server...')
     try:
-        r = requests.get(url = api_url + '/api/amiibo/size')
+        r = requests.get(url = api_url + '/api/figures/size')
         data = r.json()
         count = data['size']
         cached_figure_count = count
