@@ -45,6 +45,8 @@ CREATE TABLE amiibo
 (
     title    TEXT,
     seriesid INTEGER,
+    msrp     REAL,
+    type     INTEGER,
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (seriesid) REFERENCES series (id)
 );
@@ -58,9 +60,7 @@ CREATE TABLE series
 CREATE TABLE figure
 (
     cost       REAL,
-    month      INTEGER,
-    day        INTEGER,
-    year       INTEGER,
+    timestamp  TEXT,
     retailerid INTEGER,
     new        INTEGER,
     box        INTEGER,
