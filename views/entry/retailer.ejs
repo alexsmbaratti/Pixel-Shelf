@@ -20,6 +20,11 @@
                 <article class="tile is-child box">
                     <h1 id="title-text" class="title"><%= entry.retailer %></h1>
                     <h1 class="subtitle"><%= entry.subtext %></h1>
+                    <% if (entry.url) { %>
+                        <a href="<%= entry.url %>">
+                            <p class="has-text-link">View Website</p>
+                        </a>
+                    <% } %>
                     <% if (!entry.online) { %>
                         <div id="div-map">
                             <div id="index-map"></div>
