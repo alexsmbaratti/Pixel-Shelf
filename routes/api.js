@@ -415,6 +415,23 @@ router.get('/games/:gameId/cover', function (req, res, next) {
     });
 });
 
+router.get('/amiibo/:amiiboID/cover', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    const amiiboID = req.params.amiiboID;
+    figureArtExists(amiiboID, req).then(exists => {
+        if (!exists) {
+            res.redirect('/images/amiibo/placeholder.png');
+        } else { // Art is already cached or user-uploaded
+            res.redirect('/images/amiibo/' + amiiboID + '.png');
+        }
+    }).catch(err => {
+        console.log(err);
+        res.redirect('/images/covers/placeholder.jpg');
+    });
+
+})
+;
+
 router.get('/editions', function (req, res, next) {
     let upc = req.query.upc;
     let where = req.query.where;
@@ -708,6 +725,22 @@ function sendError(res, err) {
 function coverArtExists(id, req) {
     return new Promise(function (resolve, reject) {
         axios.get(`${req.protocol}://${req.get('host')}/images/covers/${id}.jpg`)
+            .then(response => {
+                resolve(true);
+            })
+            .catch(err => {
+                if (err.response.status == 404) {
+                    resolve(false);
+                } else {
+                    reject(err);
+                }
+            });
+    });
+}
+
+function figureArtExists(id, req) {
+    return new Promise(function (resolve, reject) {
+        axios.get(`${req.protocol}://${req.get('host')}/images/amiibo/${id}.png`)
             .then(response => {
                 resolve(true);
             })

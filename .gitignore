@@ -14,3 +14,4 @@ secrets/
 keys/
 
 !public/images/covers/placeholder.jpg
+!public/images/amiibo/placeholder.png
