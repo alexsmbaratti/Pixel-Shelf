@@ -15,7 +15,6 @@ router.get('/:figureId', function (req, res, next) {
       res.status(404);
       res.render('404', {title: 'Pixel Shelf', type: 'amiibo'});
     } else {
-      console.log(result)
       res.render('entry/figure', {
         title: result.title + ' - Pixel Shelf',
         entry: result,

@@ -55,7 +55,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                             "title": row.title,
                             "platform": row.name,
                             "dateAdded": row.timestamp,
-                            "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
+                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
                             "edition": row.edition
                         });
                     });
@@ -118,7 +118,7 @@ SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
                             "title": row.title,
                             "platform": row.name,
                             "dateAdded": row.timestamp,
-                            "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
+                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
                             "edition": row.edition
                         });
                     });
@@ -233,7 +233,7 @@ SQLite3Driver.prototype.getFigures = function getFigures(sortBy) {
                             "title": row.title,
                             "series": row.series,
                             "dateAdded": row.timestamp,
-                            "cost": (Math.round(row.cost * 100) / 100).toFixed(2)
+                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2)
                         });
                     });
 
@@ -297,8 +297,8 @@ SQLite3Driver.prototype.getFigure = function getFigure(id) {
                         "title": row.title,
                         "series": row.series,
                         "dateAdded": row.timestamp,
-                        "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
-                        "msrp": row.msrp,
+                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
+                        "msrp": row.msrp === null ? null : (Math.round(row.msrp * 100) / 100).toFixed(2),
                         "new": row.new == 1,
                         "inbox": row.inbox == 1,
                         "date": row.timestamp,
@@ -1212,7 +1212,7 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
                         "title": row.title,
                         "platform": row.name,
                         "dateAdded": row.timestamp,
-                        "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
+                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
                         "edition": row.edition,
                         "gameID": row.gameid
                     });
@@ -1277,7 +1277,7 @@ SQLite3Driver.prototype.getCompleted = function getCompleted(sortBy) {
                         "title": row.title,
                         "platform": row.name,
                         "dateAdded": row.timestamp,
-                        "cost": (Math.round(row.cost * 100) / 100).toFixed(2),
+                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
                         "edition": row.edition,
                         "gameID": row.gameid
                     });
