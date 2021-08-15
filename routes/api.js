@@ -549,6 +549,15 @@ router.post('/amiibo', function (req, res) {
     });
 });
 
+router.post('/figures', function (req, res) {
+    let driver = new SQLite3Driver();
+    driver.addFigure(req.body).then(addResult => {
+        res.status(200).send({"status": 200, "id": addResult});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.post('/retailers', function (req, res) {
     let driver = new SQLite3Driver();
     driver.addRetailer(req.body).then(addResult => {

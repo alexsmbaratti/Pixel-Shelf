@@ -5,6 +5,9 @@
     <%- include('../partials/metadata') %>
     <script src="/js/add/figure.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script>
+        getRetailers();
+    </script>
 </head>
 <body>
 <%- include('../partials/navbar') %>
@@ -135,7 +138,8 @@
 
                     <div class="field" onclick="dateCheck()">
                         <input id="date-check" type="checkbox" onclick="dateCheck()">
-                        <label class="checkbox has-text-light" onclick="dateCheck()">I don't know when I bought it</label>
+                        <label class="checkbox has-text-light" onclick="dateCheck()">I don't know when I bought
+                            it</label>
                     </div>
 
                     <div class="field">
@@ -172,7 +176,7 @@
                         <label class="label">Retailer</label>
                         <div class="control">
                             <div class="select">
-                                <select id="retailer-selection" onchange="toggleRetailer()">
+                                <select id="retailer-selection">
                                     <option value="-2">Unknown</option>
                                 </select>
                             </div>
@@ -181,7 +185,8 @@
 
                     <br>
                     <div class="control">
-                        <button disabled id="purchase-submit-button" class="button is-link" onclick="submitPurchaseInfo()">
+                        <button id="purchase-submit-button" class="button is-link"
+                                onclick="postFigure()">
                             Next
                         </button>
                     </div>
@@ -191,5 +196,6 @@
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>
