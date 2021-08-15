@@ -224,7 +224,9 @@ function getSizeByDateAdded() {
                             y: runningTotal
                         });
                         growthChart.data.datasets[0].data = points;
-                        growthChart.options.scales.xAxes[0].time.min = earliestDate;
+                        if (earliestDate < growthChart.options.scales.xAxes[0].time.min) {
+                            growthChart.options.scales.xAxes[0].time.min = earliestDate;
+                        }
                         growthChart.update();
                     }
                 });
@@ -256,7 +258,9 @@ function getSizeByDateAdded() {
                             y: runningTotal
                         });
                         growthChart.data.datasets[1].data = points;
-                        growthChart.options.scales.xAxes[0].time.min = earliestDate;
+                        if (earliestDate < growthChart.options.scales.xAxes[0].time.min) {
+                            growthChart.options.scales.xAxes[0].time.min = earliestDate;
+                        }
                         growthChart.update();
                     }
                 });
