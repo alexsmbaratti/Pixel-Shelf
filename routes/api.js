@@ -523,6 +523,15 @@ router.post('/library', function (req, res) {
     });
 });
 
+router.post('/series', function (req, res) {
+    let driver = new SQLite3Driver();
+    driver.addSeries(req.body).then(addResult => {
+        res.status(200).send({"status": 200, "id": addResult});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.post('/retailers', function (req, res) {
     let driver = new SQLite3Driver();
     driver.addRetailer(req.body).then(addResult => {
