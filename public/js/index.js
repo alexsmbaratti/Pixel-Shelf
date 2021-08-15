@@ -1,3 +1,5 @@
+var growthChart = undefined;
+
 function getSize() {
     let request = new XMLHttpRequest();
     request.open('GET', `/api/library/size`);
@@ -122,13 +124,89 @@ function getSizeByProgress() {
 }
 
 function getSizeByDateAdded() {
-    let request = new XMLHttpRequest();
-    request.open('GET', `/api/library/size?by=date-added`);
+    growthChart = new Chart(document.getElementById('size-chart').getContext('2d'), {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: "Games",
+                scaleFontColor: "#FFFFFF",
+                borderColor: 'hsl(146, 100%, 39%)',
+                backgroundColor: 'hsla(146, 100%, 39%, .2)',
+                data: []
+            }, {
+                label: "amiibo",
+                scaleFontColor: "#FFFFFF",
+                borderColor: 'hsl(0, 100%, 39%)',
+                backgroundColor: 'hsla(0, 100%, 39%, .2)',
+                data: []
+            }]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            title: {
+                display: true,
+                fontColor: 'rgb(255, 255, 255)',
+                fontSize: 24
+            },
+            animation: {
+                tension: {
+                    duration: 1000,
+                    easing: 'linear',
+                    from: 1,
+                    to: 0,
+                    loop: true
+                }
+            },
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    distribution: 'linear',
+                    time: {
+                        max: Date.now()
+                    },
+                    ticks: {
+                        fontColor: 'rgb(255, 255, 255)'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontColor: 'rgb(255, 255, 255)',
+                        precision: 0
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    title: function (tooltipItem, data) {
+                        let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                        let date = new Date(tooltipItem[0]['label']);
+                        return months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
+                    },
+                    label: function (tooltipItem, data) {
+                        if (tooltipItem['datasetIndex'] == 0) {
+                            return data['datasets'][0]['data'][tooltipItem['index']]['y'] + ' Games';
+                        } else if (tooltipItem['datasetIndex'] == 1) {
+                            return data['datasets'][1]['data'][tooltipItem['index']]['y'] + ' amiibo';
+                        } else {
+                            return '';
+                        }
+                    }
+                },
+                displayColors: false
+            }
+        }
+    });
 
-    request.onreadystatechange = function () {
-        if (request.readyState === 4) {
-            let data = JSON.parse(request.responseText)['data'];
-            if (request.status === 200) {
+    let libraryGrowthRequest = new XMLHttpRequest();
+    libraryGrowthRequest.open('GET', `/api/library/size?by=date-added`);
+
+    libraryGrowthRequest.onreadystatechange = function () {
+        if (libraryGrowthRequest.readyState === 4) {
+            let data = JSON.parse(libraryGrowthRequest.responseText)['data'];
+            if (libraryGrowthRequest.status === 200) {
                 let points = [];
                 let runningTotal = 0;
                 let earliestDate = null;
@@ -145,78 +223,49 @@ function getSizeByDateAdded() {
                             x: new Date(progress['timestamp']),
                             y: runningTotal
                         });
-                    }
-                });
-
-                let chart = new Chart(document.getElementById('size-chart').getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        datasets: [{
-                            label: "Games",
-                            scaleFontColor: "#FFFFFF",
-                            borderColor: 'hsl(146, 100%, 39%)',
-                            backgroundColor: 'hsla(146, 100%, 39%, .2)',
-                            data: points
-                        }]
-                    },
-                    options: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            fontColor: 'rgb(255, 255, 255)',
-                            fontSize: 24
-                        },
-                        animation: {
-                            tension: {
-                                duration: 1000,
-                                easing: 'linear',
-                                from: 1,
-                                to: 0,
-                                loop: true
-                            }
-                        },
-                        scales: {
-                            xAxes: [{
-                                type: 'time',
-                                distribution: 'linear',
-                                time: {
-                                    min: earliestDate,
-                                    max: Date.now()
-                                },
-                                ticks: {
-                                    fontColor: 'rgb(255, 255, 255)'
-                                }
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontColor: 'rgb(255, 255, 255)',
-                                    precision: 0
-                                }
-                            }]
-                        },
-                        tooltips: {
-                            callbacks: {
-                                title: function (tooltipItem, data) {
-                                    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                                    let date = new Date(tooltipItem[0]['label']);
-                                    return months[date.getUTCMonth()] + ' ' + date.getUTCDate() + ', ' + date.getUTCFullYear();
-                                },
-                                label: function (tooltipItem, data) {
-                                    return data['datasets'][0]['data'][tooltipItem['index']]['y'] + ' Games';
-                                }
-                            },
-                            displayColors: false
-                        }
+                        growthChart.data.datasets[0].data = points;
+                        growthChart.options.scales.xAxes[0].time.min = earliestDate;
+                        growthChart.update();
                     }
                 });
             }
         }
     }
 
-    request.send();
+    let figureGrowthRequest = new XMLHttpRequest();
+    figureGrowthRequest.open('GET', `/api/figures/size?by=date-added`);
+
+    figureGrowthRequest.onreadystatechange = function () {
+        if (figureGrowthRequest.readyState === 4) {
+            let data = JSON.parse(figureGrowthRequest.responseText)['data'];
+            if (figureGrowthRequest.status === 200) {
+                let points = [];
+                let runningTotal = 0;
+                let earliestDate = null;
+
+                data.forEach(progress => {
+                    if (progress['timestamp'] === null) {
+                        runningTotal += progress['COUNT(figure.id)'];
+                    } else {
+                        if (earliestDate === null) {
+                            earliestDate = new Date(progress['timestamp']);
+                        }
+                        runningTotal += progress['COUNT(figure.id)'];
+                        points.push({
+                            x: new Date(progress['timestamp']),
+                            y: runningTotal
+                        });
+                        growthChart.data.datasets[1].data = points;
+                        growthChart.options.scales.xAxes[0].time.min = earliestDate;
+                        growthChart.update();
+                    }
+                });
+            }
+        }
+    }
+
+    libraryGrowthRequest.send();
+    figureGrowthRequest.send();
 }
 
 function getRandomPlayingGame() {

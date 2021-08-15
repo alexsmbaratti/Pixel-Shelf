@@ -9,12 +9,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
     <script>
-        getSizeByPlatforms();
         getSize();
         getRandomPlayingGame();
         getBacklog();
         getSizeByProgress();
-        getSizeByDateAdded();
+        getSizeByPlatforms();
     </script>
 </head>
 <body>
@@ -105,5 +104,8 @@
 <div class="is-hidden-tablet">
     <%- include('mobile/index') %>
 </div>
+<script>
+    getSizeByDateAdded();
+</script>
 </body>
 </html>
