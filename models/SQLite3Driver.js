@@ -1749,6 +1749,32 @@ SQLite3Driver.prototype.getLibraryEntriesFromRetailer = function getLibraryEntri
     });
 }
 
+SQLite3Driver.prototype.getFiguresFromRetailer = function getFiguresFromRetailer(id) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT figure.id, amiibo.title, series.series
+                       FROM figure,
+                            amiibo,
+                            series,
+                            retailer
+                       WHERE figure.retailerid = ?
+                         AND retailer.id = figure.retailerid
+                         AND figure.amiiboid = amiibo.id
+                         AND amiibo.seriesid = series.id
+                       ORDER BY amiibo.title ASC`;
+            SQLite3Driver.prototype.db.all(sql, [id], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve(res);
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getLibraryEntriesWithoutRetailer = function getLibraryEntriesWithoutRetailer() {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {

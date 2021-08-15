@@ -30,7 +30,7 @@ function getGames(id) {
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
-            let tableBody = document.getElementById("table-body");
+            let tableBody = document.getElementById("game-table-body");
             if (request.status === 200) {
                 let data = JSON.parse(request.responseText)['data'];
                 data.forEach(game => {
@@ -38,6 +38,34 @@ function getGames(id) {
                     link.setAttribute("href", `/library/${game.id}`);
                     let title = document.createElement("th");
                     link.innerHTML = game.title;
+                    title.appendChild(link);
+
+                    let row = document.createElement("tr");
+                    row.appendChild(title);
+                    tableBody.appendChild(row);
+                });
+            } else {
+            }
+        }
+    }
+
+    request.send();
+}
+
+function getFigures(id) {
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/retailers/${id}/figures`);
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let tableBody = document.getElementById("figure-table-body");
+            if (request.status === 200) {
+                let data = JSON.parse(request.responseText)['data'];
+                data.forEach(figure => {
+                    let link = document.createElement("a");
+                    link.setAttribute("href", `/amiibo/${figure.id}`);
+                    let title = document.createElement("th");
+                    link.innerHTML = figure.title;
                     title.appendChild(link);
 
                     let row = document.createElement("tr");

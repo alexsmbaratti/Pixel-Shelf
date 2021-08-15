@@ -8,6 +8,7 @@
     <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
     <script>
         getGames(<%= entry.id %>);
+        getFigures(<%= entry.id %>);
     </script>
 </head>
 <body>
@@ -39,10 +40,24 @@
                                     <th>Game</th>
                                 </tr>
                                 </thead>
-                                <tbody id="table-body">
+                                <tbody id="game-table-body">
                                 </tbody>
                             </table>
                         </article>
+                        <div class="tile is-child is-vertical">
+                            <article class="tile is-parent box is-vertical">
+                                <h1 class="title is-4">amiibo Purchased Here</h1>
+                                <table class="table is-hoverable is-striped is-fullwidth">
+                                    <thead>
+                                    <tr>
+                                        <th>amiibo</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="figure-table-body">
+                                    </tbody>
+                                </table>
+                            </article>
+                        </div>
                     </div>
                     <div class="tile is-child is-vertical pl-3">
                         <div class="tile is-child is-vertical">

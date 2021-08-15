@@ -287,6 +287,15 @@ router.get('/retailers/:retailerId/library', function (req, res, next) {
     });
 });
 
+router.get('/retailers/:retailerId/figures', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getFiguresFromRetailer(req.params.retailerId).then(result => {
+        res.status(200).send({"status": 200, "data": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.get('/figures/size', function (req, res, next) {
     let driver = new SQLite3Driver();
     if (req.query.by === 'date-added') {
