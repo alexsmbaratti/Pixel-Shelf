@@ -27,10 +27,12 @@ function seriesSelect() {
 
 function submitSeriesInfo() {
     let selectedValue = document.getElementById('series-selection').value;
+    let seriesSelect = document.getElementById('series-selection');
     if (selectedValue == -1) {
         postSeries();
     } else if (selectedValue >= 0) {
         seriesID = selectedValue;
+        document.getElementById('amiibo-series').innerHTML = seriesSelect[seriesSelect.selectedIndex].innerHTML;
         swapDiv('series-div', 'amiibo-div');
         document.getElementById('amiibo-info-segment').setAttribute('class', 'steps-segment is-active');
         document.getElementById('series-info-segment').setAttribute('class', 'steps-segment');
@@ -57,6 +59,7 @@ function postSeries() {
                 swapDiv('series-div', 'amiibo-div');
                 document.getElementById('amiibo-info-segment').setAttribute('class', 'steps-segment is-active');
                 document.getElementById('series-info-segment').setAttribute('class', 'steps-segment');
+                document.getElementById('amiibo-series').innerHTML = document.getElementById('series-text').value;
             } else {
                 button.setAttribute("class", "button is-link is-danger");
                 button.disabled = false;
@@ -99,6 +102,7 @@ function postAmiibo() {
                 swapDiv('amiibo-div', 'purchase-div');
                 document.getElementById('purchase-info-segment').setAttribute('class', 'steps-segment is-active');
                 document.getElementById('amiibo-info-segment').setAttribute('class', 'steps-segment');
+                document.getElementById('amiibo-title').innerHTML = document.getElementById('amiibo-text').value;
             } else {
                 button.setAttribute("class", "button is-link is-danger");
                 button.disabled = false;
@@ -149,6 +153,7 @@ function postFigure() {
                 swapDiv('purchase-div', 'completion-div');
                 document.getElementById('completion-segment').setAttribute('class', 'steps-segment is-active');
                 document.getElementById('purchase-info-segment').setAttribute('class', 'steps-segment');
+                document.getElementById('library-view').setAttribute('href', '/amiibo/' + figureID);
             } else {
                 button.setAttribute("class", "button is-link is-danger");
                 button.disabled = false;
