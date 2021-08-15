@@ -285,6 +285,9 @@ SQLite3Driver.prototype.getFigure = function getFigure(id) {
                         case 2:
                             type = 'Plush';
                             break;
+                        case 3:
+                            type = 'Other';
+                            break;
                         default:
                             type = 'Unknown Type';
                     }
@@ -606,6 +609,28 @@ SQLite3Driver.prototype.addSeries = function addSeries(json) {
                 });
             });
         }
+    });
+}
+
+SQLite3Driver.prototype.addAmiibo = function addAmiibo(json) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
+            if (err) {
+                reject(err);
+            }
+            SQLite3Driver.prototype.db.run(`INSERT
+                                            INTO amiibo
+                                            VALUES (?, ?, ?, ?, ?)`, [json.title, json.seriesID, json.msrp, json.type], function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let amiiboID = this.lastID;
+                    console.log(`A amiibo entry was inserted with ID ${amiiboID}`);
+                    resolve(amiiboID);
+                }
+            });
+        });
+
     });
 }
 
@@ -1346,6 +1371,31 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
                     resolve({"found": false});
                 } else {
                     resolve({"found": true, "id": res[0].id});
+                }
+            });
+        });
+    });
+}
+
+SQLite3Driver.prototype.lookupAmiibo = function lookupAmiibo(name, seriesID) {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT *
+                       FROM amiibo
+                       WHERE title = ?
+                         AND seriesid = ? `;
+            SQLite3Driver.prototype.db.all(sql, [name, seriesID], (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    if (res == null || res.length < 1) {
+                        resolve({"found": false});
+                    } else {
+                        resolve({"found": true, "id": res[0].id});
+                    }
                 }
             });
         });

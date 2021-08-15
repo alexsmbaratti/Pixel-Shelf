@@ -532,6 +532,23 @@ router.post('/series', function (req, res) {
     });
 });
 
+router.post('/amiibo', function (req, res) {
+    let driver = new SQLite3Driver();
+    driver.lookupAmiibo(req.body.title, req.body.seriesID).then(result => {
+        if (result.found === true) {
+            res.status(200).send({"status": 200, "id": result.id});
+        } else {
+            driver.addAmiibo(req.body).then(addResult => {
+                res.status(200).send({"status": 200, "id": addResult});
+            }).catch(err => {
+                sendError(res, err);
+            });
+        }
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.post('/retailers', function (req, res) {
     let driver = new SQLite3Driver();
     driver.addRetailer(req.body).then(addResult => {
