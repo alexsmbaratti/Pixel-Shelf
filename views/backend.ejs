@@ -11,6 +11,7 @@
         pingEndpoint('/api/db', 'db-level', 'db-loader');
         pingEndpoint('/api/igdb', 'igdb-level', 'igdb-loader');
         pingEndpoint('/api/thermal-printer', 'thermal-printer-level', 'thermal-printer-loader');
+        pingEndpoint('https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js', 'maps-level', 'maps-loader');
         fetchSystemInformation();
         maintenanceEndpointFetch('/api/games?where=no-library', 'games-no-library');
         maintenanceEndpointFetch('/api/games?where=no-igdb', 'games-no-igdb');
@@ -89,6 +90,10 @@
                                 <nav id="igdb-level" class="level">
                                     <p class="has-text-light">IGDB</p>
                                     <div id="igdb-loader" class="loader"></div>
+                                </nav>
+                                <nav id="maps-level" class="level">
+                                    <p class="has-text-light">Apple Maps</p>
+                                    <div id="maps-loader" class="loader"></div>
                                 </nav>
                                 <nav id="thermal-printer-level" class="level">
                                     <p class="has-text-light">Thermal Printer</p>
