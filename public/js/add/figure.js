@@ -165,7 +165,7 @@ function postFigure() {
         "cost": cost,
         "timestamp": timestamp,
         "condition": conditionSelect.selectedIndex == 0,
-        "box": inBox,
+        "inbox": inBox,
         "retailerID": retailerID,
         "amiiboID": amiiboID
     }));
