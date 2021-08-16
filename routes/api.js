@@ -101,7 +101,12 @@ router.get('/library/backlog', function (req, res, next) {
 });
 
 router.get('/export', function (req, res, next) {
-    res.status(501).send({"status": 501, "msg": "Not Implemented!"});
+    let driver = new SQLite3Driver();
+    driver.createBackup().then(result => {
+        res.download(`${__dirname}/../models/backups/${result}`, result);
+    }).catch(err => {
+        sendError(res, err);
+    });
 });
 
 router.get('/library/playing', function (req, res, next) {

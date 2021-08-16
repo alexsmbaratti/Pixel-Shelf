@@ -1,4 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
 
 function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
@@ -1799,9 +1800,19 @@ SQLite3Driver.prototype.getLibraryEntriesWithoutRetailer = function getLibraryEn
     });
 }
 
-SQLite3Driver.prototype.exportDB = function exportDB() {
+SQLite3Driver.prototype.createBackup = function createBackup() {
     return new Promise(function (resolve, reject) {
-        reject("Not implemented!");
+        let timestamp = new Date(Date.now()).toISOString();
+        timestamp = timestamp.split('.')[0];
+        timestamp = timestamp.split(':').join('-');
+        let destFileName = "backup-" + timestamp + ".pixelshelf";
+        fs.copyFile(SQLite3Driver.prototype.dbName, "./models/backups/" + destFileName, (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(destFileName);
+            }
+        });
     });
 }
 

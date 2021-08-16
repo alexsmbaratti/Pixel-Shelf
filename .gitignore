@@ -1,6 +1,7 @@
 node_modules
 .idea
 *.db
+/models/backups
 /identifier.sqlite
 public/stylesheets
 public/images/covers
@@ -15,3 +16,4 @@ keys/
 
 !public/images/covers/placeholder.jpg
 !public/images/amiibo/placeholder.png
+!models/backups/README.txt

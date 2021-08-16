@@ -1,0 +1,1 @@
+This directory is used to store backups of the database upon user request.
