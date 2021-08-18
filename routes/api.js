@@ -109,6 +109,15 @@ router.get('/export', function (req, res, next) {
     });
 });
 
+router.get('/db/stats', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.getDBStats().then(result => {
+        res.status(200).send({"status": 200, "stats": result});
+    }).catch(err => {
+        sendError(res, err);
+    });
+});
+
 router.get('/library/playing', function (req, res, next) {
     let sortBy = req.query.sortBy;
     if (sortBy === null) {

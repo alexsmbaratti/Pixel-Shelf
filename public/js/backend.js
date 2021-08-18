@@ -137,3 +137,34 @@ function toggleModal(item, data) {
         modal.setAttribute('class', 'modal is-active');
     }
 }
+
+function dbStatsFetch() {
+    let request = new XMLHttpRequest();
+    request.open('GET', '/api/db/stats');
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 4) {
+            let rowData = document.getElementById('db-size-data');
+            let loader = document.getElementById('db-size-loader');
+
+            let data = JSON.parse(request.responseText);
+            loader.remove();
+            if (request.status === 200) {
+                let title = document.getElementById('db-size-title');
+                let text = document.createElement("p");
+                let sizeInMB = (data['stats']['size'] / 1048576).toFixed(2);
+                text.innerHTML = sizeInMB + ' MB';
+                rowData.appendChild(text);
+            } else {
+                let span = document.createElement("span");
+                let icon = document.createElement("icon");
+                span.setAttribute("class", 'icon has-text-warning');
+                icon.setAttribute("class", 'fas fa-exclamation-triangle fa-lg');
+                span.appendChild(icon);
+                rowData.appendChild(span);
+            }
+        }
+    }
+
+    request.send();
+}

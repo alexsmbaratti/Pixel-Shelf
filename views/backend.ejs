@@ -20,6 +20,7 @@
         maintenanceEndpointFetch('/api/library?where=no-cost', 'library-no-cost');
         maintenanceEndpointFetch('/api/library?where=no-date-added', 'library-no-date-added');
         maintenanceEndpointFetch('/api/library?where=no-retailer', 'library-no-retailer');
+        dbStatsFetch();
     </script>
 </head>
 <body>
@@ -137,7 +138,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th  id="games-no-igdb-title">Games without IGDB Metadata</th>
+                                        <th id="games-no-igdb-title">Games without IGDB Metadata</th>
                                         <td id="games-no-igdb-data">
                                             <div id="games-no-igdb-loader" class="loader"></div>
                                         </td>
@@ -168,6 +169,16 @@
                     <div class="tile is-child is-vertical pl-3">
                         <article class="tile is-parent box is-vertical">
                             <h1 class="title is-4">Database</h1>
+                            <table class="table has-background-grey">
+                                <tbody class="table-body has-background-grey">
+                                <tr>
+                                    <th id="db-size-title">Database Size (MB)</th>
+                                    <td id="db-size-data">
+                                        <div id="db-size-loader" class="loader"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                             <a href="/export">
                                 <button class="button is-success is-fullwidth">Create Backup</button>
                             </a>
@@ -200,7 +211,9 @@
                                     <button style="float:right; width:10%;" class="button">Edit</button>
                                 </div>
 
-                                <button id="request-token-button" class="button is-warning is-fullwidth" onclick="requestNewToken()">Generate New Token</button>
+                                <button id="request-token-button" class="button is-warning is-fullwidth"
+                                        onclick="requestNewToken()">Generate New Token
+                                </button>
                                 <a href="https://api-docs.igdb.com">
                                     <button class="button is-info is-fullwidth">View Documentation</button>
                                 </a>
@@ -212,7 +225,8 @@
                                     <div class="field">
                                         <label class="label">Key ID</label>
                                         <div class="control">
-                                            <input disabled style="float:left; width:90%;" id="key-id-text" class="input"
+                                            <input disabled style="float:left; width:90%;" id="key-id-text"
+                                                   class="input"
                                                    type="text" placeholder="">
                                         </div>
                                         <button style="float:right; width:10%;" class="button">Edit</button>

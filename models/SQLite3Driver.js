@@ -1839,6 +1839,18 @@ SQLite3Driver.prototype.createBackup = function createBackup() {
     });
 }
 
+SQLite3Driver.prototype.getDBStats = function getDBStats() {
+    return new Promise(function (resolve, reject) {
+        fs.stat(SQLite3Driver.prototype.dbName, (err, res) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(res);
+            }
+        });
+    });
+}
+
 SQLite3Driver.prototype.checkStatus = function checkStatus() {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
