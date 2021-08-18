@@ -190,19 +190,22 @@ SQLite3Driver.prototype.getFigures = function getFigures(sortBy) {
     let parsedSortBy;
     switch (sortBy) {
         case 'title':
-            parsedSortBy = "amiibo.title ASC";
+            parsedSortBy = "amiibo.title ASC, series.series ASC";
             break;
         case 'series':
             parsedSortBy = "series.series ASC, amiibo.title ASC";
             break;
         case 'dateAdded':
-            parsedSortBy = "figure.timestamp ASC";
+            parsedSortBy = "figure.timestamp ASC, amiibo.title ASC, series.series ASC";
             break;
         case 'cost':
-            parsedSortBy = "figure.cost ASC";
+            parsedSortBy = "figure.cost ASC, amiibo.title ASC, series.series ASC";
+            break;
+        case 'type':
+            parsedSortBy = "amiibo.type ASC, amiibo.title ASC, series.series ASC";
             break;
         default:
-            parsedSortBy = "amiibo.title ASC";
+            parsedSortBy = "amiibo.title ASC, series.series ASC";
     }
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
@@ -216,6 +219,7 @@ SQLite3Driver.prototype.getFigures = function getFigures(sortBy) {
                               amiibo.msrp,
                               figure.cost,
                               figure.new,
+                              amiibo.type,
                               figure.inbox
                        FROM amiibo,
                             series,
@@ -229,10 +233,29 @@ SQLite3Driver.prototype.getFigures = function getFigures(sortBy) {
                 } else {
                     let result = [];
                     rows.forEach((row) => {
+                        let type;
+                        switch (row.type) {
+                            case 0:
+                                type = 'Figure';
+                                break;
+                            case 1:
+                                type = 'Card';
+                                break;
+                            case 2:
+                                type = 'Plush';
+                                break;
+                            case 3:
+                                type = 'Other';
+                                break;
+                            default:
+                                type = 'Unknown Type';
+                        }
+
                         result.push({
                             "id": row.id,
                             "title": row.title,
                             "series": row.series,
+                            "type": type,
                             "dateAdded": row.timestamp,
                             "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2)
                         });

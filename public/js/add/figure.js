@@ -44,7 +44,7 @@ function submitSeriesInfo() {
 }
 
 function postSeries() {
-    let newSeries = document.getElementById('series-text').value;
+    let newSeries = document.getElementById('series-text').value.trim();
 
     let request = new XMLHttpRequest();
     request.open('POST', `/api/series`);
@@ -111,10 +111,10 @@ function postAmiibo() {
     }
 
     request.send(JSON.stringify({
-        "title": document.getElementById('amiibo-text').value,
+        "title": document.getElementById('amiibo-text').value.trim(),
         "seriesID": seriesID,
-        "msrp": document.getElementById('msrp-text').value,
-        "type": document.getElementById('type-selection').value
+        "msrp": document.getElementById('msrp-text').value.trim(),
+        "type": document.getElementById('type-selection').value.trim()
     }));
 }
 

@@ -47,11 +47,15 @@ function fetchAmiibo(sortBy = "title") {
                     let cost = document.createElement("td");
                     cost.innerHTML = figure['cost'];
 
+                    let type = document.createElement("td");
+                    type.innerHTML = figure['type'];
+
                     let row = document.createElement("tr");
                     row.appendChild(title);
                     row.appendChild(series);
                     row.appendChild(dateAdded);
                     row.appendChild(cost);
+                    row.appendChild(type);
 
                     tableBody.appendChild(row);
                 });
