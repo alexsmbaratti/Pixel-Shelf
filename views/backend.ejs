@@ -20,6 +20,7 @@
         maintenanceEndpointFetch('/api/library?where=no-cost', 'library-no-cost');
         maintenanceEndpointFetch('/api/library?where=no-date-added', 'library-no-date-added');
         maintenanceEndpointFetch('/api/library?where=no-retailer', 'library-no-retailer');
+        maintenanceEndpointFetch('/api/figures?where=no-date-added', 'figure-no-date-added');
         dbStatsFetch();
     </script>
 </head>
@@ -147,6 +148,12 @@
                                         <th id="games-no-library-title">Games without Library Entries</th>
                                         <td id="games-no-library-data">
                                             <div id="games-no-library-loader" class="loader"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th id="figure-no-date-added-title">amiibo without a Date Added</th>
+                                        <td id="figure-no-date-added-data">
+                                            <div id="figure-no-date-added-loader" class="loader"></div>
                                         </td>
                                     </tr>
                                     <tr>

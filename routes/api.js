@@ -247,14 +247,28 @@ router.put('/library/:libraryId/progress', function (req, res, next) {
 router.get('/figures', function (req, res, next) {
     let driver = new SQLite3Driver();
     let sortBy = req.query.sortBy;
+    let where = req.query.where;
     if (sortBy === null) {
         sortBy = 'title';
     }
-    driver.getFigures(sortBy).then(result => {
-        res.status(200).send({"status": 200, "figures": result});
-    }).catch(err => {
-        sendError(res, err);
-    });
+    if (where === 'no-date-added') {
+        driver.getFiguresWithoutDateAdded().then(result => {
+            if (result != undefined) {
+                console.log(result)
+                res.status(200).send({"status": 200, "data": result});
+            } else {
+                sendError(res, "No result");
+            }
+        }).catch(err => {
+            sendError(res, err);
+        });
+    } else {
+        driver.getFigures(sortBy).then(result => {
+            res.status(200).send({"status": 200, "figures": result});
+        }).catch(err => {
+            sendError(res, err);
+        });
+    }
 });
 
 router.get('/retailers', function (req, res, next) {
