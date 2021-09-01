@@ -39,3 +39,12 @@ function getIGDBInfo(id) {
     }
     igdbRequest.send();
 }
+
+function toggleModal() {
+    let modal = document.getElementById('add-modal');
+    if (modal.getAttribute('class') === 'modal is-active') {
+        modal.setAttribute('class', 'modal');
+    } else {
+        modal.setAttribute('class', 'modal is-active');
+    }
+}
