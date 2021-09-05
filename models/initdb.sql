@@ -1,6 +1,6 @@
 CREATE TABLE game
 (
-    title      TEXT,
+    title      TEXT NOT NULL,
     platformid INTEGER,
     igdbURL    TEXT,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -9,7 +9,7 @@ CREATE TABLE game
 
 CREATE TABLE platform
 (
-    name    TEXT,
+    name    TEXT NOT NULL,
     brandid INTEGER,
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (brandid) REFERENCES brand (id)
@@ -17,7 +17,7 @@ CREATE TABLE platform
 
 CREATE TABLE edition
 (
-    edition     TEXT,
+    edition     TEXT NOT NULL,
     upc         TEXT,
     msrp        REAL,
     gameid      INTEGER,
@@ -32,10 +32,10 @@ CREATE TABLE library
     timestamp  TEXT,
     editionid  INTEGER,
     retailerid INTEGER,
-    new        INTEGER,
-    box        INTEGER,
-    manual     INTEGER,
-    progress   INTEGER,
+    new        INTEGER NOT NULL,
+    box        INTEGER NOT NULL,
+    manual     INTEGER NOT NULL,
+    progress   INTEGER NOT NULL,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id),
     FOREIGN KEY (retailerid) REFERENCES retailer (id)
@@ -43,7 +43,7 @@ CREATE TABLE library
 
 CREATE TABLE amiibo
 (
-    title    TEXT,
+    title    TEXT NOT NULL,
     seriesid INTEGER,
     msrp     REAL,
     type     INTEGER,
@@ -53,7 +53,7 @@ CREATE TABLE amiibo
 
 CREATE TABLE series
 (
-    series TEXT,
+    series TEXT NOT NULL,
     id     INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
@@ -62,8 +62,8 @@ CREATE TABLE figure
     cost       REAL,
     timestamp  TEXT,
     retailerid INTEGER,
-    new        INTEGER,
-    inbox      INTEGER,
+    new        INTEGER NOT NULL,
+    inbox      INTEGER NOT NULL,
     amiiboid   INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (retailerid) REFERENCES retailer (id),
@@ -72,9 +72,9 @@ CREATE TABLE figure
 
 CREATE TABLE retailer
 (
-    retailer TEXT,
+    retailer TEXT NOT NULL,
     subtext  TEXT,
-    online   INTEGER,
+    online   INTEGER NOT NULL,
     lat      REAL,
     long     REAL,
     url      TEXT,
@@ -83,7 +83,7 @@ CREATE TABLE retailer
 
 CREATE TABLE brand
 (
-    brand TEXT UNIQUE,
+    brand TEXT UNIQUE NOT NULL,
     id    INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
@@ -92,12 +92,4 @@ CREATE TABLE wishlist
     editionid INTEGER,
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id)
-);
-
-CREATE TABLE list
-(
-    gameid INTEGER UNIQUE,
-    status INTEGER,
-    id     INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (gameid) REFERENCES game (id)
 );
