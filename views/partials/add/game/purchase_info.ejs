@@ -65,6 +65,12 @@
 <script>
     let calendar = document.getElementById("calendar-input");
     let today = new Date(Date.now());
-    calendar.value = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay();
-    calendar.setAttribute("max", today.getFullYear() + '-' + today.getMonth() + '-' + today.getDay());
+
+    let year = today.getUTCFullYear();
+    let month = today.getUTCMonth() < 10 ? '0' + today.getUTCMonth() : today.getUTCMonth();
+    let day = today.getUTCDate() < 10 ? '0' + today.getUTCDate() : today.getUTCDate();
+    let fullDate = year + '-' + month + '-' + day;
+
+    calendar.value = fullDate;
+    calendar.setAttribute("max", fullDate);
 </script>
