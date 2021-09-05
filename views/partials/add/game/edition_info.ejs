@@ -1,0 +1,29 @@
+<h1 class="title has-text-light">Edition Information</h1>
+<div class="field">
+    <label class="label">Edition</label>
+    <div class="control">
+        <input required id="edition-text" class="input" type="text" placeholder="Defaults to Standard Edition">
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">MSRP</label>
+    <div class="control">
+        <input required id="msrp-text" class="input" type="number" min="0" step="any"
+               placeholder="How much does this normally cost?">
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">UPC</label>
+    <div class="control">
+        <input required id="upc-text" class="input" type="number"
+               placeholder="Type or scan the barcode on the package">
+    </div>
+</div>
+
+<div class="control">
+    <button id="edition-submit-button" class="button is-link" onclick="submitEditionInfo()">Next</button>
+</div>
+
+<div id="edition-warning-div"></div>

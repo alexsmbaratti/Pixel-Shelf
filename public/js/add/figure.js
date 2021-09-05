@@ -172,8 +172,8 @@ function postFigure() {
 }
 
 function swapDiv(oldDivID, newDivID) {
-    document.getElementById(oldDivID).setAttribute('class', 'is-hidden');
-    document.getElementById(newDivID).setAttribute('class', '');
+    document.getElementById(oldDivID).classList.add("is-hidden");
+    document.getElementById(newDivID).classList.remove("is-hidden");
 }
 
 function dateCheck() {

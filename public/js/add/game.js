@@ -1,10 +1,8 @@
 let gameID;
 let editionID;
-let libraryID;
-let gameTitle;
 
 function submitGameInfo() {
-    let warningDiv = document.getElementById("warning-div");
+    let warningDiv = document.getElementById("game-warning-div");
     let warningMessage = document.createElement("p");
     warningMessage.setAttribute("class", "has-text-danger");
 
@@ -19,16 +17,16 @@ function submitGameInfo() {
         warningDiv.appendChild(warningMessage);
         return;
     }
-    if (platformSelect[platformSelect.selectedIndex].id == -2) { // If left on Select Platform
+    if (platformSelect[platformSelect.selectedIndex].value == -2) { // If left on Select Platform
         warningMessage.innerHTML = "You must select a platform.";
         warningDiv.appendChild(warningMessage);
         return;
     }
-    let button = document.getElementById("submit-button");
+    let button = document.getElementById("game-submit-button");
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;
 
-    if (platformSelect[platformSelect.selectedIndex].id != -1) { // The platform already exists
+    if (platformSelect[platformSelect.selectedIndex].value != -1) { // The platform already exists
         let request = new XMLHttpRequest();
         request.open('POST', `/api/games`);
         request.setRequestHeader('Content-Type', 'application/json');
@@ -38,26 +36,22 @@ function submitGameInfo() {
                 let data = JSON.parse(request.responseText);
                 if (request.status === 200) {
                     gameID = data.id;
-                    gameTitle = titleText;
 
-                    let card = document.getElementById("add-card-div");
-                    while (card.firstChild) {
-                        card.removeChild(card.firstChild);
-                    }
+                    document.getElementById('game-title').innerHTML = titleText;
+                    document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover");
 
-                    document.getElementById("edition-info-segment").setAttribute("class", "steps-segment is-active");
-                    document.getElementById("game-info-segment").setAttribute("class", "steps-segment");
-
-                    updateCard('/html/edition_info.html');
+                    swapStepsProgress('game-info-segment', 'edition-info-segment');
+                    swapDiv('game-info-div', 'edition-info-div');
                 } else {
-                    console.log(data.err);
+                    warningMessage.innerHTML = data.err;
+                    warningDiv.appendChild(warningMessage);
                 }
             }
         }
 
         request.send(JSON.stringify({
             "title": titleText,
-            "platform": platformSelect[platformSelect.selectedIndex].id
+            "platform": platformSelect[platformSelect.selectedIndex].value
         }));
     } else {
         warningMessage.innerHTML = "Adding new platforms is not implemented yet.";
@@ -79,11 +73,12 @@ function submitEditionInfo() {
     if (msrpText.length === 0) {
         msrpText = null;
     }
+
     if (upcText.length === 0) {
         upcText = null;
     }
 
-    let button = document.getElementById("submit-button");
+    let button = document.getElementById("edition-submit-button");
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;
 
@@ -97,15 +92,8 @@ function submitEditionInfo() {
             if (request.status === 200) {
                 editionID = data.id;
 
-                let card = document.getElementById("add-card-div");
-                while (card.firstChild) {
-                    card.removeChild(card.firstChild);
-                }
-
-                document.getElementById("destination-segment").setAttribute("class", "steps-segment is-active");
-                document.getElementById("edition-info-segment").setAttribute("class", "steps-segment");
-
-                updateCard('/html/destination.html');
+                swapStepsProgress('edition-info-segment', 'destination-segment');
+                swapDiv('edition-info-div', 'destination-div');
             } else {
                 console.log(data.err);
                 button.setAttribute("class", "button is-danger");
@@ -127,17 +115,15 @@ function submitDestinationInfo() {
         return;
     }
 
-    let button = document.getElementById("submit-button");
+    let button = document.getElementById("destination-submit-button");
     button.setAttribute("class", "button is-link is-loading");
     button.disabled = true;
 
-    document.getElementById("destination-segment").setAttribute("class", "steps-segment");
+    swapStepsProgress('destination-segment', 'purchase-info-segment');
     if (document.getElementById('collection-radio').checked) {
-        document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment is-active");
-        updateCard('/html/purchase_info.html');
+        getRetailers();
     } else if (document.getElementById('wishlist-radio').checked) {
-        document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
-        submitWishlistInfo();
+        swapDiv('destination-div', 'wishlist-info-div');
     }
 }
 
@@ -175,17 +161,11 @@ function submitPurchaseInfo() {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
-                libraryID = data.id;
+                let libraryID = data.id;
+                document.getElementById('library-view').setAttribute("href", "/library/" + libraryID);
 
-                let card = document.getElementById("add-card-div");
-                while (card.firstChild) {
-                    card.removeChild(card.firstChild);
-                }
-
-                document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
-                document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment");
-
-                updateCard('/html/completion.html');
+                swapStepsProgress('purchase-info-segment', 'completion-segment');
+                swapDiv('purchase-info-div', 'completion-div');
             } else {
                 console.log(data.err);
                 button.setAttribute("class", "button is-danger");
@@ -218,17 +198,13 @@ function submitWishlistInfo() {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
-                libraryID = data.id; // Stand-in for wishlist ID
+                let wishlistID = data.id;
 
-                let card = document.getElementById("add-card-div");
-                while (card.firstChild) {
-                    card.removeChild(card.firstChild);
-                }
+                document.getElementById('library-view').setAttribute("href", "/wishlist/" + wishlistID);
+                document.getElementById('view-in-button').innerHTML = "View in Wishlist";
 
-                document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
-                document.getElementById("purchase-info-segment").setAttribute("class", "steps-segment");
-
-                updateCard('/html/wishlist_completion.html');
+                swapStepsProgress('purchase-info-segment', 'completion-segment');
+                swapDiv('wishlist-info-div', 'completion-div');
             } else {
                 console.log(data.err);
                 button.setAttribute("class", "button is-danger");
@@ -240,32 +216,6 @@ function submitWishlistInfo() {
     request.send(JSON.stringify({
         "editionID": editionID
     }));
-}
-
-function updateCard(url) {
-    var request = new XMLHttpRequest();
-    request.open('GET', url);
-    request.onreadystatechange = function () {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                document.getElementById("add-card-div").innerHTML = request.responseText;
-                if (url == '/html/completion.html') {
-                    document.getElementById('game-title').innerHTML = gameTitle;
-                    document.getElementById('library-view').setAttribute("href", "/library/" + libraryID);
-                    document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover");
-                } else if (url == '/html/wishlist_completion.html') {
-                    document.getElementById('game-title').innerHTML = gameTitle;
-                    document.getElementById('library-view').setAttribute("href", "/wishlist/" + libraryID);
-                    document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover");
-                } else if (url == '/html/purchase_info.html') {
-                    getRetailers();
-                }
-            } else {
-                document.getElementById("add-card-div").innerText = "An error has occurred.";
-            }
-        }
-    }
-    request.send();
 }
 
 function giftCheck() {
@@ -310,7 +260,10 @@ function getRetailers() {
                 newRetailerOption.setAttribute('value', '-1');
                 newRetailerOption.innerHTML = '-- New Retailer --';
                 retailerSelect.appendChild(newRetailerOption);
+
+                swapDiv('destination-div', 'purchase-info-div');
             } else {
+                // TODO: Allow a retry
             }
         }
     }
@@ -340,4 +293,14 @@ function toggleRetailer() {
         }
         request.send();
     }
+}
+
+function swapDiv(oldDivID, newDivID) {
+    document.getElementById(oldDivID).classList.add("is-hidden");
+    document.getElementById(newDivID).classList.remove("is-hidden");
+}
+
+function swapStepsProgress(oldStepID, newStepID) {
+    document.getElementById(oldStepID).classList.remove("is-active");
+    document.getElementById(newStepID).classList.add("is-active");
 }

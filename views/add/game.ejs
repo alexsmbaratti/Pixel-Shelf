@@ -60,36 +60,26 @@
     </ul>
 
     <div class="card">
-        <div id="add-card-div" class="card-content">
+        <div class="card-content">
             <div class="content">
-                <h1 class="title has-text-light">Game Information</h1>
-                <div class="field">
-                    <label class="label">Title</label>
-                    <div class="control">
-                        <input required id="title-text" class="input" type="text" placeholder="i.e. Gex">
-                    </div>
+                <div id="game-info-div">
+                    <%- include('../partials/add/game/game_info') %>
                 </div>
-
-                <div class="field">
-                    <label class="label">Platform</label>
-                    <div class="control">
-                        <div class="select">
-                            <select id="platform-selection">
-                                <option id="-2">Select Platform</option>
-                                <% platforms.forEach(function(platform) { %>
-                                    <option id="<%= platform.id %>"><%= platform.name %></option>
-                                <% }); %>
-                                <option id="-1">-- New Platform --</option>
-                            </select>
-                        </div>
-                    </div>
+                <div id="edition-info-div" class="is-hidden">
+                    <%- include('../partials/add/game/edition_info') %>
                 </div>
-
-                <div class="control">
-                    <button id="submit-button" class="button is-link" onclick="submitGameInfo()">Next</button>
+                <div id="destination-div" class="is-hidden">
+                    <%- include('../partials/add/game/destination') %>
                 </div>
-
-                <div id="warning-div"></div>
+                <div id="wishlist-info-div" class="is-hidden">
+                    <%- include('../partials/add/game/wishlist_info') %>
+                </div>
+                <div id="purchase-info-div" class="is-hidden">
+                    <%- include('../partials/add/game/purchase_info') %>
+                </div>
+                <div id="completion-div" class="is-hidden">
+                    <%- include('../partials/add/game/completion') %>
+                </div>
             </div>
         </div>
     </div>

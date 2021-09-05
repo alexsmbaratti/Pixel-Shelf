@@ -1,0 +1,28 @@
+<h1 class="title has-text-light">Game Information</h1>
+<div class="field">
+    <label class="label">Title</label>
+    <div class="control">
+        <input required id="title-text" class="input" type="text" placeholder="i.e. Gex">
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">Platform</label>
+    <div class="control">
+        <div class="select">
+            <select id="platform-selection">
+                <option value="-2">Select Platform</option>
+                <% platforms.forEach(function(platform) { %>
+                    <option value="<%= platform.id %>"><%= platform.name %></option>
+                <% }); %>
+                <option value="-1">-- New Platform --</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="control">
+    <button id="game-submit-button" class="button is-link" onclick="submitGameInfo()">Next</button>
+</div>
+
+<div id="game-warning-div"></div>
