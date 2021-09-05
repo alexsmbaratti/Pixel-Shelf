@@ -274,30 +274,6 @@ function getRetailers() {
     request.send();
 }
 
-function toggleRetailer() {
-    let addRetailerDiv = document.getElementById("add-retailer-div");
-    while (addRetailerDiv.firstChild) {
-        addRetailerDiv.removeChild(addRetailerDiv.firstChild);
-    }
-
-    let retailerSelect = document.getElementById("retailer-selection");
-    let retailerID = retailerSelect[retailerSelect.selectedIndex].value;
-    if (retailerID == -1) {
-        let request = new XMLHttpRequest();
-        request.open('GET', '/html/add_retailer.html');
-        request.onreadystatechange = function () {
-            if (request.readyState === 4) {
-                if (request.status === 200) {
-                    addRetailerDiv.innerHTML = request.responseText;
-                } else {
-                    document.getElementById("add-card-div").innerText = "An error has occurred.";
-                }
-            }
-        }
-        request.send();
-    }
-}
-
 function swapDiv(oldDivID, newDivID) {
     document.getElementById(oldDivID).classList.add("is-hidden");
     document.getElementById(newDivID).classList.remove("is-hidden");
