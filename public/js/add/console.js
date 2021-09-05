@@ -1,6 +1,5 @@
 let consoleText;
 let brandText;
-let id;
 
 function submitConsoleInfo() {
     let warningDiv = document.getElementById("warning-div");
@@ -37,17 +36,12 @@ function submitConsoleInfo() {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
-                let card = document.getElementById("add-card-div");
-                id = data['id'];
+                swapStepsProgress('console-info-segment', 'completion-segment');
+                swapDiv('console-info-div', 'completion-div');
 
-                while (card.firstChild) {
-                    card.removeChild(card.firstChild);
-                }
-
-                document.getElementById("console-info-segment").setAttribute("class", "steps-segment");
-                document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
-
-                updateCard('/html/console_completion.html');
+                document.getElementById('console-title').innerHTML = consoleText;
+                document.getElementById('brand-title').innerHTML = brandText;
+                document.getElementById('library-view').setAttribute("href", "/platforms/" + data['id']);
             } else {
                 button.setAttribute("class", "button is-link is-danger");
                 button.disabled = false;
@@ -62,22 +56,12 @@ function submitConsoleInfo() {
     }));
 }
 
-function updateCard(url) {
-    var request = new XMLHttpRequest();
-    request.open('GET', url);
-    request.onreadystatechange = function () {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                document.getElementById("add-card-div").innerHTML = request.responseText;
-                if (url == '/html/console_completion.html') {
-                    document.getElementById('console-title').innerHTML = consoleText;
-                    document.getElementById('brand-title').innerHTML = brandText;
-                    document.getElementById('library-view').setAttribute("href", "/platform/" + id);
-                }
-            } else {
-                document.getElementById("add-card-div").innerText = "An error has occurred.";
-            }
-        }
-    }
-    request.send();
+function swapDiv(oldDivID, newDivID) {
+    document.getElementById(oldDivID).classList.add("is-hidden");
+    document.getElementById(newDivID).classList.remove("is-hidden");
+}
+
+function swapStepsProgress(oldStepID, newStepID) {
+    document.getElementById(oldStepID).classList.remove("is-active");
+    document.getElementById(newStepID).classList.add("is-active");
 }

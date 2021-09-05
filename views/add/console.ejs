@@ -34,28 +34,14 @@
     </ul>
 
     <div class="card">
-        <div id="add-card-div" class="card-content">
+        <div class="card-content">
             <div class="content">
-                <h1 class="title has-text-light">Console Information</h1>
-                <div class="field">
-                    <label class="label">Name</label>
-                    <div class="control">
-                        <input required id="name-text" class="input" type="text">
-                    </div>
+                <div id="console-info-div">
+                    <%- include('../partials/add/console/console_info') %>
                 </div>
-
-                <div class="field">
-                    <label class="label">Brand</label>
-                    <div class="control">
-                        <input required id="brand-text" class="input" type="text">
-                    </div>
+                <div id="completion-div" class="is-hidden">
+                    <%- include('../partials/add/console/completion') %>
                 </div>
-
-                <div class="control">
-                    <button id="submit-button" class="button is-link" onclick="submitConsoleInfo()">Next</button>
-                </div>
-
-                <div id="warning-div"></div>
             </div>
         </div>
     </div>
