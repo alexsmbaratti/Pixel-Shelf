@@ -16,11 +16,7 @@ router.get('/export', function (req, res, next) {
 });
 
 router.get('/privacy-policy', function (req, res, next) {
-    res.status(501);
-    res.render('error', {
-        status: 501,
-        message: 'This page has not been implemented yet but is planned to be added in a future build.'
-    });
+    res.render('privacy-policy', {});
 });
 
 
