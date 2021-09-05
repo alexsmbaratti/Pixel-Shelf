@@ -141,8 +141,8 @@ function submitPurchaseInfo() {
     }
 
     let conditionSelect = document.getElementById("condition-selection");
-    let hasBox = document.getElementById("box-check").checked;
-    let hasManual = document.getElementById("manual-check").checked;
+    let hasBox = !document.getElementById("box-button").classList.contains('is-outlined');
+    let hasManual = !document.getElementById("manual-button").classList.contains('is-outlined');
 
     let retailerSelect = document.getElementById("retailer-selection");
     let retailerID = retailerSelect[retailerSelect.selectedIndex].value;
@@ -306,4 +306,17 @@ function swapDiv(oldDivID, newDivID) {
 function swapStepsProgress(oldStepID, newStepID) {
     document.getElementById(oldStepID).classList.remove("is-active");
     document.getElementById(newStepID).classList.add("is-active");
+}
+
+function toggleButton(buttonID) {
+    let button = document.getElementById(buttonID);
+    if (button.classList.contains('is-outlined')) {
+        button.classList.remove('is-outlined');
+        button.classList.remove('is-light');
+        button.classList.add('is-primary');
+    } else {
+        button.classList.add('is-outlined');
+        button.classList.remove('is-primary');
+        button.classList.add('is-light');
+    }
 }
