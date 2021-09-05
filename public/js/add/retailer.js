@@ -16,7 +16,7 @@ function submitRetailerInfo() {
     retailerText = document.getElementById("retailer-text").value;
     subText = document.getElementById("subtext-text").value;
     let urlText = document.getElementById("url-text").value;
-    let isOnline = document.getElementById("online-check").checked;
+    let isOnline = document.getElementById("tab-online").classList.contains('is-active');
     if (retailerText.length === 0) { // If left blank
         warningMessage.innerHTML = "You must enter a retailer name.";
         warningDiv.appendChild(warningMessage);
@@ -109,13 +109,18 @@ function updateCard(url) {
 function toggleOnline() {
     let phyiscalDiv = document.getElementById("physical-div");
     let onlineDiv = document.getElementById("online-div");
-    let isOnline = document.getElementById("online-check").checked;
 
-    if (isOnline) {
-        phyiscalDiv.setAttribute('class', 'is-hidden');
-        onlineDiv.setAttribute('class', '');
-    } else {
+    if (document.getElementById("tab-online").classList.contains('is-active')) {
+        document.getElementById("tab-online").classList.remove('is-active');
+        document.getElementById("tab-brick").classList.add('is-active');
+
         onlineDiv.setAttribute('class', 'is-hidden');
         phyiscalDiv.setAttribute('class', '');
+    } else {
+        document.getElementById("tab-brick").classList.remove('is-active');
+        document.getElementById("tab-online").classList.add('is-active');
+
+        phyiscalDiv.setAttribute('class', 'is-hidden');
+        onlineDiv.setAttribute('class', '');
     }
 }

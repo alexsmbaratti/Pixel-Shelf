@@ -1,0 +1,55 @@
+<h1 class="title has-text-light">Retailer Information</h1>
+
+<div class="field">
+    <label class="label">Retailer Name</label>
+    <div class="control">
+        <input required id="retailer-text" class="input" type="text" placeholder="">
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">Subtext</label>
+    <div class="control">
+        <input required id="subtext-text" class="input" type="text" placeholder="i.e. City name">
+    </div>
+</div>
+
+<div class="tabs is-centered is-fullwidth is-toggle pt-5">
+    <ul id="tabs">
+        <li id="tab-brick" class="is-active" onclick="toggleOnline()"><a>Brick and Mortar</a></li>
+        <li id="tab-online" onclick="toggleOnline()"><a>Online</a></li>
+    </ul>
+</div>
+
+<div id="physical-div">
+    <div class="field">
+        <label class="label">Latitude</label>
+        <div class="control">
+            <input id="latitude-text" class="input" type="number" placeholder="i.e. -5.192">
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Longitude</label>
+        <div class="control">
+            <input id="longitude-text" class="input" type="number" placeholder="i.e. -8.721">
+        </div>
+    </div>
+</div>
+
+<div id="online-div" class="is-hidden">
+    <div class="field">
+        <label class="label">URL</label>
+        <div class="control">
+            <input id="url-text" class="input" type="text">
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="control">
+    <button id="submit-button" class="button is-link" onclick="submitRetailerInfo()">Next</button>
+</div>
+
+<div id="warning-div"></div>

@@ -37,58 +37,12 @@
     <div class="card">
         <div id="add-card-div" class="card-content">
             <div class="content">
-                <h1 class="title has-text-light">Retailer Information</h1>
-                <div class="field">
-                    <label class="label">Retailer Name</label>
-                    <div class="control">
-                        <input required id="retailer-text" class="input" type="text" placeholder="">
-                    </div>
+                <div id="retailer-info-div">
+                    <%- include('../partials/add/retailer/retailer_info') %>
                 </div>
-
-                <div class="field">
-                    <label class="label">Subtext</label>
-                    <div class="control">
-                        <input required id="subtext-text" class="input" type="text" placeholder="i.e. City name">
-                    </div>
+                <div id="retailer-completion-div" class="is-hidden">
+                    <%- include('../partials/add/retailer/completion') %>
                 </div>
-
-                <div class="field">
-                    <input id="online-check" type="checkbox" onclick="toggleOnline()">
-                    <label class="checkbox has-text-light">Online Store</label>
-                </div>
-
-                <div id="physical-div">
-                    <div class="field">
-                        <label class="label">Latitude</label>
-                        <div class="control">
-                            <input id="latitude-text" class="input" type="number" placeholder="i.e. -5.192">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label class="label">Longitude</label>
-                        <div class="control">
-                            <input id="longitude-text" class="input" type="number" placeholder="i.e. -8.721">
-                        </div>
-                    </div>
-                </div>
-
-                <div id="online-div" class="is-hidden">
-                    <div class="field">
-                        <label class="label">URL</label>
-                        <div class="control">
-                            <input id="url-text" class="input" type="text">
-                        </div>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="control">
-                    <button id="submit-button" class="button is-link" onclick="submitRetailerInfo()">Next</button>
-                </div>
-
-                <div id="warning-div"></div>
             </div>
         </div>
     </div>
