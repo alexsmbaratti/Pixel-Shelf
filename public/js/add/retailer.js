@@ -1,10 +1,7 @@
-let retailerText;
-let subText;
-let id;
-let latitude;
-let longitude;
-
 function submitRetailerInfo() {
+    let latitude;
+    let longitude;
+
     let warningDiv = document.getElementById("warning-div");
     let warningMessage = document.createElement("p");
     warningMessage.setAttribute("class", "has-text-danger");
@@ -13,8 +10,8 @@ function submitRetailerInfo() {
         warningDiv.removeChild(warningDiv.firstChild);
     }
 
-    retailerText = document.getElementById("retailer-text").value;
-    subText = document.getElementById("subtext-text").value;
+    let retailerText = document.getElementById("retailer-text").value;
+    let subText = document.getElementById("subtext-text").value;
     let urlText = document.getElementById("url-text").value;
     let isOnline = document.getElementById("tab-online").classList.contains('is-active');
     if (retailerText.length === 0) { // If left blank
@@ -55,17 +52,14 @@ function submitRetailerInfo() {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
-                let card = document.getElementById("add-card-div");
-                id = data['id'];
+                swapStepsProgress('console-info-segment', 'completion-segment');
+                swapDiv('retailer-info-div', 'retailer-completion-div');
 
-                while (card.firstChild) {
-                    card.removeChild(card.firstChild);
+                document.getElementById('retailer-title').innerHTML = retailerText;
+                document.getElementById('retailer-view').setAttribute("href", "/retailers/" + data['id']);
+                if (subText !== null) {
+                    document.getElementById('subtext-title').innerHTML = subText;
                 }
-
-                document.getElementById("console-info-segment").setAttribute("class", "steps-segment");
-                document.getElementById("completion-segment").setAttribute("class", "steps-segment is-active");
-
-                updateCard('/html/retailer_completion.html');
             } else {
                 button.setAttribute("class", "button is-link is-danger");
                 button.disabled = false;
@@ -82,28 +76,6 @@ function submitRetailerInfo() {
         "long": longitude,
         "url": urlText
     }));
-}
-
-function updateCard(url) {
-    var request = new XMLHttpRequest();
-    request.open('GET', url);
-    request.onreadystatechange = function () {
-        if (request.readyState === 4) {
-            if (request.status === 200) {
-                document.getElementById("add-card-div").innerHTML = request.responseText;
-                if (url == '/html/retailer_completion.html') {
-                    document.getElementById('retailer-title').innerHTML = retailerText;
-                    if (subText !== null) {
-                        document.getElementById('subtext-title').innerHTML = subText;
-                    }
-                    document.getElementById('retailer-view').setAttribute("href", "/retailers/" + id);
-                }
-            } else {
-                document.getElementById("add-card-div").innerText = "An error has occurred.";
-            }
-        }
-    }
-    request.send();
 }
 
 function toggleOnline(isOnline) {
@@ -123,4 +95,14 @@ function toggleOnline(isOnline) {
         physicalDiv.setAttribute('class', 'is-hidden');
         onlineDiv.setAttribute('class', '');
     }
+}
+
+function swapDiv(oldDivID, newDivID) {
+    document.getElementById(oldDivID).classList.add("is-hidden");
+    document.getElementById(newDivID).classList.remove("is-hidden");
+}
+
+function swapStepsProgress(oldStepID, newStepID) {
+    document.getElementById(oldStepID).classList.remove("is-active");
+    document.getElementById(newStepID).classList.add("is-active");
 }
