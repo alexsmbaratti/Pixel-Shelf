@@ -106,21 +106,21 @@ function updateCard(url) {
     request.send();
 }
 
-function toggleOnline() {
-    let phyiscalDiv = document.getElementById("physical-div");
+function toggleOnline(isOnline) {
+    let physicalDiv = document.getElementById("physical-div");
     let onlineDiv = document.getElementById("online-div");
 
-    if (document.getElementById("tab-online").classList.contains('is-active')) {
+    if (!isOnline) {
         document.getElementById("tab-online").classList.remove('is-active');
         document.getElementById("tab-brick").classList.add('is-active');
 
         onlineDiv.setAttribute('class', 'is-hidden');
-        phyiscalDiv.setAttribute('class', '');
+        physicalDiv.setAttribute('class', '');
     } else {
         document.getElementById("tab-brick").classList.remove('is-active');
         document.getElementById("tab-online").classList.add('is-active');
 
-        phyiscalDiv.setAttribute('class', 'is-hidden');
+        physicalDiv.setAttribute('class', 'is-hidden');
         onlineDiv.setAttribute('class', '');
     }
 }
