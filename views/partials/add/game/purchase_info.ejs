@@ -66,9 +66,9 @@
     let calendar = document.getElementById("calendar-input");
     let today = new Date(Date.now());
 
-    let year = today.getUTCFullYear();
-    let month = today.getUTCMonth() < 10 ? '0' + today.getUTCMonth() : today.getUTCMonth();
-    let day = today.getUTCDate() < 10 ? '0' + today.getUTCDate() : today.getUTCDate();
+    let year = today.getFullYear();
+    let month = today.getMonth() < 10 ? '0' + today.getMonth() : today.getMonth();
+    let day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
     let fullDate = year + '-' + month + '-' + day;
 
     calendar.value = fullDate;
