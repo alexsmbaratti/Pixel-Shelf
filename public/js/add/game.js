@@ -4,7 +4,7 @@ let editionID;
 function submitGameInfo() {
     let warningDiv = document.getElementById("game-warning-div");
     let warningMessage = document.createElement("p");
-    warningMessage.setAttribute("class", "has-text-danger");
+    warningMessage.classList.add("has-text-danger");
 
     while (warningDiv.firstChild) {
         warningDiv.removeChild(warningDiv.firstChild);
@@ -23,7 +23,7 @@ function submitGameInfo() {
         return;
     }
     let button = document.getElementById("game-submit-button");
-    button.setAttribute("class", "button is-link is-loading");
+    button.classList.add("is-loading");
     button.disabled = true;
 
     if (platformSelect[platformSelect.selectedIndex].value != -1) { // The platform already exists
@@ -56,7 +56,7 @@ function submitGameInfo() {
     } else {
         warningMessage.innerHTML = "Adding new platforms is not implemented yet.";
         warningDiv.appendChild(warningMessage);
-        button.setAttribute("class", "button is-link");
+        button.classList.remove("is-loading");
         button.disabled = false;
     }
 }
@@ -79,7 +79,7 @@ function submitEditionInfo() {
     }
 
     let button = document.getElementById("edition-submit-button");
-    button.setAttribute("class", "button is-link is-loading");
+    button.classList.add("is-loading");
     button.disabled = true;
 
     let request = new XMLHttpRequest();
@@ -96,7 +96,8 @@ function submitEditionInfo() {
                 swapDiv('edition-info-div', 'destination-div');
             } else {
                 console.log(data.err);
-                button.setAttribute("class", "button is-danger");
+                button.classList.add("is-danger");
+                button.classList.remove("is-loading");
                 button.innerHTML = "Error!"
             }
         }
@@ -116,7 +117,7 @@ function submitDestinationInfo() {
     }
 
     let button = document.getElementById("destination-submit-button");
-    button.setAttribute("class", "button is-link is-loading");
+    button.classList.add("is-loading");
     button.disabled = true;
 
     swapStepsProgress('destination-segment', 'purchase-info-segment');
@@ -150,7 +151,7 @@ function submitPurchaseInfo() {
     }
 
     let button = document.getElementById("submit-button");
-    button.setAttribute("class", "button is-link is-loading");
+    button.classList.add("is-loading");
     button.disabled = true;
 
     let request = new XMLHttpRequest();
@@ -168,7 +169,8 @@ function submitPurchaseInfo() {
                 swapDiv('purchase-info-div', 'completion-div');
             } else {
                 console.log(data.err);
-                button.setAttribute("class", "button is-danger");
+                button.classList.add("is-danger");
+                button.classList.remove("is-loading");
                 button.innerHTML = "Error!"
             }
         }
@@ -187,7 +189,7 @@ function submitPurchaseInfo() {
 
 function submitWishlistInfo() {
     let button = document.getElementById("submit-button");
-    button.setAttribute("class", "button is-link is-loading");
+    button.classList.add("is-loading");
     button.disabled = true;
 
     let request = new XMLHttpRequest();
@@ -207,7 +209,8 @@ function submitWishlistInfo() {
                 swapDiv('wishlist-info-div', 'completion-div');
             } else {
                 console.log(data.err);
-                button.setAttribute("class", "button is-danger");
+                button.classList.add("is-danger");
+                button.classList.remove("is-loading");
                 button.innerHTML = "Error!"
             }
         }
