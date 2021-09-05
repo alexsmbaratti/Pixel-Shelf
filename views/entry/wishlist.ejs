@@ -76,64 +76,7 @@
             <button class="delete" aria-label="close" onclick="toggleModal()"></button>
         </header>
         <section class="modal-card-body">
-            <div class="field">
-                <label class="label">Date Added</label>
-                <div class="control">
-                    <input id="calendar-input" type="date" name="trip-start"
-                           min="1970-01-01">
-                </div>
-            </div>
-
-            <div class="field" onclick="dateCheck()">
-                <input id="date-check" type="checkbox" onclick="dateCheck()">
-                <label class="checkbox has-text-light" onclick="dateCheck()">I don't know when I bought it</label>
-            </div>
-
-            <div class="field">
-                <label class="label">Cost</label>
-                <div class="control">
-                    <input required id="cost-text" class="input" type="number" min="0" step="any"
-                           placeholder="How much did you pay for this?">
-                </div>
-            </div>
-
-            <div class="field" onclick="giftCheck()">
-                <input id="gift-check" type="checkbox" onclick="giftCheck()">
-                <label class="checkbox has-text-light" onclick="giftCheck()">This was a gift</label>
-            </div>
-
-            <div class="field">
-                <label class="label">Condition</label>
-                <div class="control">
-                    <div class="select">
-                        <select id="condition-selection">
-                            <option id="new">New</option>
-                            <option id="used">Used</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field">
-                <label class="label">Items</label>
-                <input id="box-check" type="checkbox">
-                <label class="checkbox has-text-light">Box</label>
-                <input id="manual-check" type="checkbox">
-                <label class="checkbox has-text-light">Manual</label>
-            </div>
-
-            <div class="field">
-                <label class="label">Retailer</label>
-                <div class="control">
-                    <div class="select">
-                        <select id="retailer-selection" onchange="toggleRetailer()">
-                            <option value="-2">Unknown</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div id="add-retailer-div"></div>
+            <%- include('../partials/add/game/purchase_info') %>
         </section>
         <footer class="modal-card-foot">
             <button class="button" onclick="toggleModal()">Cancel</button>
