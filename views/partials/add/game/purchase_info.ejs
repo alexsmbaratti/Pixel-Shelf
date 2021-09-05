@@ -70,7 +70,7 @@
     let today = new Date(Date.now());
 
     let year = today.getFullYear();
-    let month = today.getMonth() < 10 ? '0' + today.getMonth() : today.getMonth();
+    let month = today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1;
     let day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
     let fullDate = year + '-' + month + '-' + day;
 
