@@ -1,0 +1,39 @@
+<h1 class="title has-text-light">amiibo Information</h1>
+
+<div class="field">
+    <label class="label">amiibo Name</label>
+    <div class="control">
+        <input required id="amiibo-text" class="input" type="text"
+               placeholder="i.e. The character's name" onKeyUp="amiiboSelect()">
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">Type</label>
+    <div class="control">
+        <div class="select">
+            <select id="type-selection" onchange="amiiboSelect()">
+                <option value="-1">Select Type</option>
+                <option value="0">Figure</option>
+                <option value="1">Card</option>
+                <option value="2">Plush</option>
+                <option value="3">Other</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="field">
+    <label class="label">MSRP</label>
+    <div class="control">
+        <input id="msrp-text" class="input" type="number" min="0" step="any"
+               placeholder="How much does this normally cost?">
+    </div>
+</div>
+
+<br>
+<div class="control">
+    <button disabled id="amiibo-submit-button" class="button is-link" onclick="postAmiibo()">
+        Next
+    </button>
+</div>

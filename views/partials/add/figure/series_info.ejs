@@ -1,0 +1,32 @@
+<h1 class="title has-text-light">Series Information</h1>
+<div class="field">
+    <label class="label">Series</label>
+    <div class="control">
+        <div class="select">
+            <select id="series-selection" onchange="seriesSelect()">
+                <option value="-2">Select Series</option>
+                <% series.forEach(function(oneseries) { %>
+                    <option value="<%= oneseries.id %>"><%= oneseries.series %></option>
+                <% }); %>
+                <option value="-1">-- New Series --</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id="add-series-div" class="is-hidden">
+    <div class="field">
+        <label class="label">New Series Name</label>
+        <div class="control">
+            <input required id="series-text" class="input" type="text"
+                   placeholder="i.e. The game series' name" onKeyUp="seriesSelect()">
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="control">
+    <button disabled id="series-submit-button" class="button is-link" onclick="submitSeriesInfo()">
+        Next
+    </button>
+</div>
