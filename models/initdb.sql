@@ -4,7 +4,7 @@ CREATE TABLE game
     platformid INTEGER,
     igdbURL    TEXT,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (platformid) REFERENCES platform (id)
+    FOREIGN KEY (platformid) REFERENCES platform (id) ON DELETE CASCADE
 );
 
 CREATE TABLE platform
@@ -12,7 +12,7 @@ CREATE TABLE platform
     name    TEXT NOT NULL,
     brandid INTEGER,
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (brandid) REFERENCES brand (id)
+    FOREIGN KEY (brandid) REFERENCES brand (id) ON DELETE CASCADE
 );
 
 CREATE TABLE edition
@@ -23,7 +23,7 @@ CREATE TABLE edition
     gameid      INTEGER,
     trackingURL TEXT,
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (gameid) REFERENCES game (id)
+    FOREIGN KEY (gameid) REFERENCES game (id) ON DELETE CASCADE
 );
 
 CREATE TABLE library
@@ -37,8 +37,8 @@ CREATE TABLE library
     manual     INTEGER NOT NULL,
     progress   INTEGER NOT NULL,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (editionid) REFERENCES edition (id),
-    FOREIGN KEY (retailerid) REFERENCES retailer (id)
+    FOREIGN KEY (editionid) REFERENCES edition (id) ON DELETE CASCADE,
+    FOREIGN KEY (retailerid) REFERENCES retailer (id) ON DELETE SET NULL
 );
 
 CREATE TABLE amiibo
@@ -48,7 +48,7 @@ CREATE TABLE amiibo
     msrp     REAL,
     type     INTEGER,
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (seriesid) REFERENCES series (id)
+    FOREIGN KEY (seriesid) REFERENCES series (id) ON DELETE CASCADE
 );
 
 CREATE TABLE series
@@ -66,13 +66,13 @@ CREATE TABLE figure
     inbox      INTEGER NOT NULL,
     amiiboid   INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (retailerid) REFERENCES retailer (id),
-    FOREIGN KEY (amiiboid) REFERENCES amiibo (id)
+    FOREIGN KEY (retailerid) REFERENCES retailer (id) ON DELETE SET NULL,
+    FOREIGN KEY (amiiboid) REFERENCES amiibo (id) ON DELETE CASCADE
 );
 
 CREATE TABLE retailer
 (
-    retailer TEXT NOT NULL,
+    retailer TEXT    NOT NULL,
     subtext  TEXT,
     online   INTEGER NOT NULL,
     lat      REAL,
@@ -91,5 +91,5 @@ CREATE TABLE wishlist
 (
     editionid INTEGER,
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (editionid) REFERENCES edition (id)
+    FOREIGN KEY (editionid) REFERENCES edition (id) ON DELETE CASCADE
 );
