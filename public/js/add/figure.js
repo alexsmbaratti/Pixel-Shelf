@@ -34,11 +34,9 @@ function submitSeriesInfo() {
         seriesID = selectedValue;
         document.getElementById('amiibo-series').innerHTML = seriesSelect[seriesSelect.selectedIndex].innerHTML;
         swapDiv('series-div', 'amiibo-div');
-        document.getElementById('amiibo-info-segment').setAttribute('class', 'steps-segment is-active');
-        document.getElementById('series-info-segment').setAttribute('class', 'steps-segment');
+        swapStepsProgress('series-info-segment', 'amiibo-info-segment');
     } else {
         let button = document.getElementById('series-submit-button');
-        button.setAttribute("class", "button is-link is-danger");
         button.setAttribute("class", "button is-link is-danger");
     }
 }
@@ -57,8 +55,7 @@ function postSeries() {
             if (request.status === 200) {
                 seriesID = data['id'];
                 swapDiv('series-div', 'amiibo-div');
-                document.getElementById('amiibo-info-segment').setAttribute('class', 'steps-segment is-active');
-                document.getElementById('series-info-segment').setAttribute('class', 'steps-segment');
+                swapStepsProgress('series-info-segment', 'amiibo-info-segment');
                 document.getElementById('amiibo-series').innerHTML = document.getElementById('series-text').value;
             } else {
                 button.setAttribute("class", "button is-link is-danger");
@@ -100,8 +97,7 @@ function postAmiibo() {
             if (request.status === 200) {
                 amiiboID = data['id'];
                 swapDiv('amiibo-div', 'purchase-div');
-                document.getElementById('purchase-info-segment').setAttribute('class', 'steps-segment is-active');
-                document.getElementById('amiibo-info-segment').setAttribute('class', 'steps-segment');
+                swapStepsProgress('amiibo-info-segment', 'purchase-info-segment');
                 document.getElementById('amiibo-title').innerHTML = document.getElementById('amiibo-text').value;
             } else {
                 button.setAttribute("class", "button is-link is-danger");
@@ -151,8 +147,7 @@ function postFigure() {
             if (request.status === 200) {
                 figureID = data['id'];
                 swapDiv('purchase-div', 'completion-div');
-                document.getElementById('completion-segment').setAttribute('class', 'steps-segment is-active');
-                document.getElementById('purchase-info-segment').setAttribute('class', 'steps-segment');
+                swapStepsProgress('purchase-info-segment', 'completion-segment');
                 document.getElementById('library-view').setAttribute('href', '/amiibo/' + figureID);
             } else {
                 button.setAttribute("class", "button is-link is-danger");
@@ -169,11 +164,6 @@ function postFigure() {
         "retailerID": retailerID,
         "amiiboID": amiiboID
     }));
-}
-
-function swapDiv(oldDivID, newDivID) {
-    document.getElementById(oldDivID).classList.add("is-hidden");
-    document.getElementById(newDivID).classList.remove("is-hidden");
 }
 
 function dateCheck() {

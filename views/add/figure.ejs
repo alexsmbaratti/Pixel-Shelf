@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <%- include('../partials/metadata') %>
     <script src="/js/add/figure.js"></script>
+    <script src="/js/utils.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script>
         getRetailers();
@@ -190,6 +191,18 @@
                             Next
                         </button>
                     </div>
+
+                    <script>
+                        let calendar = document.getElementById("calendar-input");
+                        let today = new Date(Date.now());
+
+                        let year = today.getFullYear();
+                        let month = today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : today.getMonth() + 1;
+                        let day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
+                        let fullDate = year + '-' + month + '-' + day;
+
+                        calendar.value = fullDate;
+                    </script>
                 </div>
                 <div id="completion-div" class="is-hidden">
                     <h1 class="title has-text-light">amiibo Added</h1>
