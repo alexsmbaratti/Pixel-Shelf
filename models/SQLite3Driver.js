@@ -351,17 +351,18 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = [];
-                rows.forEach((row) => {
-                    result.push({
-                        "id": row.id,
-                        "name": row.name,
-                        "brand": row.brand
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "name": row.name,
+                            "brand": row.brand
+                        });
                     });
-                });
 
-                resolve(result);
+                    resolve(result);
+                }
             });
         });
     });
@@ -577,10 +578,11 @@ SQLite3Driver.prototype.addEdition = function addEdition(json) {
                 if (err) {
                     console.log(err);
                     reject(err);
+                } else {
+                    let editionID = this.lastID;
+                    console.log(`${json.edition} was inserted with ID ${editionID}`);
+                    resolve(editionID);
                 }
-                let editionID = this.lastID;
-                console.log(`${json.edition} was inserted with ID ${editionID}`);
-                resolve(editionID);
             });
         });
     });
@@ -602,10 +604,11 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
                 if (err) {
                     console.log(err);
                     reject(err);
+                } else {
+                    let libraryID = this.lastID;
+                    console.log(`A library entry was inserted with ID ${libraryID}`);
+                    resolve(libraryID);
                 }
-                let libraryID = this.lastID;
-                console.log(`A library entry was inserted with ID ${libraryID}`);
-                resolve(libraryID);
             });
         });
     });
@@ -693,10 +696,11 @@ SQLite3Driver.prototype.addRetailer = function addRetailer(json) {
                 if (err) {
                     console.log(err);
                     reject(err);
+                } else {
+                    let retailerID = this.lastID;
+                    console.log(`${json.retailer} was inserted with ID ${retailerID}`);
+                    resolve(retailerID);
                 }
-                let retailerID = this.lastID;
-                console.log(`${json.retailer} was inserted with ID ${retailerID}`);
-                resolve(retailerID);
             });
         });
     });
@@ -739,8 +743,9 @@ SQLite3Driver.prototype.updateLibrary = function updateLibrary(id, json) {
                     if (err) {
                         console.log(err);
                         reject(err);
+                    } else {
+                        resolve();
                     }
-                    resolve();
                 });
             });
         }
@@ -774,8 +779,9 @@ SQLite3Driver.prototype.updateEdition = function updateEdition(id, json) {
                     if (err) {
                         console.log(err);
                         reject(err);
+                    } else {
+                        resolve();
                     }
-                    resolve();
                 });
             });
         }
@@ -806,8 +812,9 @@ SQLite3Driver.prototype.updateGame = function updateGame(id, json) {
                     if (err) {
                         console.log(err);
                         reject(err);
+                    } else {
+                        resolve();
                     }
-                    resolve();
                 });
             });
         }
@@ -965,19 +972,20 @@ SQLite3Driver.prototype.getPhysicalRetailers = function getPhysicalRetailers() {
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = [];
-                rows.forEach((row) => {
-                    result.push({
-                        "id": row.id,
-                        "retailer": row.retailer,
-                        "subtext": row.subtext,
-                        "lat": row.lat,
-                        "long": row.long,
-                        "url": row.url
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "retailer": row.retailer,
+                            "subtext": row.subtext,
+                            "lat": row.lat,
+                            "long": row.long,
+                            "url": row.url
+                        });
                     });
-                });
-                resolve(result);
+                    resolve(result);
+                }
             });
         });
     });
@@ -1173,11 +1181,11 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    let num = res[0]['COUNT(id)'];
+
+                    resolve(num);
                 }
-
-                let num = res[0]['COUNT(id)'];
-
-                resolve(num);
             });
         });
     });
@@ -1228,21 +1236,22 @@ SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortB
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = [];
-                rows.forEach((row) => {
-                    result.push({
-                        "id": row.id,
-                        "title": row.title,
-                        "platform": row.name,
-                        "dateAdded": row.timestamp,
-                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
-                        "edition": row.edition,
-                        "gameID": row.gameid
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "title": row.title,
+                            "platform": row.name,
+                            "dateAdded": row.timestamp,
+                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
+                            "edition": row.edition,
+                            "gameID": row.gameid
+                        });
                     });
-                });
 
-                resolve(result);
+                    resolve(result);
+                }
             });
         });
     });
