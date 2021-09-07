@@ -176,7 +176,7 @@ IGDBDriver.prototype.checkStatus = function checkStatus() {
                 if (res.status === 200) {
                     resolve();
                 } else {
-                    reject("Recieved non-200 status code");
+                    reject("Received non-200 status code");
                 }
             })
             .catch(function (e) {
