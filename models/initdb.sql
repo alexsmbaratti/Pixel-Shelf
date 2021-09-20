@@ -117,8 +117,9 @@ CREATE TABLE igdb
 
 CREATE TABLE rating
 (
-    orgid INTEGER,
-    id    INTEGER PRIMARY KEY AUTOINCREMENT
+    ratingorg INTEGER,
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    FOREIGN KEY (ratingorg) REFERENCES ratingsystem (id) ON DELETE SET NULL
 );
 
 CREATE TABLE genre
@@ -150,4 +151,18 @@ CREATE TABLE currency
     symbol TEXT,
     format INTEGER,
     id     INTEGER PRIMARY KEY AUTOINCREMENT
+);
+
+CREATE TABLE region
+(
+    name      TEXT NOT NULL,
+    ratingorg INTEGER,
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    FOREIGN KEY (ratingorg) REFERENCES ratingsystem (id) ON DELETE SET NULL
+)
+
+CREATE TABLE ratingsystem
+(
+    name TEXT NOT NULL,
+    id   INTEGER PRIMARY KEY AUTOINCREMENT
 );
