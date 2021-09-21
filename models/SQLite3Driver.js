@@ -513,30 +513,32 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
             SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = {};
-                try {
-                    rows.forEach((row) => {
-                        let igdbURL;
-                        if (row.igdbURL === undefined) {
-                            igdbURL = null;
-                        } else {
-                            igdbURL = row.igdbURL;
-                        }
+                } else {
+                    let result = {};
+                    try {
+                        rows.forEach((row) => {
+                            let igdbURL;
+                            if (row.igdbURL === undefined) {
+                                igdbURL = null;
+                            } else {
+                                igdbURL = row.igdbURL;
+                            }
 
-                        result = {
-                            "title": row.title,
-                            "platform": row.name,
-                            "msrp": row.msrp,
-                            "edition": row.edition,
-                            "igdbURL": igdbURL,
-                            "gameID": row.gameid
-                        };
-                    });
-                } catch (e) {
-                    reject(e);
+                            result = {
+                                "title": row.title,
+                                "platform": row.name,
+                                "msrp": row.msrp,
+                                "edition": row.edition,
+                                "igdbURL": igdbURL,
+                                "gameID": row.gameid,
+                                "editionID": row.editionid
+                            };
+                        });
+                    } catch (e) {
+                        reject(e);
+                    }
+                    resolve(result);
                 }
-                resolve(result);
             });
         });
     });

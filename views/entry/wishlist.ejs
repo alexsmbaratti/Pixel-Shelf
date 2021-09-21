@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <%- include('../partials/metadata') %>
     <script src="/js/entry/wishlist.js"></script>
+    <script src="/js/utils.js"></script>
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
@@ -80,7 +81,7 @@
         </section>
         <footer class="modal-card-foot">
             <button class="button" onclick="toggleModal()">Cancel</button>
-            <button class="button is-primary" onclick="submitPurchaseInfo()">Submit</button>
+            <button class="button is-primary" onclick="addToLibrary(<%= entry.editionID %>)">Submit</button>
         </footer>
     </div>
 </div>
