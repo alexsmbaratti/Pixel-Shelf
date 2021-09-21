@@ -114,6 +114,7 @@ CREATE TABLE igdb
 (
     description TEXT,
     cover       BLOB,
+    releasedate TEXT,
     igdbURL     TEXT PRIMARY KEY
 );
 
