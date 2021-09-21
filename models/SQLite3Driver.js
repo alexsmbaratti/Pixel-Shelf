@@ -515,30 +515,34 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
                 if (err) {
                     reject(err);
                 } else {
-                    let result = {};
-                    try {
-                        rows.forEach((row) => {
-                            let igdbURL;
-                            if (row.igdbURL === undefined) {
-                                igdbURL = null;
-                            } else {
-                                igdbURL = row.igdbURL;
-                            }
+                    if (rows.length === 0) {
+                        reject({status: 404});
+                    } else {
+                        let result = {};
+                        try {
+                            rows.forEach((row) => {
+                                let igdbURL;
+                                if (row.igdbURL === undefined) {
+                                    igdbURL = null;
+                                } else {
+                                    igdbURL = row.igdbURL;
+                                }
 
-                            result = {
-                                "title": row.title,
-                                "platform": row.name,
-                                "msrp": row.msrp,
-                                "edition": row.edition,
-                                "igdbURL": igdbURL,
-                                "gameID": row.gameid,
-                                "editionID": row.editionid
-                            };
-                        });
-                    } catch (e) {
-                        reject(e);
+                                result = {
+                                    "title": row.title,
+                                    "platform": row.name,
+                                    "msrp": row.msrp,
+                                    "edition": row.edition,
+                                    "igdbURL": igdbURL,
+                                    "gameID": row.gameid,
+                                    "editionID": row.editionid
+                                };
+                            });
+                        } catch (e) {
+                            reject(e);
+                        }
+                        resolve(result);
                     }
-                    resolve(result);
                 }
             });
         });

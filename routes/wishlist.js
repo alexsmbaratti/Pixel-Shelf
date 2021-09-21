@@ -19,7 +19,12 @@ router.get('/:wishlistId', function (req, res, next) {
             igdb: result.igdbURL
         });
     }).catch(err => {
-        res.render('error', {message: "Error", error: err});
+        if (err['status'] === 404) {
+            res.status(404);
+            res.render('404', {title: 'Pixel Shelf', type: 'game'});
+        } else {
+            res.render('error', {message: "Error", error: err});
+        }
     });
 });
 
@@ -38,7 +43,7 @@ router.get('/:gameId/igdb', function (req, res, next) {
             res.status(500).send({"status": 500});
         }
     }).catch(err => {
-
+        res.status(500).send({"status": 500});
     });
 });
 
