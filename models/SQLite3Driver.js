@@ -406,7 +406,7 @@ SQLite3Driver.prototype.getGame = function getGame(id) {
                        WHERE game.id = ?
                          AND platform.id = platformid`;
             SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
-                if (err) {
+                if (err || row === undefined) {
                     reject(err);
                 } else {
                     let result = {};
