@@ -553,7 +553,7 @@ router.post('/games', function (req, res) {
 
 router.post('/editions', function (req, res) {
     let driver = new SQLite3Driver();
-    driver.lookupEdition(req.body.edition, req.body.gameID).then(result => {
+    driver.lookupEdition(req.body.edition, req.body.gameID, req.body.digital).then(result => {
         if (result.found === true) {
             res.status(200).send({"status": 200, "id": result.id});
         } else {

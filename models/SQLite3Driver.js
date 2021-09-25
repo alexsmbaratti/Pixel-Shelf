@@ -600,7 +600,7 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
             }
             SQLite3Driver.prototype.db.run(`INSERT
                                             INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0, 0, json['gift'] ? 1 : 0, json['currency']], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json['box'] ? 1 : 0, json['manual'] ? 1 : 0, 0, json['gift'] ? 1 : 0, json['currency'], json['notes']], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -1401,7 +1401,7 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
     });
 }
 
-SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) {
+SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID, digital = false) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
             if (err) {
@@ -1411,12 +1411,14 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
             if (gameID == undefined) {
                 gameID = '\'undefined\'';
             }
+            let parsedDigital = digital ? 1 : 0;
             let sql = `SELECT *
                        FROM edition
                        WHERE edition = ?
-                         AND gameid = ? `;
+                         AND gameid = ? 
+                         AND digital = ?`;
             // TODO: Change to get
-            SQLite3Driver.prototype.db.all(sql, [edition, gameID], (err, res) => {
+            SQLite3Driver.prototype.db.all(sql, [edition, gameID, parsedDigital], (err, res) => {
                 if (err) {
                     console.log(err);
                     reject(err);

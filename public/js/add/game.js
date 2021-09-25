@@ -82,6 +82,8 @@ function submitEditionInfo() {
     button.classList.add("is-loading");
     button.disabled = true;
 
+    let isDigital = document.getElementById("digital-check").checked;
+
     let request = new XMLHttpRequest();
     request.open('POST', `/api/editions`);
     request.setRequestHeader('Content-Type', 'application/json');
@@ -107,6 +109,7 @@ function submitEditionInfo() {
         "edition": editionText.length == 0 ? "Standard Edition" : editionText,
         "upc": upcText,
         "msrp": msrpText,
+        "digital": isDigital,
         "gameID": gameID
     }));
 }
