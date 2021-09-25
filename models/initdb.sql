@@ -27,7 +27,7 @@ CREATE TABLE edition
     region      TEXT,
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (gameid) REFERENCES game (id) ON DELETE CASCADE,
-    FOREIGN KEY (currencyid) REFERENCES currency (id) ON DELETE SET NULL
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
 );
 
 CREATE TABLE library
@@ -46,7 +46,7 @@ CREATE TABLE library
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id) ON DELETE CASCADE,
     FOREIGN KEY (retailerid) REFERENCES retailer (id) ON DELETE SET NULL,
-    FOREIGN KEY (currencyid) REFERENCES currency (id) ON DELETE SET NULL
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
 );
 
 CREATE TABLE amiibo
@@ -58,7 +58,7 @@ CREATE TABLE amiibo
     currencyid INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (seriesid) REFERENCES series (id) ON DELETE CASCADE,
-    FOREIGN KEY (currencyid) REFERENCES currency (id) ON DELETE SET NULL
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
 );
 
 CREATE TABLE series
@@ -82,7 +82,7 @@ CREATE TABLE figure
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (retailerid) REFERENCES retailer (id) ON DELETE SET NULL,
     FOREIGN KEY (amiiboid) REFERENCES amiibo (id) ON DELETE CASCADE,
-    FOREIGN KEY (currencyid) REFERENCES currency (id) ON DELETE SET NULL
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
 );
 
 CREATE TABLE retailer
@@ -152,7 +152,7 @@ CREATE TABLE currency
 (
     symbol TEXT,
     label  TEXT,
-    id     INTEGER PRIMARY KEY AUTOINCREMENT
+    code   TEXT UNIQUE PRIMARY KEY
 );
 
 CREATE TABLE region
@@ -161,10 +161,17 @@ CREATE TABLE region
     ratingorg INTEGER,
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (ratingorg) REFERENCES ratingsystem (id) ON DELETE SET NULL
-)
+);
 
 CREATE TABLE ratingsystem
 (
     name TEXT NOT NULL,
     id   INTEGER PRIMARY KEY AUTOINCREMENT
 );
+
+-- Sample currencies
+INSERT INTO currency
+VALUES ('$', 'United States dollar', 'USD');
+
+INSERT INTO currency
+VALUES ('¥', 'Japanese yen', 'JPY');
