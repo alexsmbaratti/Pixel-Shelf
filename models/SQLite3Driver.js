@@ -510,39 +510,28 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
                   AND platform.id = platformid
                   AND wishlist.id = ?
                 LIMIT 1`;
-            // TODO: Change to get
-            SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
+            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
-                } else {
-                    if (rows.length === 0) {
-                        reject({status: 404});
+                } else if (row) {
+                    let igdbURL;
+                    if (row.igdbURL === undefined) {
+                        igdbURL = null;
                     } else {
-                        let result = {};
-                        try {
-                            rows.forEach((row) => {
-                                let igdbURL;
-                                if (row.igdbURL === undefined) {
-                                    igdbURL = null;
-                                } else {
-                                    igdbURL = row.igdbURL;
-                                }
-
-                                result = {
-                                    "title": row.title,
-                                    "platform": row.name,
-                                    "msrp": row.msrp,
-                                    "edition": row.edition,
-                                    "igdbURL": igdbURL,
-                                    "gameID": row.gameid,
-                                    "editionID": row.editionid
-                                };
-                            });
-                        } catch (e) {
-                            reject(e);
-                        }
-                        resolve(result);
+                        igdbURL = row.igdbURL;
                     }
+
+                    resolve({
+                        "title": row.title,
+                        "platform": row.name,
+                        "msrp": row.msrp,
+                        "edition": row.edition,
+                        "igdbURL": igdbURL,
+                        "gameID": row.gameid,
+                        "editionID": row.editionid
+                    });
+                } else {
+                    reject({status: 404}); // TODO: Use found key/value to determine 404
                 }
             });
         });
