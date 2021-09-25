@@ -514,19 +514,12 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
                 if (err) {
                     reject(err);
                 } else if (row) {
-                    let igdbURL;
-                    if (row.igdbURL === undefined) {
-                        igdbURL = null;
-                    } else {
-                        igdbURL = row.igdbURL;
-                    }
-
                     resolve({
                         "title": row.title,
                         "platform": row.name,
                         "msrp": row.msrp,
                         "edition": row.edition,
-                        "igdbURL": igdbURL,
+                        "igdbURL": row.igdbURL,
                         "gameID": row.gameid,
                         "editionID": row.editionid
                     });
