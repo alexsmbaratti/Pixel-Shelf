@@ -22,7 +22,6 @@ CREATE TABLE edition
     upc         TEXT,
     msrp        REAL,
     gameid      INTEGER,
-    trackingURL TEXT,
     digital     INTEGER NOT NULL,
     currencyid  INTEGER,
     region      TEXT,
