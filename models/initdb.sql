@@ -152,7 +152,7 @@ CREATE TABLE hasarating
 CREATE TABLE currency
 (
     symbol TEXT,
-    format INTEGER,
+    label  TEXT,
     id     INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
