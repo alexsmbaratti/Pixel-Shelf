@@ -143,6 +143,7 @@ function submitPurchaseInfo() {
     let conditionSelect = document.getElementById("condition-selection");
     let hasBox = !document.getElementById("box-button").classList.contains('is-outlined');
     let hasManual = !document.getElementById("manual-button").classList.contains('is-outlined');
+    let isGift = document.getElementById("gift-check").checked;
 
     let retailerSelect = document.getElementById("retailer-selection");
     let retailerID = retailerSelect[retailerSelect.selectedIndex].value;
@@ -183,6 +184,7 @@ function submitPurchaseInfo() {
         "box": hasBox,
         "manual": hasManual,
         "retailerID": retailerID,
+        "gift": isGift,
         "editionID": editionID
     }));
 }
