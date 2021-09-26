@@ -18,14 +18,14 @@ CREATE TABLE platform
 
 CREATE TABLE edition
 (
-    edition     TEXT    NOT NULL,
-    upc         TEXT,
-    msrp        REAL,
-    gameid      INTEGER,
-    digital     INTEGER NOT NULL,
-    currencyid  INTEGER,
-    region      TEXT,
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    edition    TEXT    NOT NULL,
+    upc        TEXT,
+    msrp       REAL,
+    gameid     INTEGER,
+    digital    INTEGER NOT NULL,
+    currencyid INTEGER,
+    region     TEXT,
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (gameid) REFERENCES game (id) ON DELETE CASCADE,
     FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
 );
@@ -42,6 +42,7 @@ CREATE TABLE library
     progress   INTEGER NOT NULL,
     gift       INTEGER NOT NULL,
     currencyid INTEGER,
+    private    INTEGER NOT NULL,
     notes      TEXT,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id) ON DELETE CASCADE,
@@ -158,20 +159,25 @@ CREATE TABLE currency
 CREATE TABLE region
 (
     name      TEXT NOT NULL,
-    ratingorg INTEGER,
-    id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (ratingorg) REFERENCES ratingsystem (id) ON DELETE SET NULL
+    id        INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
-CREATE TABLE ratingsystem
-(
-    name TEXT NOT NULL,
-    id   INTEGER PRIMARY KEY AUTOINCREMENT
-);
-
--- Sample currencies
+-- Currencies
 INSERT INTO currency
 VALUES ('$', 'United States dollar', 'USD');
 
 INSERT INTO currency
 VALUES ('¥', 'Japanese yen', 'JPY');
+
+-- Regions
+INSERT INTO region
+VALUES ('No Region', 1);
+
+INSERT INTO region
+VALUES ('North America', 2);
+
+INSERT INTO region
+VALUES ('Europe', 3);
+
+INSERT INTO region
+VALUES ('Japan', 4);
