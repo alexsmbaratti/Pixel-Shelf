@@ -574,7 +574,7 @@ SQLite3Driver.prototype.addEdition = function addEdition(json) {
             }
             SQLite3Driver.prototype.db.run(`INSERT
                                             INTO edition
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [json.edition, json.upc, json.msrp, json.gameID, json['digital'] ? 1 : 0, json['currency'], json['region']], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [json.edition, json.upc, json.msrp, json.gameID, json['digital'] ? 1 : 0, 'USD', json['region']], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -600,7 +600,7 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
             }
             SQLite3Driver.prototype.db.run(`INSERT
                                             INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json['box'] ? 1 : 0, json['manual'] ? 1 : 0, 0, json['gift'] ? 1 : 0, json['currency'], json['private'] ? 1 : 0, json['notes']], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json['box'] ? 1 : 0, json['manual'] ? 1 : 0, 0, json['gift'] ? 1 : 0, 'USD', json['private'] ? 1 : 0, json['notes']], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
