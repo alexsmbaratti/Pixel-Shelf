@@ -148,6 +148,8 @@ function submitPurchaseInfo() {
     let hasManual = !document.getElementById("manual-button").classList.contains('is-outlined');
     let isGift = document.getElementById("gift-check").checked;
 
+    let notes = document.getElementById("notes-field").value;
+
     let retailerSelect = document.getElementById("retailer-selection");
     let retailerID = retailerSelect[retailerSelect.selectedIndex].value;
     if (retailerID < 1) {
@@ -188,6 +190,7 @@ function submitPurchaseInfo() {
         "manual": hasManual,
         "retailerID": retailerID,
         "gift": isGift,
+        "notes": notes,
         "editionID": editionID
     }));
 }
