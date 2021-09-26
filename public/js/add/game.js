@@ -149,6 +149,9 @@ function submitPurchaseInfo() {
     let isGift = document.getElementById("gift-check").checked;
 
     let notes = document.getElementById("notes-field").value;
+    if (notes.length === 0) {
+        notes = null;
+    }
 
     let retailerSelect = document.getElementById("retailer-selection");
     let retailerID = retailerSelect[retailerSelect.selectedIndex].value;
