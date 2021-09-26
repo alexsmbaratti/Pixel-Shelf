@@ -1191,6 +1191,34 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
     });
 }
 
+SQLite3Driver.prototype.getCurrencies = function getCurrencies() {
+    return new Promise(function (resolve, reject) {
+        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
+            if (err) {
+                reject(err);
+            }
+            let sql = `SELECT *
+                       FROM currency`;
+            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "code": row.code,
+                            "label": row.label,
+                            "symbol": row.symbol
+                        });
+                    });
+
+                    resolve(result);
+                }
+            });
+        });
+    });
+}
+
 SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortBy) {
     let parsedSortBy;
     switch (sortBy) {
