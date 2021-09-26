@@ -600,7 +600,7 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
             }
             SQLite3Driver.prototype.db.run(`INSERT
                                             INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json['box'] ? 1 : 0, json['manual'] ? 1 : 0, 0, json['gift'] ? 1 : 0, json['currency'], json['notes']], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json['box'] ? 1 : 0, json['manual'] ? 1 : 0, 0, json['gift'] ? 1 : 0, json['currency'], json['private'] ? 1 : 0, json['notes']], function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
