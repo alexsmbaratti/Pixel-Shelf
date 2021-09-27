@@ -104,14 +104,14 @@ function getIGDBInfo(id) {
     document.getElementById("loading-div").appendChild(loader);
 
     let igdbRequest = new XMLHttpRequest();
-    igdbRequest.open('GET', `/api/library/${id}/igdb`);
+    igdbRequest.open('GET', `/api/games/${id}/igdb`);
 
     igdbRequest.onreadystatechange = function () {
         if (igdbRequest.readyState === 4) {
-            let data = JSON.parse(igdbRequest.responseText)['data'][0];
+            let data = JSON.parse(igdbRequest.responseText)['data'];
             if (igdbRequest.status === 200) {
                 document.getElementById("igdb-loader").remove();
-                document.getElementById("description").innerHTML = data['summary'];
+                document.getElementById("description").innerHTML = data['description'];
                 document.getElementById("igdb-link").innerHTML = 'View on IGDB';
                 let tagsDiv = document.getElementById("tags-div");
                 data['genres'].forEach(genre => {

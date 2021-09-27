@@ -257,7 +257,7 @@
     <% if (entry.retailerID != null) { %>
     getRetailerInfo(<%= entry.retailerID %>);
     <% } %>
-    getIGDBInfo(<%= id %>);
+    getIGDBInfo(<%= entry.gameID %>);
     renderCostChart(<%= entry.msrp == null ? 'null' : entry.msrp %>, <%= entry.cost == null ? 'null' : entry.cost %>, null);
 </script>
 </body>

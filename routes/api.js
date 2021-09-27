@@ -185,18 +185,11 @@ router.get('/library/size', function (req, res, next) {
     }
 });
 
-router.get('/library/:libraryId/igdb', function (req, res, next) {
+router.get('/games/:gameId/igdb', function (req, res, next) {
     let driver = new SQLite3Driver();
-    const libraryId = req.params.libraryId;
-    driver.getLibraryGame(libraryId).then(result => {
-        if (result.igdbURL != null) {
-            let igdbDriver = new IGDBDriver();
-            igdbDriver.getGameByURL(result.igdbURL).then(igdbRes => {
-                res.status(200).send({"status": 200, "data": igdbRes});
-            }).catch(err => {
-                sendError(res, err);
-            });
-        }
+    const gameID = req.params.gameId;
+    driver.getCachedIGDBMetadataByID(gameID).then(result => {
+        res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
     });
