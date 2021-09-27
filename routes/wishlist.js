@@ -12,33 +12,19 @@ router.get('/:wishlistId', function (req, res, next) {
     let driver = new SQLite3Driver();
     const wishlistId = req.params.wishlistId;
     driver.getWishlistGame(wishlistId).then(result => {
-        res.render('entry/wishlist', {
-            title: result.title + ' - Pixel Shelf',
-            entry: result,
-            id: wishlistId,
-            igdb: result.igdbURL
+        driver.getCurrencies().then(currencies => {
+            res.render('entry/wishlist', {
+                title: result.title + ' - Pixel Shelf',
+                entry: result,
+                id: wishlistId,
+                igdb: result.igdbURL,
+                currencies: currencies
+            });
+        }).catch(err => {
+            res.render('error', {error: err});
         });
     }).catch(err => {
         res.render('error', {message: "Error", error: err});
-    });
-});
-
-router.get('/:gameId/igdb', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    const gameId = req.params.gameId;
-    driver.getGame(gameId).then(result => {
-        if (result.igdbURL != null) {
-            let igdbDriver = new IGDBDriver();
-            igdbDriver.getGameByURL(result.igdbURL).then(igdbRes => {
-                res.status(200).send({"status": 200, "data": igdbRes});
-            }).catch(err => {
-                res.status(500).send({"status": 500});
-            });
-        } else {
-            res.status(500).send({"status": 500});
-        }
-    }).catch(err => {
-
     });
 });
 

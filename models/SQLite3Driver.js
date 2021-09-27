@@ -420,38 +420,12 @@ SQLite3Driver.prototype.getPlatform = function getPlatform(id) {
     });
 }
 
-// TODO: Move into ReadDriver
 SQLite3Driver.prototype.getGame = function getGame(id) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT game.*, platform.*
-                       FROM game,
-                            platform
-                       WHERE game.id = ?
-                         AND platform.id = platformid`;
-            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
-                if (err) {
-                    reject(err);
-                }
-                let result = {};
-                let igdbURL;
-                if (row.igdbURL === undefined) {
-                    igdbURL = null;
-                } else {
-                    igdbURL = row.igdbURL;
-                }
-
-                result = {
-                    "id": id,
-                    "title": row.title,
-                    "platform": row.name,
-                    "igdbURL": igdbURL
-                };
-                resolve(result);
-            });
+        read.selectGameByID(id).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
