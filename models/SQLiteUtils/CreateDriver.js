@@ -146,7 +146,7 @@ module.exports = {
                             } else {
                                 let igdbID = this.lastID;
                                 console.log(`INSERT ${igdbURL} was inserted into IGDB table with ID ${igdbID}`);
-                                resolve();
+                                resolve(igdbID);
                             }
                         });
                     }
@@ -171,7 +171,32 @@ module.exports = {
                             } else {
                                 let seriesID = this.lastID;
                                 console.log(`INSERT ${series} was inserted into series table with ID ${seriesID}`);
-                                resolve();
+                                resolve(seriesID);
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
+    insertAmiibo: function (title, seriesID, msrp = null, type = 3, currencyCode = 'USD') {
+        return new Promise(function (resolve, reject) {
+            if (title && seriesID) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO amiibo
+                                VALUES (?, ?, ?, ?, ?, ?)`, [title, seriesID, msrp, type, currencyCode], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let amiiboID = this.lastID;
+                                console.log(`INSERT ${title} was inserted into amiibo table with ID ${amiiboID}`);
+                                resolve(amiiboID);
                             }
                         });
                     }
@@ -196,7 +221,7 @@ module.exports = {
                             } else {
                                 let figureID = this.lastID;
                                 console.log(`INSERT A figure was inserted into figure table with ID ${figureID}`);
-                                resolve();
+                                resolve(figureID);
                             }
                         });
                     }

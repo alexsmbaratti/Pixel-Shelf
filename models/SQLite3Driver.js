@@ -587,23 +587,12 @@ SQLite3Driver.prototype.addSeries = function addSeries(json) {
 
 SQLite3Driver.prototype.addAmiibo = function addAmiibo(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO amiibo
-                                            VALUES (?, ?, ?, ?, ?, ?)`, [json.title, json.seriesID, json.msrp, json.type, json['currency']], function (err) {
-                if (err) {
-                    reject(err);
-                } else {
-                    let amiiboID = this.lastID;
-                    console.log(`A amiibo entry was inserted with ID ${amiiboID}`);
-                    resolve(amiiboID);
-                }
-            });
+        create.insertAmiibo(json['title'], json['seriesID'], json['msrp'], json['type'], json['currency']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            console.log(err);
+            reject(err);
         });
-
     });
 }
 
