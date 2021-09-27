@@ -480,7 +480,9 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "gameID": row.gameid,
                             "editionID": row.editionid,
                             "retailerID": row.retailerid,
-                            "progress": row.progress
+                            "progress": row.progress,
+                            "notes": row.notes,
+                            "gift": row.gift == 1
                         };
                     });
                 } catch (e) {

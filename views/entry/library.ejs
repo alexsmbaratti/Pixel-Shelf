@@ -157,6 +157,14 @@
                                     </li>
                                 </ul>
                             </article>
+                            <% if (entry.notes) { %>
+                            <div class="tile is-child is-vertical">
+                                <article class="tile is-parent box is-vertical">
+                                    <h1 class="title is-4">Notes</h1>
+                                    <p class="has-text-light"><%= entry.notes %></p>
+                                </article>
+                            </div>
+                            <% } %>
                         </div>
                     </div>
                     <div class="tile is-child is-vertical pl-3">
@@ -165,6 +173,36 @@
                             <div class="mr-3 ml-3">
                                 <canvas id="cost-chart" width="350" height="100"></canvas>
                             </div>
+                            <table class="table has-background-grey mr-6 ml-6">
+                                <tbody class="table-body has-background-grey has-text-centered">
+                                <% if (entry.msrp) { %>
+                                    <tr>
+                                        <th>MSRP</th>
+                                        <td><%= entry.msrp %></td>
+                                    </tr>
+                                <% } %>
+                                <% if (entry.cost) { %>
+                                    <tr>
+                                        <th>Cost</th>
+                                        <td><%= entry.cost %></td>
+                                    </tr>
+                                <% } %>
+                                <tr>
+                                    <th>Gift</th>
+                                    <td>
+                                        <% if (entry.gift) { %>
+                                            <span class="icon">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        <% } else { %>
+                                            <span class="icon">
+                                                <i class="fas fa-times"></i>
+                                            </span>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </article>
                         <div class="tile is-child is-vertical">
                             <article class="tile is-parent box is-vertical">
