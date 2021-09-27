@@ -62,47 +62,7 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
                 let resJSON = res.data;
                 resolve(resJSON);
                 if (resJSON.length > 0) {
-                    if (resJSON[0]['cover']) {
-                        let size = 'cover_big_2x';
-                        let imageID = resJSON[0]['cover']['image_id'];
-                        https.get(`https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`, function (fileRes) {
-                            let imagePath = "/images/covers/" + imageID + ".jpg";
-                            const file = fs.createWriteStream(__dirname + "/../public" + imagePath);
-                            fileRes.pipe(file);
-                            create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], imagePath).catch(err => {
-                                console.log(err);
-                            });
-                        }).on('error', function (err) {
-                            console.log(err);
-                        });
-                    } else {
-                        create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], null).catch(err => {
-                            console.log(err);
-                        });
-                    }
-                    resJSON[0]['genres'].forEach(genre => {
-                        create.insertGenre(genre['id'], genre['name']).catch(err => {
-                        });
-                        create.insertHasAGenre(genre['id'], resJSON[0]['url']).catch(err => {
-                        });
-                    });
-                    resJSON[0]['age_ratings'].forEach(ageRating => {
-                        let category;
-                        switch (ageRating['category']) {
-                            case 1:
-                                category = 'ESRB';
-                                break;
-                            case 2:
-                                category = 'PEGI';
-                                break;
-                            default:
-                                category = 'Unknown';
-                        }
-                        create.insertRating(ageRating['rating'], category).catch(err => {
-                        });
-                        create.insertHasARating(ageRating['rating'], resJSON[0]['url']).catch(err => {
-                        });
-                    });
+                    cacheMetadata(resJSON);
                 }
             })
             .catch(function (e) {
@@ -122,52 +82,16 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url) {
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
                 'Content-Type': 'text/plain'
             },
-            data: 'fields *, genres.name, age_ratings.*; where url = \"' + url + '\";'
+            data: 'fields first_release_date, summary, url, age_ratings.rating, age_ratings.category, genres.name, cover.image_id; where url = \"' + url + '\";'
         })
             .then(function (res) {
                 let resJSON = res.data;
                 resolve(resJSON);
-            })
-            .catch(function (e) {
-                console.log("Error in Game Info");
-                console.log(e);
-                reject(e);
-            });
-    });
-}
-
-IGDBDriver.prototype.getCoverByURL = function getCoverByURL(url, gameID) {
-    return new Promise(function (resolve, reject) {
-        if (url == undefined) {
-            reject();
-        }
-        axios({
-            method: 'post',
-            url: 'https://api.igdb.com/' + IGDBDriver.prototype.version + '/games/',
-            headers: {
-                'Client-ID': IGDBDriver.prototype.clientID,
-                'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
-                'Content-Type': 'text/plain'
-            },
-            data: 'fields *; where url = \"' + url + '\";'
-        })
-            .then(function (res) {
-                console.log("Caching cover art from IGDB...");
-                let resJSON = res.data;
                 if (resJSON.length > 0) {
-                    IGDBDriver.prototype.getCoverArtByID(resJSON[0].id).then(function (coverRes) {
-                        const file = fs.createWriteStream(__dirname + "/../public/images/covers/" + gameID + ".jpg");
-                        const request = https.get(coverRes, function (fileRes) {
-                            fileRes.pipe(file);
-                            resolve(resJSON);
-                        });
-                    });
-                } else {
-                    reject();
+                    cacheMetadata(resJSON);
                 }
             })
             .catch(function (e) {
-                console.log("Error in Game Info");
                 console.log(e);
                 reject(e);
             });
@@ -226,6 +150,50 @@ IGDBDriver.prototype.checkStatus = function checkStatus() {
             .catch(function (e) {
                 reject(e);
             });
+    });
+}
+
+function cacheMetadata(resJSON) {
+    if (resJSON[0]['cover']) {
+        let size = 'cover_big_2x';
+        let imageID = resJSON[0]['cover']['image_id'];
+        https.get(`https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`, function (fileRes) {
+            let imagePath = "/images/covers/" + imageID + ".jpg";
+            const file = fs.createWriteStream(__dirname + "/../public" + imagePath);
+            fileRes.pipe(file);
+            create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], imagePath).catch(err => {
+                console.log(err);
+            });
+        }).on('error', function (err) {
+            console.log(err);
+        });
+    } else {
+        create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], null).catch(err => {
+            console.log(err);
+        });
+    }
+    resJSON[0]['genres'].forEach(genre => {
+        create.insertGenre(genre['id'], genre['name']).catch(err => {
+        });
+        create.insertHasAGenre(genre['id'], resJSON[0]['url']).catch(err => {
+        });
+    });
+    resJSON[0]['age_ratings'].forEach(ageRating => {
+        let category;
+        switch (ageRating['category']) {
+            case 1:
+                category = 'ESRB';
+                break;
+            case 2:
+                category = 'PEGI';
+                break;
+            default:
+                category = 'Unknown';
+        }
+        create.insertRating(ageRating['rating'], category).catch(err => {
+        });
+        create.insertHasARating(ageRating['rating'], resJSON[0]['url']).catch(err => {
+        });
     });
 }
 

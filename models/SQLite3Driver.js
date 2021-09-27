@@ -380,7 +380,16 @@ SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetada
                 resolve(res);
             });
         }).catch(err => {
-            reject(err);
+            read.selectGameByID(id).then(gameRes => {
+                if (gameRes['igdbURL']) {
+                    // TODO: Get metadata via getGameByName
+                    reject("Not implemented");
+                } else {
+                    reject(err);
+                }
+            }).catch(err => {
+                reject(err);
+            });
         });
     });
 }
@@ -411,6 +420,7 @@ SQLite3Driver.prototype.getPlatform = function getPlatform(id) {
     });
 }
 
+// TODO: Move into ReadDriver
 SQLite3Driver.prototype.getGame = function getGame(id) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {

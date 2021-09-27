@@ -81,6 +81,29 @@ module.exports = {
                 }
             });
         });
+    },
+    selectGameByID: function (gameID) {
+        return new Promise(function (resolve, reject) {
+            let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    db.get(`SELECT game.*, platform.*
+                            FROM game,
+                                 platform
+                            WHERE game.id = ?
+                              AND platform.id = platformid`, [gameID], (err, row) => {
+                        if (err) {
+                            reject(err);
+                        } else if (!row) {
+                            reject();
+                        } else {
+                            resolve(row);
+                        }
+                    });
+                }
+            });
+        });
     }, selectGenresByGame: function (gameID) {
         return new Promise(function (resolve, reject) {
             let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
