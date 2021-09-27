@@ -6,11 +6,12 @@ const fs = require('fs');
 
 const create = require('./SQLiteUtils/CreateDriver');
 
+const version = 'v4';
+
 function IGDBDriver() {
     IGDBDriver.prototype.clientID = config.client_id;
     IGDBDriver.prototype.clientSecret = config.client_secret;
     IGDBDriver.prototype.token = config.token;
-    IGDBDriver.prototype.version = 'v4';
 }
 
 IGDBDriver.prototype.regenerateToken = function regenerateToken() {
@@ -50,7 +51,7 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
     return new Promise(function (resolve, reject) {
         axios({
             method: 'post',
-            url: 'https://api.igdb.com/' + IGDBDriver.prototype.version + '/games/',
+            url: 'https://api.igdb.com/' + version + '/games/',
             headers: {
                 'Client-ID': IGDBDriver.prototype.clientID,
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
@@ -76,7 +77,7 @@ IGDBDriver.prototype.getGameByURL = function getGameByURL(url) {
     return new Promise(function (resolve, reject) {
         axios({
             method: 'post',
-            url: 'https://api.igdb.com/' + IGDBDriver.prototype.version + '/games/',
+            url: 'https://api.igdb.com/' + version + '/games/',
             headers: {
                 'Client-ID': IGDBDriver.prototype.clientID,
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
@@ -102,7 +103,7 @@ IGDBDriver.prototype.getCoverArtByID = function getCoverArtByID(id) {
     return new Promise(function (resolve, reject) {
         axios({
             method: 'post',
-            url: 'https://api.igdb.com/' + IGDBDriver.prototype.version + '/covers',
+            url: 'https://api.igdb.com/' + version + '/covers',
             headers: {
                 'Client-ID': IGDBDriver.prototype.clientID,
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
@@ -132,7 +133,7 @@ IGDBDriver.prototype.checkStatus = function checkStatus() {
     return new Promise(function (resolve, reject) {
         axios({
             method: 'post',
-            url: 'https://api.igdb.com/' + IGDBDriver.prototype.version + '/games',
+            url: 'https://api.igdb.com/' + version + '/games',
             headers: {
                 'Client-ID': IGDBDriver.prototype.clientID,
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,

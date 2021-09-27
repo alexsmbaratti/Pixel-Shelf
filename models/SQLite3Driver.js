@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const create = require('./SQLiteUtils/CreateDriver');
 const read = require('./SQLiteUtils/ReadDriver');
+var IGDBDriver = require('./IGDBDriver');
 
 function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
@@ -380,15 +381,15 @@ SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetada
                 resolve(res);
             });
         }).catch(err => {
+            reject(err); // Send back failure and attempt to cache for the next request
             read.selectGameByID(id).then(gameRes => {
                 if (gameRes['igdbURL']) {
-                    // TODO: Get metadata via getGameByName
-                    reject("Not implemented");
+                    let igdbDriver = new IGDBDriver();
+                    igdbDriver.getGameByURL(gameRes['igdbURL']).catch(err => {
+                    });
                 } else {
-                    reject(err);
                 }
             }).catch(err => {
-                reject(err);
             });
         });
     });
