@@ -120,9 +120,8 @@ CREATE TABLE igdb
 
 CREATE TABLE rating
 (
-    ratingorg INTEGER,
-    id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (ratingorg) REFERENCES ratingsystem (id) ON DELETE SET NULL
+    ratingorg TEXT,
+    id        INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
 CREATE TABLE genre

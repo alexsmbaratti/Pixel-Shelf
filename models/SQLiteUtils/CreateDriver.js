@@ -181,21 +181,69 @@ module.exports = {
             }
         });
     },
-    insertHasAGenre: function (genreid, igdbURL) {
+    insertHasAGenre: function (genreID, igdbURL) {
         return new Promise(function (resolve, reject) {
-            if (genreid && igdbURL) {
+            if (genreID && igdbURL) {
                 let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
                     if (err) {
                         reject(err);
                     } else {
                         db.run(`INSERT
                                 INTO hasagenre
-                                VALUES (?, ?)`, [igdbURL, genreid], function (err) {
+                                VALUES (?, ?)`, [igdbURL, genreID], function (err) {
                             if (err) {
                                 reject(err);
                             } else {
-                                console.log(`INSERT A row was inserted into hasagenre table with ID (${igdbURL}, ${genreid})`);
+                                console.log(`INSERT A row was inserted into hasagenre table with ID (${igdbURL}, ${genreID})`);
                                 resolve();
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
+    insertHasARating: function (ratingID, igdbURL) {
+        return new Promise(function (resolve, reject) {
+            if (ratingID && igdbURL) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO hasarating
+                                VALUES (?, ?)`, [igdbURL, ratingID], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                console.log(`INSERT A row was inserted into hasarating table with ID (${igdbURL}, ${ratingID})`);
+                                resolve();
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
+    insertRating: function (ratingID, ratingOrganization) {
+        return new Promise(function (resolve, reject) {
+            if (ratingID && ratingOrganization) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO rating
+                                VALUES (?, ?)`, [ratingOrganization, ratingID], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                console.log(`INSERT A row was inserted into rating table with ID ${ratingID}`);
+                                resolve(ratingID);
                             }
                         });
                     }

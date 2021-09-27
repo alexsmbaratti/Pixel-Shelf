@@ -56,7 +56,7 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
                 'Content-Type': 'text/plain'
             },
-            data: 'fields first_release_date, summary, url, age_ratings.rating, genres.name, cover.image_id; where name = \"' + name + '\";'
+            data: 'fields first_release_date, summary, url, age_ratings.rating, age_ratings.category, genres.name, cover.image_id; where name = \"' + name + '\";'
         })
             .then(function (res) {
                 let resJSON = res.data;
@@ -84,6 +84,23 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
                         create.insertGenre(genre['id'], genre['name']).catch(err => {
                         });
                         create.insertHasAGenre(genre['id'], resJSON[0]['url']).catch(err => {
+                        });
+                    });
+                    resJSON[0]['age_ratings'].forEach(ageRating => {
+                        let category;
+                        switch (ageRating['category']) {
+                            case 1:
+                                category = 'ESRB';
+                                break;
+                            case 2:
+                                category = 'PEGI';
+                                break;
+                            default:
+                                category = 'Unknown';
+                        }
+                        create.insertRating(ageRating['rating'], category).catch(err => {
+                        });
+                        create.insertHasARating(ageRating['rating'], resJSON[0]['url']).catch(err => {
                         });
                     });
                 }
