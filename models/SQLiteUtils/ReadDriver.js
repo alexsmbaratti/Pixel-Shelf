@@ -58,5 +58,26 @@ module.exports = {
                 }
             });
         });
+    },
+    selectIGDBByGame: function (gameID) {
+        return new Promise(function (resolve, reject) {
+            let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    db.get(`SELECT igdb.*
+                            FROM igdb,
+                                 game
+                            WHERE igdb.igdbURL = game.igdbURL
+                              AND game.id = ?`, [gameID], (err, row) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(row);
+                        }
+                    });
+                }
+            });
+        });
     }
 }
