@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
+const create = require('./SQLiteUtils/CreateDriver');
 
 function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
@@ -544,23 +545,10 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
 
 SQLite3Driver.prototype.addGame = function addGame(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`
-                INSERT
-                INTO game
-                VALUES (?, ?, ?, ?)`, [json.title, json.platform, json['igdb-url']], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-                let gameID = this.lastID;
-                console.log(`${json.title} was inserted with ID ${gameID}`);
-                resolve(gameID);
-            });
+        create.insertGame(json['title'], json['platform'], json['igdb-url']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
