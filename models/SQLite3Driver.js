@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
+
 const create = require('./SQLiteUtils/CreateDriver');
 const read = require('./SQLiteUtils/ReadDriver');
 
@@ -576,26 +577,11 @@ SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
 
 SQLite3Driver.prototype.addSeries = function addSeries(json) {
     return new Promise(function (resolve, reject) {
-        if (json['series'].length === 0) {
-            reject('Invalid series name');
-        } else {
-            SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                SQLite3Driver.prototype.db.run(`INSERT
-                                                INTO series
-                                                VALUES (?, ?)`, [json.series], function (err) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        let seriesID = this.lastID;
-                        console.log(`A series entry was inserted with ID ${seriesID}`);
-                        resolve(seriesID);
-                    }
-                });
-            });
-        }
+        create.insertSeries(json['series']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
     });
 }
 

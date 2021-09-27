@@ -105,4 +105,29 @@ module.exports = {
             }
         });
     },
+    insertSeries: function (series) {
+        return new Promise(function (resolve, reject) {
+            if (series) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO series
+                                VALUES (?, ?)`, [series], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let seriesID = this.lastID;
+                                console.log(`INSERT ${series} was inserted into series table with ID ${seriesID}`);
+                                resolve();
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    }
 }
