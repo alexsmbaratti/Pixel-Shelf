@@ -97,7 +97,7 @@ function renderCostChart(msrp = null, cost = null, sold = null) {
     });
 }
 
-function getIGDBInfo(id) {
+function getIGDBInfo(id, ratingOrg = 'ESRB') {
     let loader = document.createElement("div");
     loader.setAttribute("class", "loader");
     loader.setAttribute("id", "igdb-loader");
@@ -121,7 +121,7 @@ function getIGDBInfo(id) {
                     tagsDiv.appendChild(genreTag);
                 });
                 data['ratings'].forEach(rating => {
-                    if (rating['ratingorg'] == 'ESRB') {
+                    if (rating['ratingorg'] == ratingOrg) {
                         let ratingFigure = document.getElementById('rating-figure');
                         let image = document.createElement("img");
                         image.setAttribute("src", "/images/ratings/" + rating['id'] + ".jpg");
