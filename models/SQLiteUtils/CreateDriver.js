@@ -80,6 +80,57 @@ module.exports = {
             }
         });
     },
+    insertPlatform: function (name, brandID) {
+        return new Promise(function (resolve, reject) {
+            if (name && brandID) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO platform
+                                VALUES (?, ?, ?)`, [name, brandID], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let platformID = this.lastID;
+                                console.log(`INSERT ${name} was inserted into platform table with ID ${platformID}`);
+                                resolve(platformID);
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
+    insertBrand: function (brandName) {
+        return new Promise(function (resolve, reject) {
+            if (brandName) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`
+                            INSERT
+                            INTO brand
+                            VALUES (?, ?)`, [brandName], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let brandID = this.lastID;
+                                console.log(`INSERT ${brandName} was inserted into brand table with ID ${brandID}`);
+                                resolve(brandID);
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
     insertIGDB: function (igdbURL, description = null, releaseDate = null, cover = null) {
         return new Promise(function (resolve, reject) {
             if (igdbURL) {

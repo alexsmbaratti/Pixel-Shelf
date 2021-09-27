@@ -769,43 +769,20 @@ SQLite3Driver.prototype.updateGame = function updateGame(id, json) {
 
 SQLite3Driver.prototype.addConsole = function addConsole(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO platform
-                                            VALUES (?, ?, ?)`, [`${json.name}`, `${json.brandID}`], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-                let platformID = this.lastID;
-                resolve(platformID);
-            });
+        create.insertPlatform(json['name'], json['brandID']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
 
 SQLite3Driver.prototype.addBrand = function addBrand(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`
-                INSERT
-                INTO brand
-                VALUES (?, ?)`, [json.brand], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-                let brandID = this.lastID;
-                resolve(brandID);
-            });
+        create.insertBrand(json['brand']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
