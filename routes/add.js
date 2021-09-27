@@ -4,8 +4,12 @@ var SQLite3Driver = require('../models/SQLite3Driver');
 
 router.get('/game', function (req, res, next) {
     let driver = new SQLite3Driver();
-    driver.getPlatforms().then(result => {
-        res.render('add/game', {title: 'Pixel Shelf', platforms: result});
+    driver.getPlatforms().then(platforms => {
+        driver.getCurrencies().then(currencies => {
+            res.render('add/game', {title: 'Pixel Shelf', platforms: platforms, currencies: currencies});
+        }).catch(err => {
+            res.render('error', {error: err});
+        });
     }).catch(err => {
         res.render('error', {error: err});
     });

@@ -8,6 +8,13 @@
 
 <div class="field">
     <label class="label">MSRP</label>
+    <div class="select">
+        <select id="msrp-currency-selection">
+            <% currencies.forEach(function(currency) { %>
+                <option value="<%= currency.code %>"><%= currency.label %> (<%= currency.symbol %>)</option>
+            <% }); %>
+        </select>
+    </div>
     <div class="control">
         <input required id="msrp-text" class="input" type="number" min="0" step="any"
                placeholder="How much does this normally cost?">
