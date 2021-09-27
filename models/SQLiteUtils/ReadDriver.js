@@ -107,5 +107,31 @@ module.exports = {
                 }
             });
         });
+    }, selectRatingsByGame: function (gameID) {
+        return new Promise(function (resolve, reject) {
+            let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    db.all(`SELECT rating.*
+                            FROM igdb,
+                                 rating,
+                                 hasarating,
+                                 game
+                            WHERE rating.id = hasarating.ratingid
+                              AND hasarating.igdbURL = igdb.igdbURL
+                              AND igdb.igdbURL = game.igdbURL
+                              AND game.id = ?`, [gameID], (err, rows) => {
+                        if (err) {
+                            reject(err);
+                        } else if (!rows) {
+                            reject();
+                        } else {
+                            resolve(rows);
+                        }
+                    });
+                }
+            });
+        });
     }
 }

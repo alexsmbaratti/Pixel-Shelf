@@ -370,7 +370,12 @@ SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetada
             res['genres'] = [];
             read.selectGenresByGame(id).then(genreRes => {
                 res['genres'] = genreRes;
-                resolve(res);
+                read.selectRatingsByGame(id).then(ratingRes => {
+                    res['ratings'] = ratingRes;
+                    resolve(res);
+                }).catch(err => {
+                    resolve(res);
+                });
             }).catch(err => {
                 resolve(res);
             });

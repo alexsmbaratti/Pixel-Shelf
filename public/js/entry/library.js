@@ -120,17 +120,14 @@ function getIGDBInfo(id) {
                     genreTag.innerHTML = genre['description'];
                     tagsDiv.appendChild(genreTag);
                 });
-                const ratingOrg = 1; // ESRB Ratings Only
-                const ratingLegend = ["N/A", "Three", "Seven", "Twelve", "Sixteen", "Eighteen", "RP", "EC", "E", "E10", "T", "M", "AO"];
-                let ratings = data['age_ratings'];
-                for (let i = 0; i < ratings.length; i++) {
-                    if (ratings[i]['category'] === ratingOrg) {
+                data['ratings'].forEach(rating => {
+                    if (rating['ratingorg'] == 'ESRB') {
+                        let ratingFigure = document.getElementById('rating-figure');
                         let image = document.createElement("img");
-                        image.setAttribute("src", "/images/ratings/" + ratings[i]['rating'] + ".jpg");
-                        document.getElementById("rating-figure").appendChild(image);
-                        break;
+                        image.setAttribute("src", "/images/ratings/" + rating['id'] + ".jpg");
+                        ratingFigure.appendChild(image);
                     }
-                }
+                });
             } else {
                 document.getElementById("igdb-loader").remove();
                 document.getElementById("description").innerHTML = "Failed to load IGDB information!";
