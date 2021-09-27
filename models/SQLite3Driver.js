@@ -350,7 +350,7 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
     });
 }
 
-SQLite3Driver.prototype.getArtByID = function getArtByID(id) {
+SQLite3Driver.prototype.getCoverByID = function getCoverByID(id) {
     return new Promise(function (resolve, reject) {
         read.selectIGDBByGame(id).then(res => {
             if (res['coverURL']) {

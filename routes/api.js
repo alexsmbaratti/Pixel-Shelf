@@ -416,7 +416,7 @@ router.get('/games/:id', function (req, res, next) {
 router.get('/games/:gameId/cover', function (req, res, next) {
     let driver = new SQLite3Driver();
     const gameId = req.params.gameId;
-    driver.getArtByID(gameId).then(result => {
+    driver.getCoverByID(gameId).then(result => {
         res.redirect(result);
     }).catch(err => {
         res.redirect('/images/covers/placeholder.jpg');
