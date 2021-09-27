@@ -17,9 +17,9 @@ module.exports = {
                             let result = [];
                             rows.forEach((row) => {
                                 result.push({
-                                    "code": row.code,
-                                    "label": row.label,
-                                    "symbol": row.symbol
+                                    "code": row['code'],
+                                    "label": row['label'],
+                                    "symbol": row['symbol']
                                 });
                             });
                             resolve(result);
