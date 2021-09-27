@@ -180,5 +180,30 @@ module.exports = {
                 reject({status: 400});
             }
         });
+    },
+    insertFigure: function (amiiboID, cost = null, timestamp = null, retailerID = null, isNew = true, inBox = true, isGift = false, region = null, currencyCode = 'USD', notes = null) {
+        return new Promise(function (resolve, reject) {
+            if (amiiboID) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO figure
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [cost, timestamp, retailerID, isNew ? 1 : 0, inBox ? 1 : 0, amiiboID, region, isGift, currencyCode, notes], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let figureID = this.lastID;
+                                console.log(`INSERT A figure was inserted into figure table with ID ${figureID}`);
+                                resolve();
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
     }
 }

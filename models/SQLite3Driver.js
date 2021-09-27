@@ -593,7 +593,7 @@ SQLite3Driver.prototype.addAmiibo = function addAmiibo(json) {
             }
             SQLite3Driver.prototype.db.run(`INSERT
                                             INTO amiibo
-                                            VALUES (?, ?, ?, ?, ?)`, [json.title, json.seriesID, json.msrp, json.type], function (err) {
+                                            VALUES (?, ?, ?, ?, ?, ?)`, [json.title, json.seriesID, json.msrp, json.type, json['currency']], function (err) {
                 if (err) {
                     reject(err);
                 } else {
@@ -609,23 +609,11 @@ SQLite3Driver.prototype.addAmiibo = function addAmiibo(json) {
 
 SQLite3Driver.prototype.addFigure = function addFigure(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO figure
-                                            VALUES (?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.retailerID, json['condition'] ? 1 : 0, json['inbox'] ? 1 : 0, json.amiiboID], function (err) {
-                if (err) {
-                    reject(err);
-                } else {
-                    let figureID = this.lastID;
-                    console.log(`A figure entry was inserted with ID ${figureID}`);
-                    resolve(figureID);
-                }
-            });
+        create.insertFigure(json['amiiboID'], json['cost'], json['timestamp'], json['retailerID'], json['condition'], json['gift'], json['region'], json['currency'], json['notes']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
-
     });
 }
 
