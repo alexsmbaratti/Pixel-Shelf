@@ -353,8 +353,11 @@ SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
 SQLite3Driver.prototype.getArtByID = function getArtByID(id) {
     return new Promise(function (resolve, reject) {
         read.selectIGDBByGame(id).then(res => {
-            console.log(res);
-            resolve(res['cover']);
+            if (res['coverURL']) {
+                resolve(res['coverURL']);
+            } else {
+                reject();
+            }
         }).catch(err => {
             reject(err);
         });

@@ -113,7 +113,7 @@ CREATE TABLE wishlist
 CREATE TABLE igdb
 (
     description TEXT,
-    cover       BLOB,
+    coverURL    TEXT,
     releasedate TEXT,
     igdbURL     TEXT PRIMARY KEY
 );
@@ -158,8 +158,8 @@ CREATE TABLE currency
 
 CREATE TABLE region
 (
-    name      TEXT NOT NULL,
-    id        INTEGER PRIMARY KEY AUTOINCREMENT
+    name TEXT NOT NULL,
+    id   INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
 -- Currencies

@@ -62,25 +62,21 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
                 let resJSON = res.data;
                 resolve(resJSON);
                 if (resJSON.length > 0) {
-                    let coverBytes = null;
                     if (resJSON[0]['cover']) {
                         let size = 'cover_big_2x';
                         let imageID = resJSON[0]['cover']['image_id'];
-                        const request = https.get(`https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`, function (fileRes) {
-                            var blob = "";
-                            fileRes.on("data", function (chunk) {
-                                blob += chunk;
-                            });
-                            fileRes.on('end', function () {
-                                create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], blob).catch(err => {
-                                    console.log(err);
-                                });
+                        https.get(`https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`, function (fileRes) {
+                            let imagePath = "/images/covers/" + imageID + ".jpg";
+                            const file = fs.createWriteStream(__dirname + "/../public" + imagePath);
+                            fileRes.pipe(file);
+                            create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], imagePath).catch(err => {
+                                console.log(err);
                             });
                         }).on('error', function (err) {
                             console.log(err);
                         });
                     } else {
-                        create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], coverBytes).catch(err => {
+                        create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], null).catch(err => {
                             console.log(err);
                         });
                     }

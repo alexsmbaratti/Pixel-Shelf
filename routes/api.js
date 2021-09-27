@@ -417,10 +417,8 @@ router.get('/games/:gameId/cover', function (req, res, next) {
     let driver = new SQLite3Driver();
     const gameId = req.params.gameId;
     driver.getArtByID(gameId).then(result => {
-        res.set({'Content-Type': 'image/jpg'});
-        res.send(result);
+        res.redirect(result);
     }).catch(err => {
-        console.log(err);
         res.redirect('/images/covers/placeholder.jpg');
     });
 });
@@ -518,9 +516,6 @@ router.post('/games', function (req, res) {
                     "igdb-url": igdbLink
                 }).then(addResult => {
                     res.status(200).send({"status": 200, "id": addResult, "igdb": igdbLink});
-                    igdbDriver.getCoverByURL(igdbLink, addResult).catch(err => {
-                        console.log(err);
-                    });
                 }).catch(err => {
                     sendError(res, err);
                 })
@@ -730,22 +725,6 @@ router.get('/maps/token', function (req, res, next) {
 
 function sendError(res, err) {
     res.status(500).send({"status": 500, "error": err});
-}
-
-function coverArtExists(id, req) {
-    return new Promise(function (resolve, reject) {
-        axios.get(`${req.protocol}://${req.get('host')}/images/covers/${id}.jpg`)
-            .then(response => {
-                resolve(true);
-            })
-            .catch(err => {
-                if (err.response.status == 404) {
-                    resolve(false);
-                } else {
-                    reject(err);
-                }
-            });
-    });
 }
 
 function figureArtExists(id, req) {

@@ -38,7 +38,6 @@ function submitGameInfo() {
                     gameID = data.id;
 
                     document.getElementById('game-title').innerHTML = titleText;
-                    document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover");
 
                     swapStepsProgress('game-info-segment', 'edition-info-segment');
                     swapDiv('game-info-div', 'edition-info-div');
@@ -94,6 +93,7 @@ function submitEditionInfo() {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
                 editionID = data.id;
+                document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover"); // Cover art preview needs slight delay to allow image to cache properly
 
                 swapStepsProgress('edition-info-segment', 'destination-segment');
                 swapDiv('edition-info-div', 'destination-div');

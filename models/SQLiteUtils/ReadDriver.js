@@ -70,7 +70,7 @@ module.exports = {
                                  game
                             WHERE igdb.igdbURL = game.igdbURL
                               AND game.id = ?`, [gameID], (err, row) => {
-                        if (err) {
+                        if (err || !row) {
                             reject(err);
                         } else {
                             resolve(row);
