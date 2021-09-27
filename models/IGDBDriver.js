@@ -4,6 +4,8 @@ var config = require('../config.json');
 const https = require('https');
 const fs = require('fs');
 
+const create = require('./SQLiteUtils/CreateDriver');
+
 function IGDBDriver() {
     IGDBDriver.prototype.clientID = config.client_id;
     IGDBDriver.prototype.clientSecret = config.client_secret;
@@ -59,6 +61,11 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
             .then(function (res) {
                 let resJSON = res.data;
                 resolve(resJSON);
+                if (resJSON.length > 0) {
+                    create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], null).catch(err => {
+                        console.log(err);
+                    });
+                }
             })
             .catch(function (e) {
                 console.log("Error in Game Info");

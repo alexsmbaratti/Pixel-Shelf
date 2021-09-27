@@ -79,5 +79,30 @@ module.exports = {
                 reject({status: 400});
             }
         });
-    }
+    },
+    insertIGDB: function (igdbURL, description = null, releaseDate = null, cover = null) {
+        return new Promise(function (resolve, reject) {
+            if (igdbURL) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO igdb
+                                VALUES (?, ?, ?, ?)`, [description, cover, releaseDate, igdbURL], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let igdbID = this.lastID;
+                                console.log(`INSERT ${igdbURL} was inserted into IGDB table with ID ${igdbID}`);
+                                resolve();
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
 }
