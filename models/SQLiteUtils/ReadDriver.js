@@ -8,9 +8,8 @@ module.exports = {
                 if (err) {
                     reject(err);
                 } else {
-                    let sql = `SELECT *
-                               FROM currency`;
-                    db.all(sql, [], (err, rows) => {
+                    db.all(`SELECT *
+                            FROM currency`, [], (err, rows) => {
                         if (err) {
                             reject(err);
                         } else {
@@ -22,6 +21,37 @@ module.exports = {
                                     "symbol": row['symbol']
                                 });
                             });
+                            console.log(`SELECT ${result.length} rows queried from currency table`);
+                            resolve(result);
+                        }
+                    });
+                }
+            });
+        });
+    },
+    selectPlatforms: function () {
+        return new Promise(function (resolve, reject) {
+            let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    db.all(`SELECT platform.*, brand.brand
+                            FROM platform,
+                                 brand
+                            WHERE platform.brandid = brand.id
+                            ORDER BY platform.name ASC`, [], (err, rows) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            let result = [];
+                            rows.forEach((row) => {
+                                result.push({
+                                    "id": row.id,
+                                    "name": row.name,
+                                    "brand": row.brand
+                                });
+                            });
+                            console.log(`SELECT ${result.length} rows queried from platform and brand tables`);
                             resolve(result);
                         }
                     });

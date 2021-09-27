@@ -342,31 +342,10 @@ SQLite3Driver.prototype.getFigure = function getFigure(id) {
 
 SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT platform.*, brand.brand
-                       FROM platform,
-                            brand
-                       WHERE platform.brandid = brand.id
-                       ORDER BY platform.name ASC`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    let result = [];
-                    rows.forEach((row) => {
-                        result.push({
-                            "id": row.id,
-                            "name": row.name,
-                            "brand": row.brand
-                        });
-                    });
-
-                    resolve(result);
-                }
-            });
+        read.selectPlatforms().then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
