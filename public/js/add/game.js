@@ -65,6 +65,7 @@ function submitEditionInfo() {
     let editionText = document.getElementById("edition-text").value;
     let upcText = document.getElementById("upc-text").value;
     let msrpText = document.getElementById("msrp-text").value;
+    let currencySelect = document.getElementById("msrp-currency-selection");
 
     if (isNaN(msrpText) && msrpText.length > 0) {
         return;
@@ -110,6 +111,7 @@ function submitEditionInfo() {
         "upc": upcText,
         "msrp": msrpText,
         "digital": isDigital,
+        "currency": currencySelect[currencySelect.selectedIndex].value,
         "gameID": gameID
     }));
 }
