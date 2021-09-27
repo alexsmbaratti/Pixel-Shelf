@@ -15,6 +15,13 @@
 
 <div class="field">
     <label class="label">Cost</label>
+    <div class="select">
+        <select id="cost-currency-selection">
+            <% currencies.forEach(function(currency) { %>
+                <option value="<%= currency.code %>"><%= currency.label %> (<%= currency.symbol %>)</option>
+            <% }); %>
+        </select>
+    </div>
     <div class="control">
         <input required id="cost-text" class="input" type="number" min="0" step="any"
                placeholder="How much did you pay for this?">

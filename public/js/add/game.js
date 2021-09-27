@@ -145,6 +145,7 @@ function submitPurchaseInfo() {
         timestamp = null;
     }
 
+    let currencySelect = document.getElementById("cost-currency-selection");
     let conditionSelect = document.getElementById("condition-selection");
     let hasBox = !document.getElementById("box-button").classList.contains('is-outlined');
     let hasManual = !document.getElementById("manual-button").classList.contains('is-outlined');
@@ -196,6 +197,7 @@ function submitPurchaseInfo() {
         "retailerID": retailerID,
         "gift": isGift,
         "notes": notes,
+        "currency": currencySelect[currencySelect.selectedIndex].value,
         "editionID": editionID
     }));
 }
