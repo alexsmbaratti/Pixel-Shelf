@@ -555,49 +555,20 @@ SQLite3Driver.prototype.addGame = function addGame(json) {
 
 SQLite3Driver.prototype.addEdition = function addEdition(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO edition
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [json.edition, json.upc, json.msrp, json.gameID, json['digital'] ? 1 : 0, 'USD', json['region']], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                } else {
-                    let editionID = this.lastID;
-                    console.log(`${json.edition} was inserted with ID ${editionID}`);
-                    resolve(editionID);
-                }
-            });
+        create.insertEdition(json['edition'], json['gameID'], json['upc'], json['msrp'], json['currency'], json['digital'], json['region']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
 
 SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
-    if (json.condition == null) {
-        json.condition = true; // Default to true
-    }
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json['box'] ? 1 : 0, json['manual'] ? 1 : 0, 0, json['gift'] ? 1 : 0, 'USD', json['private'] ? 1 : 0, json['notes']], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                } else {
-                    let libraryID = this.lastID;
-                    console.log(`A library entry was inserted with ID ${libraryID}`);
-                    resolve(libraryID);
-                }
-            });
+        create.insertLibraryEntry(json['editionID'], json['cost'], json['currency'], json['timestamp'], json['retailerID'], json['condition'], json['box'], json['manual'], json['gift'], json['private'], json['notes']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
@@ -1431,7 +1402,7 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID, 
             let sql = `SELECT *
                        FROM edition
                        WHERE edition = ?
-                         AND gameid = ? 
+                         AND gameid = ?
                          AND digital = ?`;
             // TODO: Change to get
             SQLite3Driver.prototype.db.all(sql, [edition, gameID, parsedDigital], (err, res) => {
