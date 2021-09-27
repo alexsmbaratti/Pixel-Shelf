@@ -56,7 +56,7 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
                 'Authorization': 'Bearer ' + IGDBDriver.prototype.token,
                 'Content-Type': 'text/plain'
             },
-            data: 'fields *, genres.name; where name = \"' + name + '\";'
+            data: 'fields first_release_date, summary, url, age_ratings.rating, genres.name, cover.image_id; where name = \"' + name + '\";'
         })
             .then(function (res) {
                 let resJSON = res.data;
@@ -68,7 +68,6 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
                 }
             })
             .catch(function (e) {
-                console.log("Error in Game Info");
                 console.log(e);
                 reject(e);
             });
