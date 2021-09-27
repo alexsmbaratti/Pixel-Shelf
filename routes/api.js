@@ -247,7 +247,6 @@ router.get('/figures', function (req, res, next) {
     if (where === 'no-date-added') {
         driver.getFiguresWithoutDateAdded().then(result => {
             if (result != undefined) {
-                console.log(result)
                 res.status(200).send({"status": 200, "data": result});
             } else {
                 sendError(res, "No result");
@@ -495,8 +494,7 @@ router.post('/games', function (req, res) {
         if (gameResult.found === true) {
             res.status(200).send({"status": 200, "id": gameResult.id, "igdb": gameResult.igdb});
         } else {
-            let igdbDriver = new IGDBDriver();
-            igdbDriver.getGameByName(req.body.title).then(result => {
+            IGDBDriver.getGameByName(req.body.title).then(result => {
                 let igdbLink;
                 if (result.length < 1) {
                     igdbLink = null;
@@ -634,8 +632,7 @@ router.post('/wishlist', function (req, res) {
 });
 
 router.get('/igdb', function (req, res) {
-    let driver = new IGDBDriver();
-    driver.checkStatus().then(result => {
+    IGDBDriver.checkStatus().then(result => {
         res.status(200).send({"status": 200});
     }).catch(err => {
         sendError(res, err);
@@ -689,8 +686,7 @@ router.get('/igdb/client-secret', function (req, res) {
 });
 
 router.put('/igdb/regen-token', function (req, res) {
-    let driver = new IGDBDriver();
-    driver.regenerateToken().then(result => {
+    IGDBDriver.regenerateToken().then(result => {
         res.status(200).send({"status": 200});
     }).catch(err => {
         sendError(res, err);

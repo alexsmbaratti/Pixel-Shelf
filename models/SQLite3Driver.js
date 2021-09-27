@@ -325,7 +325,7 @@ SQLite3Driver.prototype.getFigure = function getFigure(id) {
                         "title": row.title,
                         "series": row.series,
                         "dateAdded": row.timestamp,
-                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
+                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2), // TODO: Allow a library to format based on currency
                         "msrp": row.msrp === null ? null : (Math.round(row.msrp * 100) / 100).toFixed(2),
                         "new": row.new == 1,
                         "inbox": row.inbox == 1,
@@ -384,8 +384,7 @@ SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetada
             reject(err); // Send back failure and attempt to cache for the next request
             read.selectGameByID(id).then(gameRes => {
                 if (gameRes['igdbURL']) {
-                    let igdbDriver = new IGDBDriver();
-                    igdbDriver.getGameByURL(gameRes['igdbURL']).catch(err => {
+                    IGDBDriver.getGameByURL(gameRes['igdbURL']).catch(err => {
                     });
                 } else {
                 }
