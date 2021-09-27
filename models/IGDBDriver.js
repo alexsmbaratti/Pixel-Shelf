@@ -80,6 +80,12 @@ IGDBDriver.prototype.getGameByName = function getGameByName(name) {
                             console.log(err);
                         });
                     }
+                    resJSON[0]['genres'].forEach(genre => {
+                        create.insertGenre(genre['id'], genre['name']).catch(err => {
+                        });
+                        create.insertHasAGenre(genre['id'], resJSON[0]['url']).catch(err => {
+                        });
+                    });
                 }
             })
             .catch(function (e) {

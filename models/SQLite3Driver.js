@@ -367,7 +367,13 @@ SQLite3Driver.prototype.getCoverByID = function getCoverByID(id) {
 SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetadataByID(id) {
     return new Promise(function (resolve, reject) {
         read.selectIGDBByGame(id).then(res => {
-            resolve(res);
+            res['genres'] = [];
+            read.selectGenresByGame(id).then(genreRes => {
+                res['genres'] = genreRes;
+                resolve(res);
+            }).catch(err => {
+                resolve(res);
+            });
         }).catch(err => {
             reject(err);
         });

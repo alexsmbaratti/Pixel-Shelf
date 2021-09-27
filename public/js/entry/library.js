@@ -117,7 +117,7 @@ function getIGDBInfo(id) {
                 data['genres'].forEach(genre => {
                     let genreTag = document.createElement("span");
                     genreTag.setAttribute("class", "tag is-light mr-3");
-                    genreTag.innerHTML = genre.name;
+                    genreTag.innerHTML = genre['description'];
                     tagsDiv.appendChild(genreTag);
                 });
                 const ratingOrg = 1; // ESRB Ratings Only

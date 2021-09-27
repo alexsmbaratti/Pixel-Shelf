@@ -156,6 +156,55 @@ module.exports = {
             }
         });
     },
+    insertGenre: function (id, description) {
+        return new Promise(function (resolve, reject) {
+            if (id && description) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO genre
+                                VALUES (?, ?)`, [description, id], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let genre = this.lastID;
+                                console.log(`INSERT ${description} was inserted into genre table with ID ${genre}`);
+                                resolve(genre);
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
+    insertHasAGenre: function (genreid, igdbURL) {
+        return new Promise(function (resolve, reject) {
+            if (genreid && igdbURL) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO hasagenre
+                                VALUES (?, ?)`, [igdbURL, genreid], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                console.log(`INSERT A row was inserted into hasagenre table with ID (${igdbURL}, ${genreid})`);
+                                resolve();
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
     insertSeries: function (series) {
         return new Promise(function (resolve, reject) {
             if (series) {

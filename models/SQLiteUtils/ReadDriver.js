@@ -81,5 +81,31 @@ module.exports = {
                 }
             });
         });
+    }, selectGenresByGame: function (gameID) {
+        return new Promise(function (resolve, reject) {
+            let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    db.all(`SELECT genre.*
+                            FROM igdb,
+                                 genre,
+                                 hasagenre,
+                                 game
+                            WHERE genre.id = hasagenre.genreid
+                              AND hasagenre.igdbURL = igdb.igdbURL
+                              AND igdb.igdbURL = game.igdbURL
+                              AND game.id = ?`, [gameID], (err, rows) => {
+                        if (err) {
+                            reject(err);
+                        } else if (!rows) {
+                            reject();
+                        } else {
+                            resolve(rows);
+                        }
+                    });
+                }
+            });
+        });
     }
 }
