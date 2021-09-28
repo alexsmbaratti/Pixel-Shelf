@@ -464,28 +464,29 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                                 igdbURL = row.igdbURL;
                             }
 
-                        result = {
-                            "title": row.title,
-                            "platform": row.name,
-                            "cost": row.cost,
-                            "msrp": row.msrp,
-                            "upc": row.upc,
-                            "edition": row.edition,
-                            "new": row.new == 1,
-                            "box": row.box == 1,
-                            "manual": row.manual == 1,
-                            "igdbURL": igdbURL,
-                            "date": row.timestamp,
-                            "gameID": row.gameid,
-                            "editionID": row.editionid,
-                            "retailerID": row.retailerid,
-                            "progress": row.progress,
-                            "notes": row.notes,
-                            "gift": row.gift == 1
-                        };
-                    });
-                } catch (e) {
-                    reject(e);
+                            result = {
+                                "title": row.title,
+                                "platform": row.name,
+                                "cost": row.cost,
+                                "msrp": row.msrp,
+                                "upc": row.upc,
+                                "edition": row.edition,
+                                "new": row.new == 1,
+                                "box": row.box == 1,
+                                "manual": row.manual == 1,
+                                "igdbURL": igdbURL,
+                                "date": row.timestamp,
+                                "gameID": row.gameid,
+                                "editionID": row.editionid,
+                                "retailerID": row.retailerid,
+                                "progress": row.progress,
+                                "notes": row.notes,
+                                "gift": row.gift == 1
+                            };
+                        });
+                    } catch (e) {
+                        reject(e);
+                    }
                 }
             });
         });
