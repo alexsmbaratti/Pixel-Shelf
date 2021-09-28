@@ -157,14 +157,17 @@
                                     </li>
                                 </ul>
                             </article>
-                            <% if (entry.notes) { %>
+
                             <div class="tile is-child is-vertical">
                                 <article class="tile is-parent box is-vertical">
                                     <h1 class="title is-4">Notes</h1>
-                                    <p class="has-text-light"><%= entry.notes %></p>
+                                    <% if (entry.notes) { %>
+                                        <p class="has-text-light"><%= entry.notes %></p>
+                                    <% } else { %>
+                                        <p class="has-text-light">N/A</p>
+                                    <% } %>
                                 </article>
                             </div>
-                            <% } %>
                         </div>
                     </div>
                     <div class="tile is-child is-vertical pl-3">

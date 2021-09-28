@@ -56,6 +56,9 @@ module.exports = {
     insertLibraryEntry: function (editionID, cost = null, currencyCode = 'USD', timestamp = null, retailerID = null, isNew = true, hasBox = true, hasManual = true, isGift = false, isPrivate = false, notes = null) {
         return new Promise(function (resolve, reject) {
             if (editionID) {
+                if (isGift) {
+                    cost = 0; // By virtue of being a gift, assume the cost is 0.00 to ensure proper sorting
+                }
                 let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
                     if (err) {
                         console.log(err);

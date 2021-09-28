@@ -40,6 +40,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                               platform.name,
                               library.timestamp,
                               library.cost,
+                              library.gift,
                               edition.edition
                        FROM game,
                             platform,
@@ -60,6 +61,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                             "title": row.title,
                             "platform": row.name,
                             "dateAdded": row.timestamp,
+                            "gift": row.gift == 1,
                             "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
                             "edition": row.edition
                         });
