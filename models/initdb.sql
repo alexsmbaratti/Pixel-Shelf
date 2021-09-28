@@ -1,3 +1,4 @@
+-- Create Tables
 CREATE TABLE game
 (
     title      TEXT NOT NULL,

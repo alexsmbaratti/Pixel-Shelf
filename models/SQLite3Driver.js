@@ -62,7 +62,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                             "platform": row.name,
                             "dateAdded": row.timestamp,
                             "gift": row.gift == 1,
-                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
+                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2), // TODO: Allow a library to format based on currency
                             "edition": row.edition
                         });
                     });
@@ -375,17 +375,18 @@ SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetada
                 res['genres'] = genreRes;
                 read.selectRatingsByGame(id).then(ratingRes => {
                     res['ratings'] = ratingRes;
-                    resolve(res);
+                    resolve(res); // Happy Day Case: Resolve with ratings, genres, and base metadata
                 }).catch(err => {
-                    resolve(res);
+                    resolve(res); // Resolve only base metadata and genres
                 });
             }).catch(err => {
-                resolve(res);
+                resolve(res); // Resolve only base metadata
             });
         }).catch(err => {
             reject(err); // Send back failure and attempt to cache for the next request
             read.selectGameByID(id).then(gameRes => {
                 if (gameRes['igdbURL']) {
+                    // TODO: If the data is not already cached, attempt to retrieve it and load it into the response
                     IGDBDriver.getGameByURL(gameRes['igdbURL']).catch(err => {
                     });
                 } else {
