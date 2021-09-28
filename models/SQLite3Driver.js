@@ -410,13 +410,13 @@ SQLite3Driver.prototype.getPlatform = function getPlatform(id) {
             SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve({
+                        "id": row.id,
+                        "name": row.name,
+                        "brand": row.brand
+                    });
                 }
-
-                resolve({
-                    "id": row.id,
-                    "name": row.name,
-                    "brand": row.brand
-                });
             });
         });
     });
@@ -452,18 +452,17 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
             SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = {};
+                } else {
+                    let result = {};
+                    try {
+                        rows.forEach((row) => {
 
-                try {
-                    rows.forEach((row) => {
-
-                        let igdbURL;
-                        if (row.igdbURL === undefined) {
-                            igdbURL = null;
-                        } else {
-                            igdbURL = row.igdbURL;
-                        }
+                            let igdbURL;
+                            if (row.igdbURL === undefined) {
+                                igdbURL = null;
+                            } else {
+                                igdbURL = row.igdbURL;
+                            }
 
                         result = {
                             "title": row.title,
@@ -488,7 +487,6 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                 } catch (e) {
                     reject(e);
                 }
-                resolve(result);
             });
         });
     });
@@ -514,34 +512,29 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
                   AND platform.id = platformid
                   AND wishlist.id = ?
                 LIMIT 1`;
-            // TODO: Change to get
-            SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
+            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
-                }
-                let result = {};
-                try {
-                    rows.forEach((row) => {
-                        let igdbURL;
-                        if (row.igdbURL === undefined) {
-                            igdbURL = null;
-                        } else {
-                            igdbURL = row.igdbURL;
-                        }
+                } else if (row) {
+                    let igdbURL;
+                    if (row.igdbURL === undefined) {
+                        igdbURL = null;
+                    } else {
+                        igdbURL = row.igdbURL;
+                    }
 
-                        result = {
-                            "title": row.title,
-                            "platform": row.name,
-                            "msrp": row.msrp,
-                            "edition": row.edition,
-                            "igdbURL": igdbURL,
-                            "gameID": row.gameid
-                        };
+                    resolve({
+                        "title": row.title,
+                        "platform": row.name,
+                        "msrp": row.msrp,
+                        "edition": row.edition,
+                        "igdbURL": igdbURL,
+                        "gameID": row.gameid,
+                        "editionID": row.editionid
                     });
-                } catch (e) {
-                    reject(e);
+                } else {
+                    reject({status: 404}); // TODO: Use found key/value to determine 404
                 }
-                resolve(result);
             });
         });
     });
@@ -780,8 +773,7 @@ SQLite3Driver.prototype.lookupBrand = function lookupBrand(name) {
             SQLite3Driver.prototype.db.get(sql, [name], (err, row) => {
                 if (err) {
                     reject(err);
-                }
-                if (row) {
+                } else if (row) {
                     resolve({"found": true, "id": row.id});
                 } else {
                     resolve({"found": false});
@@ -805,16 +797,17 @@ SQLite3Driver.prototype.getRetailer = function getRetailer(id) {
             SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve({
+                        "id": row.id,
+                        "retailer": row.retailer,
+                        "subtext": row.subtext,
+                        "online": row.online === 1,
+                        "lat": row.lat,
+                        "long": row.long,
+                        "url": row.url
+                    });
                 }
-                resolve({
-                    "id": row.id,
-                    "retailer": row.retailer,
-                    "subtext": row.subtext,
-                    "online": row.online === 1,
-                    "lat": row.lat,
-                    "long": row.long,
-                    "url": row.url
-                });
             });
         });
     });
@@ -843,20 +836,21 @@ SQLite3Driver.prototype.getRetailers = function getRetailers(sortBy = 'retailer'
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = [];
-                rows.forEach((row) => {
-                    result.push({
-                        "id": row.id,
-                        "retailer": row.retailer,
-                        "subtext": row.subtext,
-                        "online": row.online === 1,
-                        "lat": row.lat,
-                        "long": row.long,
-                        "url": row.url
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "retailer": row.retailer,
+                            "subtext": row.subtext,
+                            "online": row.online === 1,
+                            "lat": row.lat,
+                            "long": row.long,
+                            "url": row.url
+                        });
                     });
-                });
-                resolve(result);
+                    resolve(result);
+                }
             });
         });
     });
@@ -906,11 +900,11 @@ SQLite3Driver.prototype.addWishlist = function addWishlist(json) {
                 if (err) {
                     console.log(err);
                     reject(err);
+                } else {
+                    let wishlistID = this.lastID;
+                    console.log(`A wishlist entry was inserted with ID ${wishlistID}`);
+                    resolve(wishlistID);
                 }
-
-                let wishlistID = this.lastID;
-                console.log(`A wishlist entry was inserted with ID ${wishlistID}`);
-                resolve(wishlistID);
             });
         });
     });
@@ -934,23 +928,24 @@ SQLite3Driver.prototype.lookupByUPC = function lookupByUPC(upc) {
             SQLite3Driver.prototype.db.all(sql, [upc], (err, rows) => {
                 if (err) {
                     reject(err);
+                } else {
+                    let result = {};
+                    try {
+                        rows.forEach((row) => {
+                            result = {
+                                "title": row.title,
+                                "platform": row.name,
+                                "cost": row.cost,
+                                "msrp": row.msrp,
+                                "upc": row.upc,
+                                "edition": row.edition
+                            };
+                        });
+                        resolve(result);
+                    } catch (e) {
+                        reject(e);
+                    }
                 }
-                let result = {};
-                try {
-                    rows.forEach((row) => {
-                        result = {
-                            "title": row.title,
-                            "platform": row.name,
-                            "cost": row.cost,
-                            "msrp": row.msrp,
-                            "upc": row.upc,
-                            "edition": row.edition
-                        };
-                    });
-                } catch (e) {
-                    reject(e);
-                }
-                resolve(result);
             });
         });
     });
@@ -972,8 +967,9 @@ SQLite3Driver.prototype.updateProgress = function updateProgress(libraryID = -1,
             SQLite3Driver.prototype.db.run(sql, [progress, libraryID], function (err) {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve();
                 }
-                resolve();
             });
         });
     });
@@ -1214,21 +1210,22 @@ SQLite3Driver.prototype.getCompleted = function getCompleted(sortBy) {
             SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err);
-                }
-                let result = [];
-                rows.forEach((row) => {
-                    result.push({
-                        "id": row.id,
-                        "title": row.title,
-                        "platform": row.name,
-                        "dateAdded": row.timestamp,
-                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
-                        "edition": row.edition,
-                        "gameID": row.gameid
+                } else {
+                    let result = [];
+                    rows.forEach((row) => {
+                        result.push({
+                            "id": row.id,
+                            "title": row.title,
+                            "platform": row.name,
+                            "dateAdded": row.timestamp,
+                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
+                            "edition": row.edition,
+                            "gameID": row.gameid
+                        });
                     });
-                });
 
-                resolve(result);
+                    resolve(result);
+                }
             });
         });
     });
@@ -1246,10 +1243,10 @@ SQLite3Driver.prototype.getFigureSize = function getFigureSize() {
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    let num = res[0]['COUNT(id)'];
+                    resolve(num);
                 }
-
-                let num = res[0]['COUNT(id)'];
-                resolve(num);
             });
         });
     });
@@ -1267,12 +1264,10 @@ SQLite3Driver.prototype.getWishlistSize = function getWishlistSize() {
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    let num = res[0]['COUNT(id)'];
+                    resolve(num);
                 }
-
-                let num = res[0]['COUNT(id)'];
-
-
-                resolve(num);
             });
         });
     });
@@ -1390,9 +1385,9 @@ SQLite3Driver.prototype.countByPlatform = function countByPlatform() {
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1411,9 +1406,9 @@ SQLite3Driver.prototype.countByProgress = function countByProgress() {
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1432,9 +1427,9 @@ SQLite3Driver.prototype.countByDateAdded = function countByDateAdded() {
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1494,9 +1489,9 @@ SQLite3Driver.prototype.countByCondition = function countByCondition() {
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1523,9 +1518,9 @@ SQLite3Driver.prototype.countByBrand = function countByBrand() {
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1550,9 +1545,9 @@ SQLite3Driver.prototype.getGamesWithoutLibrary = function getGamesWithoutLibrary
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1570,9 +1565,9 @@ SQLite3Driver.prototype.getGamesWithoutIGDBMetadata = function getGamesWithoutIG
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1592,9 +1587,9 @@ SQLite3Driver.prototype.getEditionsWithoutUPC = function getEditionsWithoutUPC()
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1614,9 +1609,9 @@ SQLite3Driver.prototype.getEditionsWithoutMSRP = function getEditionsWithoutMSRP
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1638,9 +1633,9 @@ SQLite3Driver.prototype.getLibraryEntriesWithoutCost = function getLibraryEntrie
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1713,8 +1708,9 @@ SQLite3Driver.prototype.getLibraryEntriesFromRetailer = function getLibraryEntri
             SQLite3Driver.prototype.db.all(sql, [id], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-                resolve(res);
             });
         });
     });
@@ -1739,8 +1735,9 @@ SQLite3Driver.prototype.getFiguresFromRetailer = function getFiguresFromRetailer
             SQLite3Driver.prototype.db.all(sql, [id], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-                resolve(res);
             });
         });
     });
@@ -1762,9 +1759,9 @@ SQLite3Driver.prototype.getLibraryEntriesWithoutRetailer = function getLibraryEn
             SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
                 if (err) {
                     reject(err);
+                } else {
+                    resolve(res);
                 }
-
-                resolve(res);
             });
         });
     });
@@ -1803,8 +1800,9 @@ SQLite3Driver.prototype.checkStatus = function checkStatus() {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
             if (err) {
                 reject(err);
+            } else {
+                resolve();
             }
-            resolve();
         });
     });
 }

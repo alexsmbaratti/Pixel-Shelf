@@ -24,7 +24,12 @@ router.get('/:wishlistId', function (req, res, next) {
             res.render('error', {error: err});
         });
     }).catch(err => {
-        res.render('error', {message: "Error", error: err});
+        if (err['status'] === 404) {
+            res.status(404);
+            res.render('404', {title: 'Pixel Shelf', type: 'game'});
+        } else {
+            res.render('error', {message: "Error", error: err});
+        }
     });
 });
 
