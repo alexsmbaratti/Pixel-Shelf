@@ -44,8 +44,15 @@ function fetchLibrary(sortBy = "title") {
                         dateAdded.innerHTML = (date.getUTCMonth() + 1) + '-' + date.getUTCDate() + '-' + date.getUTCFullYear();
                     }
 
+                    console.log(game)
                     let cost = document.createElement("td");
-                    cost.innerHTML = game.cost;
+                    if (game['gift']) {
+                        cost.innerHTML = 'Gift';
+                    } else if (game['cost'] == null) {
+                        cost.innerHTML = 'Unknown';
+                    } else {
+                        cost.innerHTML = game.cost;
+                    }
 
                     let edition = document.createElement("td");
                     edition.innerHTML = game.edition;
