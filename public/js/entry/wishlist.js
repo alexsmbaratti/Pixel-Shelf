@@ -30,7 +30,9 @@ function getIGDBInfo(id, ratingOrg = 'ESRB') {
                     }
                 });
             } else {
-                console.log("TODO: Handle error!")
+                document.getElementById("igdb-loader").remove();
+                document.getElementById("description").innerHTML = "Failed to load IGDB information!";
+                document.getElementById("igdb-link").innerHTML = 'View on IGDB';
             }
         }
     }
