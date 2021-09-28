@@ -24,10 +24,11 @@ CREATE TABLE edition
     gameid     INTEGER,
     digital    INTEGER NOT NULL,
     currencyid TEXT,
-    region     TEXT,
+    region     INTEGER,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (gameid) REFERENCES game (id) ON DELETE CASCADE,
-    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL,
+    FOREIGN KEY (region) REFERENCES region (id) ON DELETE SET NULL
 );
 
 CREATE TABLE library
@@ -76,14 +77,15 @@ CREATE TABLE figure
     new        INTEGER NOT NULL,
     inbox      INTEGER NOT NULL,
     amiiboid   INTEGER,
-    region     TEXT,
+    region     INTEGER,
     gift       INTEGER NOT NULL,
     currencyid TEXT,
     notes      TEXT,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (retailerid) REFERENCES retailer (id) ON DELETE SET NULL,
     FOREIGN KEY (amiiboid) REFERENCES amiibo (id) ON DELETE CASCADE,
-    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL,
+    FOREIGN KEY (region) REFERENCES region (id) ON DELETE SET NULL
 );
 
 CREATE TABLE retailer
@@ -170,13 +172,10 @@ VALUES ('¥', 'Japanese yen', 'JPY');
 
 -- Regions
 INSERT INTO region
-VALUES ('No Region', 1);
+VALUES ('North America', 1);
 
 INSERT INTO region
-VALUES ('North America', 2);
+VALUES ('Europe', 2);
 
 INSERT INTO region
-VALUES ('Europe', 3);
-
-INSERT INTO region
-VALUES ('Japan', 4);
+VALUES ('Japan', 3);
