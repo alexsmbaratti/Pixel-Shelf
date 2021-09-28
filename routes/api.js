@@ -643,17 +643,25 @@ router.post('/thermal-printer/:libraryId', function (req, res) {
     const libraryId = req.params.libraryId;
 
     if (thermalPrinterEndpoint) {
-        axios({
-            method: 'post',
-            url: thermalPrinterEndpoint + '/api/pixel-shelf/library/' + libraryId,
-            headers: {}
-        })
-            .then(function (result) {
-                res.status(200).send({"status": 200});
+        let driver = new SQLite3Driver();
+        driver.getLibraryGame(libraryId).then(libraryGame => {
+            axios({
+                method: 'post',
+                url: thermalPrinterEndpoint + '/api/pixel-shelf/library/' + libraryId,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: libraryGame
             })
-            .catch(function (err) {
-                sendError(res, err);
-            });
+                .then(function (result) {
+                    res.status(200).send({"status": 200});
+                })
+                .catch(function (err) {
+                    sendError(res, err);
+                });
+        }).catch(function (err) {
+            sendError(res, err);
+        });
     } else {
         res.status(501).send({"status": 501, "error": "Thermal Printer not configured!"});
     }

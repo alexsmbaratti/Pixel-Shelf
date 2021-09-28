@@ -223,6 +223,9 @@ function print(id) {
             if (request.status === 200) {
                 button.setAttribute("class", "button is-success");
                 button.innerHTML = 'Printed!';
+            } else if (request.status === 501) {
+                button.setAttribute("class", "button is-danger");
+                button.innerHTML = 'Not Configured!';
             } else {
                 button.setAttribute("class", "button is-danger");
             }
