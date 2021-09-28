@@ -4,7 +4,8 @@ CREATE TABLE game
     platformid INTEGER,
     igdbURL    TEXT,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (platformid) REFERENCES platform (id) ON DELETE CASCADE
+    FOREIGN KEY (platformid) REFERENCES platform (id) ON DELETE CASCADE,
+    FOREIGN KEY (igdbURL) REFERENCES igdb (igdbURL) ON DELETE SET NULL
 );
 
 CREATE TABLE platform
@@ -17,13 +18,17 @@ CREATE TABLE platform
 
 CREATE TABLE edition
 (
-    edition     TEXT NOT NULL,
-    upc         TEXT,
-    msrp        REAL,
-    gameid      INTEGER,
-    trackingURL TEXT,
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (gameid) REFERENCES game (id) ON DELETE CASCADE
+    edition    TEXT    NOT NULL,
+    upc        TEXT,
+    msrp       REAL,
+    gameid     INTEGER,
+    digital    INTEGER NOT NULL,
+    currencyid TEXT,
+    region     INTEGER,
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    FOREIGN KEY (gameid) REFERENCES game (id) ON DELETE CASCADE,
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL,
+    FOREIGN KEY (region) REFERENCES region (id) ON DELETE SET NULL
 );
 
 CREATE TABLE library
@@ -36,19 +41,26 @@ CREATE TABLE library
     box        INTEGER NOT NULL,
     manual     INTEGER NOT NULL,
     progress   INTEGER NOT NULL,
+    gift       INTEGER NOT NULL,
+    currencyid TEXT,
+    private    INTEGER NOT NULL,
+    notes      TEXT,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id) ON DELETE CASCADE,
-    FOREIGN KEY (retailerid) REFERENCES retailer (id) ON DELETE SET NULL
+    FOREIGN KEY (retailerid) REFERENCES retailer (id) ON DELETE SET NULL,
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
 );
 
 CREATE TABLE amiibo
 (
-    title    TEXT NOT NULL,
-    seriesid INTEGER,
-    msrp     REAL,
-    type     INTEGER,
-    id       INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (seriesid) REFERENCES series (id) ON DELETE CASCADE
+    title      TEXT NOT NULL,
+    seriesid   INTEGER,
+    msrp       REAL,
+    type       INTEGER,
+    currencyid TEXT,
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    FOREIGN KEY (seriesid) REFERENCES series (id) ON DELETE CASCADE,
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL
 );
 
 CREATE TABLE series
@@ -65,9 +77,15 @@ CREATE TABLE figure
     new        INTEGER NOT NULL,
     inbox      INTEGER NOT NULL,
     amiiboid   INTEGER,
+    region     INTEGER,
+    gift       INTEGER NOT NULL,
+    currencyid TEXT,
+    notes      TEXT,
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (retailerid) REFERENCES retailer (id) ON DELETE SET NULL,
-    FOREIGN KEY (amiiboid) REFERENCES amiibo (id) ON DELETE CASCADE
+    FOREIGN KEY (amiiboid) REFERENCES amiibo (id) ON DELETE CASCADE,
+    FOREIGN KEY (currencyid) REFERENCES currency (code) ON DELETE SET NULL,
+    FOREIGN KEY (region) REFERENCES region (id) ON DELETE SET NULL
 );
 
 CREATE TABLE retailer
@@ -93,3 +111,71 @@ CREATE TABLE wishlist
     id        INTEGER PRIMARY KEY AUTOINCREMENT,
     FOREIGN KEY (editionid) REFERENCES edition (id) ON DELETE CASCADE
 );
+
+CREATE TABLE igdb
+(
+    description TEXT,
+    coverURL    TEXT,
+    releasedate TEXT,
+    igdbURL     TEXT PRIMARY KEY
+);
+
+CREATE TABLE rating
+(
+    ratingorg TEXT,
+    id        INTEGER PRIMARY KEY AUTOINCREMENT
+);
+
+CREATE TABLE genre
+(
+    description TEXT,
+    id          INTEGER PRIMARY KEY AUTOINCREMENT
+);
+
+CREATE TABLE hasagenre
+(
+    igdbURL TEXT,
+    genreid INTEGER,
+    PRIMARY KEY (igdbURL, genreid),
+    FOREIGN KEY (igdbURL) REFERENCES igdb (igdbURL) ON DELETE CASCADE,
+    FOREIGN KEY (genreid) REFERENCES genre (id) ON DELETE CASCADE
+);
+
+CREATE TABLE hasarating
+(
+    igdbURL  TEXT,
+    ratingid INTEGER,
+    PRIMARY KEY (igdbURL, ratingid),
+    FOREIGN KEY (igdbURL) REFERENCES igdb (igdbURL) ON DELETE CASCADE,
+    FOREIGN KEY (ratingid) REFERENCES rating (id) ON DELETE CASCADE
+);
+
+CREATE TABLE currency
+(
+    symbol TEXT,
+    label  TEXT,
+    code   TEXT UNIQUE PRIMARY KEY
+);
+
+CREATE TABLE region
+(
+    name TEXT NOT NULL,
+    id   INTEGER PRIMARY KEY AUTOINCREMENT
+);
+
+-- Currencies
+INSERT INTO currency
+VALUES ('$', 'United States dollar', 'USD');
+
+INSERT INTO currency
+VALUES ('¥', 'Japanese yen', 'JPY');
+
+-- Regions
+INSERT INTO region
+VALUES ('North America', 1);
+
+INSERT INTO region
+VALUES ('Europe', 2);
+
+INSERT INTO region
+VALUES ('Japan', 3);

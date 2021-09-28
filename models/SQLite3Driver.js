@@ -1,6 +1,10 @@
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs');
 
+const create = require('./SQLiteUtils/CreateDriver');
+const read = require('./SQLiteUtils/ReadDriver');
+var IGDBDriver = require('./IGDBDriver');
+
 function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
 }
@@ -36,6 +40,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                               platform.name,
                               library.timestamp,
                               library.cost,
+                              library.gift,
                               edition.edition
                        FROM game,
                             platform,
@@ -56,6 +61,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
                             "title": row.title,
                             "platform": row.name,
                             "dateAdded": row.timestamp,
+                            "gift": row.gift == 1,
                             "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
                             "edition": row.edition
                         });
@@ -321,7 +327,7 @@ SQLite3Driver.prototype.getFigure = function getFigure(id) {
                         "title": row.title,
                         "series": row.series,
                         "dateAdded": row.timestamp,
-                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
+                        "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2), // TODO: Allow a library to format based on currency
                         "msrp": row.msrp === null ? null : (Math.round(row.msrp * 100) / 100).toFixed(2),
                         "new": row.new == 1,
                         "inbox": row.inbox == 1,
@@ -339,30 +345,52 @@ SQLite3Driver.prototype.getFigure = function getFigure(id) {
 
 SQLite3Driver.prototype.getPlatforms = function getPlatforms() {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT platform.*, brand.brand
-                       FROM platform,
-                            brand
-                       WHERE platform.brandid = brand.id
-                       ORDER BY platform.name ASC`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    let result = [];
-                    rows.forEach((row) => {
-                        result.push({
-                            "id": row.id,
-                            "name": row.name,
-                            "brand": row.brand
-                        });
-                    });
+        read.selectPlatforms().then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });
+}
 
-                    resolve(result);
+SQLite3Driver.prototype.getCoverByID = function getCoverByID(id) {
+    return new Promise(function (resolve, reject) {
+        read.selectIGDBByGame(id).then(res => {
+            if (res['coverURL']) {
+                resolve(res['coverURL']);
+            } else {
+                reject();
+            }
+        }).catch(err => {
+            reject(err);
+        });
+    });
+}
+
+SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetadataByID(id) {
+    return new Promise(function (resolve, reject) {
+        read.selectIGDBByGame(id).then(res => {
+            res['genres'] = [];
+            read.selectGenresByGame(id).then(genreRes => {
+                res['genres'] = genreRes;
+                read.selectRatingsByGame(id).then(ratingRes => {
+                    res['ratings'] = ratingRes;
+                    resolve(res);
+                }).catch(err => {
+                    resolve(res);
+                });
+            }).catch(err => {
+                resolve(res);
+            });
+        }).catch(err => {
+            reject(err); // Send back failure and attempt to cache for the next request
+            read.selectGameByID(id).then(gameRes => {
+                if (gameRes['igdbURL']) {
+                    IGDBDriver.getGameByURL(gameRes['igdbURL']).catch(err => {
+                    });
+                } else {
                 }
+            }).catch(err => {
             });
         });
     });
@@ -396,36 +424,10 @@ SQLite3Driver.prototype.getPlatform = function getPlatform(id) {
 
 SQLite3Driver.prototype.getGame = function getGame(id) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT game.*, platform.*
-                       FROM game,
-                            platform
-                       WHERE game.id = ?
-                         AND platform.id = platformid`;
-            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
-                if (err || row === undefined) {
-                    reject(err);
-                } else {
-                    let result = {};
-                    let igdbURL;
-                    if (row.igdbURL === undefined) {
-                        igdbURL = null;
-                    } else {
-                        igdbURL = row.igdbURL;
-                    }
-
-                    result = {
-                        "id": id,
-                        "title": row.title,
-                        "platform": row.name,
-                        "igdbURL": igdbURL
-                    };
-                    resolve(result);
-                }
-            });
+        read.selectGameByID(id).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
@@ -462,28 +464,28 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                                 igdbURL = row.igdbURL;
                             }
 
-                            result = {
-                                "title": row.title,
-                                "platform": row.name,
-                                "cost": row.cost,
-                                "msrp": row.msrp,
-                                "upc": row.upc,
-                                "edition": row.edition,
-                                "new": row.new == 1,
-                                "box": row.box == 1,
-                                "manual": row.manual == 1,
-                                "igdbURL": igdbURL,
-                                "date": row.timestamp,
-                                "gameID": row.gameid,
-                                "editionID": row.editionid,
-                                "retailerID": row.retailerid,
-                                "progress": row.progress
-                            };
-                        });
-                    } catch (e) {
-                        reject(e);
-                    }
-                    resolve(result);
+                        result = {
+                            "title": row.title,
+                            "platform": row.name,
+                            "cost": row.cost,
+                            "msrp": row.msrp,
+                            "upc": row.upc,
+                            "edition": row.edition,
+                            "new": row.new == 1,
+                            "box": row.box == 1,
+                            "manual": row.manual == 1,
+                            "igdbURL": igdbURL,
+                            "date": row.timestamp,
+                            "gameID": row.gameid,
+                            "editionID": row.editionid,
+                            "retailerID": row.retailerid,
+                            "progress": row.progress,
+                            "notes": row.notes,
+                            "gift": row.gift == 1
+                        };
+                    });
+                } catch (e) {
+                    reject(e);
                 }
             });
         });
@@ -540,143 +542,62 @@ SQLite3Driver.prototype.getWishlistGame = function getWishlistGame(id) {
 
 SQLite3Driver.prototype.addGame = function addGame(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`
-                INSERT
-                INTO game
-                VALUES (?, ?, ?, ?)`, [json.title, json.platform, json['igdb-url']], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                } else {
-                    let gameID = this.lastID;
-                    console.log(`${json.title} was inserted with ID ${gameID}`);
-                    resolve(gameID);
-                }
-            });
+        create.insertGame(json['title'], json['platform'], json['igdb-url']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
 
 SQLite3Driver.prototype.addEdition = function addEdition(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO edition
-                                            VALUES (?, ?, ?, ?, ?, ?)`, [json.edition, json.upc, json.msrp, json.gameID], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                } else {
-                    let editionID = this.lastID;
-                    console.log(`${json.edition} was inserted with ID ${editionID}`);
-                    resolve(editionID);
-                }
-            });
+        create.insertEdition(json['edition'], json['gameID'], json['upc'], json['msrp'], json['currency'], json['digital'], json['region']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
 
 SQLite3Driver.prototype.addLibrary = function addLibrary(json) {
-    if (json.condition == null) {
-        json.condition = true; // Default to true
-    }
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO library
-                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.editionID, json.retailerID, json['condition'] ? 1 : 0, json.box ? 1 : 0, json.manual ? 1 : 0, 0], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                } else {
-                    let libraryID = this.lastID;
-                    console.log(`A library entry was inserted with ID ${libraryID}`);
-                    resolve(libraryID);
-                }
-            });
+        create.insertLibraryEntry(json['editionID'], json['cost'], json['currency'], json['timestamp'], json['retailerID'], json['condition'], json['box'], json['manual'], json['gift'], json['private'], json['notes']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
 
 SQLite3Driver.prototype.addSeries = function addSeries(json) {
     return new Promise(function (resolve, reject) {
-        if (json['series'].length === 0) {
-            reject('Invalid series name');
-        } else {
-            SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-                if (err) {
-                    reject(err);
-                }
-                SQLite3Driver.prototype.db.run(`INSERT
-                                                INTO series
-                                                VALUES (?, ?)`, [json.series], function (err) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        let seriesID = this.lastID;
-                        console.log(`A series entry was inserted with ID ${seriesID}`);
-                        resolve(seriesID);
-                    }
-                });
-            });
-        }
+        create.insertSeries(json['series']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
     });
 }
 
 SQLite3Driver.prototype.addAmiibo = function addAmiibo(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO amiibo
-                                            VALUES (?, ?, ?, ?, ?)`, [json.title, json.seriesID, json.msrp, json.type], function (err) {
-                if (err) {
-                    reject(err);
-                } else {
-                    let amiiboID = this.lastID;
-                    console.log(`A amiibo entry was inserted with ID ${amiiboID}`);
-                    resolve(amiiboID);
-                }
-            });
+        create.insertAmiibo(json['title'], json['seriesID'], json['msrp'], json['type'], json['currency']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            console.log(err);
+            reject(err);
         });
-
     });
 }
 
 SQLite3Driver.prototype.addFigure = function addFigure(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO figure
-                                            VALUES (?, ?, ?, ?, ?, ?, ?)`, [json.cost, json.timestamp, json.retailerID, json['condition'] ? 1 : 0, json['inbox'] ? 1 : 0, json.amiiboID], function (err) {
-                if (err) {
-                    reject(err);
-                } else {
-                    let figureID = this.lastID;
-                    console.log(`A figure entry was inserted with ID ${figureID}`);
-                    resolve(figureID);
-                }
-            });
+        create.insertFigure(json['amiiboID'], json['cost'], json['timestamp'], json['retailerID'], json['condition'], json['gift'], json['region'], json['currency'], json['notes']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
-
     });
 }
 
@@ -820,45 +741,20 @@ SQLite3Driver.prototype.updateGame = function updateGame(id, json) {
 
 SQLite3Driver.prototype.addConsole = function addConsole(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`INSERT
-                                            INTO platform
-                                            VALUES (?, ?, ?)`, [`${json.name}`, `${json.brandID}`], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                } else {
-                    let platformID = this.lastID;
-                    resolve(platformID);
-                }
-            });
+        create.insertPlatform(json['name'], json['brandID']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
 
 SQLite3Driver.prototype.addBrand = function addBrand(json) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READWRITE, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            SQLite3Driver.prototype.db.run(`
-                INSERT
-                INTO brand
-                VALUES (?, ?)`, [json.brand], function (err) {
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                } else {
-                    let brandID = this.lastID;
-                    resolve(brandID);
-                }
-            });
+        create.insertBrand(json['brand']).then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
@@ -1193,6 +1089,16 @@ SQLite3Driver.prototype.getLibrarySize = function getLibrarySize() {
     });
 }
 
+SQLite3Driver.prototype.getCurrencies = function getCurrencies() {
+    return new Promise(function (resolve, reject) {
+        read.selectCurrencies().then(res => {
+            resolve(res);
+        }).catch(err => {
+            reject(err);
+        });
+    });
+}
+
 SQLite3Driver.prototype.getCurrentlyPlaying = function getCurrentlyPlaying(sortBy) {
     let parsedSortBy;
     switch (sortBy) {
@@ -1402,7 +1308,7 @@ SQLite3Driver.prototype.lookupGame = function lookupGame(title, platformID) {
     });
 }
 
-SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) {
+SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID, digital = false) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
             if (err) {
@@ -1412,12 +1318,14 @@ SQLite3Driver.prototype.lookupEdition = function lookupEdition(edition, gameID) 
             if (gameID == undefined) {
                 gameID = '\'undefined\'';
             }
+            let parsedDigital = digital ? 1 : 0;
             let sql = `SELECT *
                        FROM edition
                        WHERE edition = ?
-                         AND gameid = ? `;
+                         AND gameid = ?
+                         AND digital = ?`;
             // TODO: Change to get
-            SQLite3Driver.prototype.db.all(sql, [edition, gameID], (err, res) => {
+            SQLite3Driver.prototype.db.all(sql, [edition, gameID, parsedDigital], (err, res) => {
                 if (err) {
                     console.log(err);
                     reject(err);

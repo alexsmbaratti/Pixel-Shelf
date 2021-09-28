@@ -185,18 +185,11 @@ router.get('/library/size', function (req, res, next) {
     }
 });
 
-router.get('/library/:libraryId/igdb', function (req, res, next) {
+router.get('/games/:gameId/igdb', function (req, res, next) {
     let driver = new SQLite3Driver();
-    const libraryId = req.params.libraryId;
-    driver.getLibraryGame(libraryId).then(result => {
-        if (result.igdbURL != null) {
-            let igdbDriver = new IGDBDriver();
-            igdbDriver.getGameByURL(result.igdbURL).then(igdbRes => {
-                res.status(200).send({"status": 200, "data": igdbRes});
-            }).catch(err => {
-                sendError(res, err);
-            });
-        }
+    const gameID = req.params.gameId;
+    driver.getCachedIGDBMetadataByID(gameID).then(result => {
+        res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
     });
@@ -254,7 +247,6 @@ router.get('/figures', function (req, res, next) {
     if (where === 'no-date-added') {
         driver.getFiguresWithoutDateAdded().then(result => {
             if (result != undefined) {
-                console.log(result)
                 res.status(200).send({"status": 200, "data": result});
             } else {
                 sendError(res, "No result");
@@ -416,29 +408,9 @@ router.get('/games/:id', function (req, res, next) {
 router.get('/games/:gameId/cover', function (req, res, next) {
     let driver = new SQLite3Driver();
     const gameId = req.params.gameId;
-    driver.getGame(gameId).then(result => {
-        coverArtExists(gameId, req).then(exists => {
-            if (!exists) {
-                if (result.igdbURL != null) { // Cache the IGDB cover
-                    let igdbDriver = new IGDBDriver();
-                    igdbDriver.getCoverByURL(result.igdbURL, gameId).then(igdbRes => {
-                        res.redirect('/images/covers/' + gameId + '.jpg');
-                    }).catch(err => {
-                        console.log(err);
-                        res.redirect('/images/covers/placeholder.jpg');
-                    });
-                } else { // No IGDB link
-                    res.redirect('/images/covers/placeholder.jpg');
-                }
-            } else { // Art is already cached or user-uploaded
-                res.redirect('/images/covers/' + gameId + '.jpg');
-            }
-        }).catch(err => {
-            console.log(err);
-            res.redirect('/images/covers/placeholder.jpg');
-        });
+    driver.getCoverByID(gameId).then(result => {
+        res.redirect(result);
     }).catch(err => {
-        console.log(err);
         res.redirect('/images/covers/placeholder.jpg');
     });
 });
@@ -522,8 +494,7 @@ router.post('/games', function (req, res) {
         if (gameResult.found === true) {
             res.status(200).send({"status": 200, "id": gameResult.id, "igdb": gameResult.igdb});
         } else {
-            let igdbDriver = new IGDBDriver();
-            igdbDriver.getGameByName(req.body.title).then(result => {
+            IGDBDriver.getGameByName(req.body.title).then(result => {
                 let igdbLink;
                 if (result.length < 1) {
                     igdbLink = null;
@@ -536,9 +507,6 @@ router.post('/games', function (req, res) {
                     "igdb-url": igdbLink
                 }).then(addResult => {
                     res.status(200).send({"status": 200, "id": addResult, "igdb": igdbLink});
-                    igdbDriver.getCoverByURL(igdbLink, addResult).catch(err => {
-                        console.log(err);
-                    });
                 }).catch(err => {
                     sendError(res, err);
                 })
@@ -553,7 +521,7 @@ router.post('/games', function (req, res) {
 
 router.post('/editions', function (req, res) {
     let driver = new SQLite3Driver();
-    driver.lookupEdition(req.body.edition, req.body.gameID).then(result => {
+    driver.lookupEdition(req.body.edition, req.body.gameID, req.body.digital).then(result => {
         if (result.found === true) {
             res.status(200).send({"status": 200, "id": result.id});
         } else {
@@ -664,8 +632,7 @@ router.post('/wishlist', function (req, res) {
 });
 
 router.get('/igdb', function (req, res) {
-    let driver = new IGDBDriver();
-    driver.checkStatus().then(result => {
+    IGDBDriver.checkStatus().then(result => {
         res.status(200).send({"status": 200});
     }).catch(err => {
         sendError(res, err);
@@ -719,8 +686,7 @@ router.get('/igdb/client-secret', function (req, res) {
 });
 
 router.put('/igdb/regen-token', function (req, res) {
-    let driver = new IGDBDriver();
-    driver.regenerateToken().then(result => {
+    IGDBDriver.regenerateToken().then(result => {
         res.status(200).send({"status": 200});
     }).catch(err => {
         sendError(res, err);
@@ -748,22 +714,6 @@ router.get('/maps/token', function (req, res, next) {
 
 function sendError(res, err) {
     res.status(500).send({"status": 500, "error": err});
-}
-
-function coverArtExists(id, req) {
-    return new Promise(function (resolve, reject) {
-        axios.get(`${req.protocol}://${req.get('host')}/images/covers/${id}.jpg`)
-            .then(response => {
-                resolve(true);
-            })
-            .catch(err => {
-                if (err.response.status == 404) {
-                    resolve(false);
-                } else {
-                    reject(err);
-                }
-            });
-    });
 }
 
 function figureArtExists(id, req) {

@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var SQLite3Driver = require('../models/SQLite3Driver');
-var IGDBDriver = require('../models/IGDBDriver');
-const axios = require('axios');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {

@@ -38,7 +38,6 @@ function submitGameInfo() {
                     gameID = data.id;
 
                     document.getElementById('game-title').innerHTML = titleText;
-                    document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover");
 
                     swapStepsProgress('game-info-segment', 'edition-info-segment');
                     swapDiv('game-info-div', 'edition-info-div');
@@ -65,6 +64,7 @@ function submitEditionInfo() {
     let editionText = document.getElementById("edition-text").value;
     let upcText = document.getElementById("upc-text").value;
     let msrpText = document.getElementById("msrp-text").value;
+    let currencySelect = document.getElementById("msrp-currency-selection");
 
     if (isNaN(msrpText) && msrpText.length > 0) {
         return;
@@ -82,6 +82,8 @@ function submitEditionInfo() {
     button.classList.add("is-loading");
     button.disabled = true;
 
+    let isDigital = document.getElementById("digital-check").checked;
+
     let request = new XMLHttpRequest();
     request.open('POST', `/api/editions`);
     request.setRequestHeader('Content-Type', 'application/json');
@@ -91,6 +93,7 @@ function submitEditionInfo() {
             let data = JSON.parse(request.responseText);
             if (request.status === 200) {
                 editionID = data.id;
+                document.getElementById('game-cover').setAttribute("src", "/api/games/" + gameID + "/cover"); // Cover art preview needs slight delay to allow image to cache properly
 
                 swapStepsProgress('edition-info-segment', 'destination-segment');
                 swapDiv('edition-info-div', 'destination-div');
@@ -107,6 +110,8 @@ function submitEditionInfo() {
         "edition": editionText.length == 0 ? "Standard Edition" : editionText,
         "upc": upcText,
         "msrp": msrpText,
+        "digital": isDigital,
+        "currency": currencySelect[currencySelect.selectedIndex].value,
         "gameID": gameID
     }));
 }
@@ -140,9 +145,16 @@ function submitPurchaseInfo() {
         timestamp = null;
     }
 
+    let currencySelect = document.getElementById("cost-currency-selection");
     let conditionSelect = document.getElementById("condition-selection");
     let hasBox = !document.getElementById("box-button").classList.contains('is-outlined');
     let hasManual = !document.getElementById("manual-button").classList.contains('is-outlined');
+    let isGift = document.getElementById("gift-check").checked;
+
+    let notes = document.getElementById("notes-field").value;
+    if (notes.length === 0) {
+        notes = null;
+    }
 
     let retailerSelect = document.getElementById("retailer-selection");
     let retailerID = retailerSelect[retailerSelect.selectedIndex].value;
@@ -183,6 +195,9 @@ function submitPurchaseInfo() {
         "box": hasBox,
         "manual": hasManual,
         "retailerID": retailerID,
+        "gift": isGift,
+        "notes": notes,
+        "currency": currencySelect[currencySelect.selectedIndex].value,
         "editionID": editionID
     }));
 }
