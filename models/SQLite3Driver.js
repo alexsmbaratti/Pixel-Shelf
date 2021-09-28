@@ -448,45 +448,36 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                          AND platform.id = platformid
                          AND library.id = ?
                        LIMIT 1`;
-            // TODO: Change to get
-            SQLite3Driver.prototype.db.all(sql, [id], (err, rows) => {
+            SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
                 if (err) {
                     reject(err);
-                } else {
-                    let result = {};
+                } else if (row) {
                     try {
-                        rows.forEach((row) => {
-
-                            let igdbURL;
-                            if (row.igdbURL === undefined) {
-                                igdbURL = null;
-                            } else {
-                                igdbURL = row.igdbURL;
-                            }
-
-                            result = {
-                                "title": row.title,
-                                "platform": row.name,
-                                "cost": row.cost,
-                                "msrp": row.msrp,
-                                "upc": row.upc,
-                                "edition": row.edition,
-                                "new": row.new == 1,
-                                "box": row.box == 1,
-                                "manual": row.manual == 1,
-                                "igdbURL": igdbURL,
-                                "date": row.timestamp,
-                                "gameID": row.gameid,
-                                "editionID": row.editionid,
-                                "retailerID": row.retailerid,
-                                "progress": row.progress,
-                                "notes": row.notes,
-                                "gift": row.gift == 1
-                            };
-                        });
+                        let result = {
+                            "title": row.title,
+                            "platform": row.name,
+                            "cost": row.cost,
+                            "msrp": row.msrp,
+                            "upc": row.upc,
+                            "edition": row.edition,
+                            "new": row.new == 1,
+                            "box": row.box == 1,
+                            "manual": row.manual == 1,
+                            "igdbURL": row.igdbURL,
+                            "date": row.timestamp,
+                            "gameID": row.gameid,
+                            "editionID": row.editionid,
+                            "retailerID": row.retailerid,
+                            "progress": row.progress,
+                            "notes": row.notes,
+                            "gift": row.gift == 1
+                        };
+                        resolve(result);
                     } catch (e) {
                         reject(e);
                     }
+                } else {
+                    reject();
                 }
             });
         });
