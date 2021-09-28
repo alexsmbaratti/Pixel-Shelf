@@ -22,7 +22,7 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
             parsedSortBy = "library.timestamp ASC";
             break;
         case 'cost':
-            parsedSortBy = "library.cost ASC";
+            parsedSortBy = "library.cost ASC, library.gift DESC";
             break;
         case 'edition':
             parsedSortBy = "edition.edition ASC";
