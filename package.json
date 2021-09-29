@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www & python3 ./eink/eink.py && fg",
-    "test": "jest"
+    "test": "jest -i"
   },
   "dependencies": {
     "axios": "^0.21.1",
