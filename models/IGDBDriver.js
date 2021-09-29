@@ -1,15 +1,15 @@
 const axios = require('axios');
-var config = require('../config.json');
 
 const https = require('https');
 const fs = require('fs');
 
 const create = require('./SQLiteUtils/CreateDriver');
+const secrets = require('./SecretsDriver');
 
 const version = 'v4';
-var clientID = config['client_id'];
-var clientSecret = config['client_secret'];
-var clientToken = config['token'];
+var clientID = secrets.igdbClientID();
+var clientSecret = secrets.igdbClientSecret();
+var clientToken = null;
 
 module.exports = {
     regenerateToken: function () {
@@ -22,24 +22,11 @@ module.exports = {
                 .then(function (response) {
                     let data = response.data;
                     clientToken = data['access_token']; // Update the prototype's token
-                    fs.readFile('config.json', 'utf8', function (err, configObject) { // Update the file's token
-                        if (err) {
-                            reject(err);
-                        } else {
-                            let temp = JSON.parse(configObject);
-                            temp['token'] = data['access_token'];
-                            let json = JSON.stringify(temp);
-                            fs.writeFile('config.json', json, 'utf8', function () {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    resolve();
-                                }
-                            });
-                        }
-                    });
+                    console.log("IGDB Generated new token");
                 })
                 .catch(function (error) {
+                    console.log("IGDB Could not generate token");
+                    console.log(error);
                     reject(error);
                 });
         });

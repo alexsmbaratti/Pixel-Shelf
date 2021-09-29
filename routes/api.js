@@ -4,13 +4,14 @@ const fs = require('fs');
 var jwt = require('jsonwebtoken');
 var SQLite3Driver = require('../models/SQLite3Driver');
 var IGDBDriver = require('../models/IGDBDriver');
+const secrets = require('../models/SecretsDriver');
 const si = require('systeminformation');
 var axios = require('axios');
 
-const thermalPrinterEndpoint = require('../config.json')['thermal-printer-endpoint'];
-const mapsKey = require('../config.json')['maps-key-path'];
-const mapsID = require('../config.json')['maps-key-id'];
-const teamID = require('../config.json')['maps-team-id'];
+const thermalPrinterEndpoint = secrets.thermalPrinterEndpoint();
+const mapsKey = secrets.mapsKey();
+const mapsID = secrets.mapsKeyID();
+const teamID = secrets.mapsTeamID();;
 var key = null;
 if (mapsKey) {
     key = fs.readFileSync(mapsKey);
