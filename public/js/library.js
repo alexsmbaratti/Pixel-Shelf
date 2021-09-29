@@ -44,7 +44,6 @@ function fetchLibrary(sortBy = "title") {
                         dateAdded.innerHTML = (date.getUTCMonth() + 1) + '-' + date.getUTCDate() + '-' + date.getUTCFullYear();
                     }
 
-                    console.log(game)
                     let cost = document.createElement("td");
                     if (game['gift']) {
                         cost.innerHTML = 'Gift';
@@ -58,6 +57,7 @@ function fetchLibrary(sortBy = "title") {
                     edition.innerHTML = game.edition;
 
                     let row = document.createElement("tr");
+                    row.setAttribute("id", `library-${game['id']}-row`);
                     row.appendChild(title);
                     row.appendChild(platform);
                     row.appendChild(dateAdded);
