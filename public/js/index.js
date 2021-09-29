@@ -272,21 +272,27 @@ function getSizeByDateAdded() {
     figureGrowthRequest.send();
 }
 
-function getRandomPlayingGame() {
+function getCurrentlyPlaying() {
     let request = new XMLHttpRequest();
     request.open('GET', `/api/library/playing`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
+            let tableBody = document.getElementById("currently-playing-table-body");
             if (request.status === 200) {
                 let data = JSON.parse(request.responseText)['currentlyPlaying'];
                 if (data.length > 0) {
-                    let randomIndex = Math.floor(Math.random() * data.length);
-                    let url = '/library/' + data[randomIndex]['id'];
-                    let coverURL = '/api/games/' + data[randomIndex]['gameID'] + '/cover';
-                    document.getElementById('currently-playing-cover').setAttribute('src', coverURL);
-                    document.getElementById('currently-playing-cover').setAttribute('title', data[randomIndex]['title']);
-                    document.getElementById('currently-playing-link').setAttribute('href', url);
+                    data.forEach(game => {
+                        let link = document.createElement("a");
+                        link.setAttribute("href", `/library/${game.id}`);
+                        let title = document.createElement("th");
+                        link.innerHTML = game.title;
+                        title.appendChild(link);
+
+                        let row = document.createElement("tr");
+                        row.appendChild(title);
+                        tableBody.appendChild(row);
+                    });
                 }
             } else {
             }
@@ -302,7 +308,7 @@ function getBacklog() {
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
-            let tableBody = document.getElementById("table-body");
+            let tableBody = document.getElementById("backlog-table-body");
             if (request.status === 200) {
                 let data = JSON.parse(request.responseText)['backlog'];
                 if (data.length > 0) {
