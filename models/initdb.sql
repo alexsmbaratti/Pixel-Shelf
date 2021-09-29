@@ -164,6 +164,15 @@ CREATE TABLE region
     id   INTEGER PRIMARY KEY AUTOINCREMENT
 );
 
+CREATE TABLE haslink
+(
+    editionid INTEGER,
+    label     TEXT NOT NULL,
+    url       TEXT NOT NULL,
+    PRIMARY KEY (editionid, url),
+    FOREIGN KEY (editionid) REFERENCES edition (id) ON DELETE CASCADE
+);
+
 -- Currencies
 INSERT INTO currency
 VALUES ('$', 'United States dollar', 'USD');
