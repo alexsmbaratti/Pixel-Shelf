@@ -11,7 +11,8 @@ var axios = require('axios');
 const thermalPrinterEndpoint = secrets.thermalPrinterEndpoint();
 const mapsKey = secrets.mapsKey();
 const mapsID = secrets.mapsKeyID();
-const teamID = secrets.mapsTeamID();;
+const teamID = secrets.mapsTeamID();
+
 var key = null;
 if (mapsKey) {
     key = fs.readFileSync(mapsKey);

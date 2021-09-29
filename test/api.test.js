@@ -2,6 +2,9 @@ const axios = require('axios');
 const API_URL = 'http://localhost:3000/api';
 
 var consoleIDs = [];
+var gameID = null;
+var editionID = null;
+var retailerID = null;
 
 test('API is online', () => {
     return axios({
@@ -76,6 +79,69 @@ test('Add a new brick and mortar retailer', () => {
             "online": false,
             "lat": 30.000,
             "long": -70.000
+        }
+    }).then(result => {
+        retailerID = result['data']['id'];
+        expect(result['data']['status']).toStrictEqual(200);
+    });
+});
+
+test('Add a new game', () => {
+    return axios({
+        method: 'post',
+        url: API_URL + `/games`,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: {
+            "title": "My Amazing Game",
+            "platform": consoleIDs[0]
+        }
+    }).then(result => {
+        gameID = result['data']['id'];
+        expect(result['data']['status']).toStrictEqual(200);
+    });
+});
+
+test('Add a new edition', () => {
+    return axios({
+        method: 'post',
+        url: API_URL + `/editions`,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: {
+            "edition": "Standard Edition",
+            "upc": "1234567890",
+            "msrp": "59.99",
+            "digital": false,
+            "currency": "USD",
+            "gameID": gameID
+        }
+    }).then(result => {
+        editionID = result['data']['id'];
+        expect(result['data']['status']).toStrictEqual(200);
+    });
+});
+
+test('Add a new library entry', () => {
+    return axios({
+        method: 'post',
+        url: API_URL + `/library`,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: {
+            "cost": "39.99",
+            "timestamp": new Date(Date.now()).toISOString(),
+            "condition": true,
+            "box": true,
+            "manual": false,
+            "retailerID": retailerID,
+            "gift": false,
+            "notes": "Test",
+            "currency": 'USD',
+            "editionID": editionID
         }
     }).then(result => {
         expect(result['data']['status']).toStrictEqual(200);
