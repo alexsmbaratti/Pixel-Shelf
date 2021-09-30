@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www && fg",
-    "test": "jest -i"
+    "test": "jest -i",
+    "sqlite": "cat models/initdb.sql | sqlite3 models/db/pixelshelf.db"
   },
   "dependencies": {
     "axios": "^0.21.1",
