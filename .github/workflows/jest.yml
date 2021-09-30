@@ -33,6 +33,3 @@ jobs:
           cat models/initdb.sql | sqlite3 models/db/pixelshelf.db
       - name: Run Jest Testing
         run: npm test
-        env:
-          IGDB_CLIENT_ID: ${{ secrets.IGDB_CLIENT_ID }}
-          IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
