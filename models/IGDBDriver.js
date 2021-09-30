@@ -25,7 +25,7 @@ module.exports = {
                     console.log("IGDB Generated new token");
                 })
                 .catch(function (error) {
-                    console.log("IGDB Could not generate token");
+                    // TODO: Allow logging here after regenerateToken has been reworked
                     reject(error);
                 });
         });
