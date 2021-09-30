@@ -512,8 +512,16 @@ router.post('/games', function (req, res) {
                 }).catch(err => {
                     sendError(res, err);
                 })
-            }).catch(err => {
-                sendError(res, err);
+            }).catch(err => { // For some reason IGDB cannot be reached, just set the metadata to null and allow the user to manually add it later
+                driver.addGame({
+                    "title": req.body.title,
+                    "platform": req.body.platform,
+                    "igdb-url": null
+                }).then(addResult => {
+                    res.status(200).send({"status": 200, "id": addResult});
+                }).catch(err => {
+                    sendError(res, err);
+                })
             });
         }
     }).catch(err => {
