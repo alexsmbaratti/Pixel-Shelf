@@ -26,7 +26,6 @@ module.exports = {
                 })
                 .catch(function (error) {
                     console.log("IGDB Could not generate token");
-                    console.log(error);
                     reject(error);
                 });
         });
@@ -51,7 +50,6 @@ module.exports = {
                     }
                 })
                 .catch(function (e) {
-                    console.log(e);
                     reject(e);
                 });
         });
@@ -76,7 +74,6 @@ module.exports = {
                     }
                 })
                 .catch(function (e) {
-                    console.log(e);
                     reject(e);
                 });
         });
@@ -119,7 +116,6 @@ function cacheMetadata(resJSON) {
                 console.log(err);
             });
         }).on('error', function (err) {
-            console.log(err);
         });
     } else {
         create.insertIGDB(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['first_release_date'], null).catch(err => {
