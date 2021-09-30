@@ -31,5 +31,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Initialize SQLite3 database
-        run: sudo npm run sqlite
+        run: |-
+          mkdir models/db
+          cat models/initdb.sql | sqlite3 models/db/pixelshelf.db
       - run: npm test
