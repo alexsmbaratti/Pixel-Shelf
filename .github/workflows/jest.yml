@@ -31,7 +31,5 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Initialize SQLite3 database
-        run: |-
-          cd /home/runner/work/Pixel-Shelf/Pixel-Shelf
-          npm run sqlite
+        run: sudo npm run sqlite
       - run: npm test
