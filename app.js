@@ -16,6 +16,7 @@ var apiRouter = require('./routes/api');
 
 var app = express();
 
+// TODO: Only regenerate the token upon the first request to IGDB
 var IGDBDriver = require('./models/IGDBDriver');
 IGDBDriver.regenerateToken().catch(() => {
 });
