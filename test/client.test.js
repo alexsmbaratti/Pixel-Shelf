@@ -1,6 +1,11 @@
 const pixelShelf = require("../app");
 const supertest = require("supertest");
 
+beforeEach(() => {
+    // TODO: Initialize database
+    // TODO: Generate token
+});
+
 test('Index Page Loads', () => {
     return supertest(pixelShelf)
         .get("/")

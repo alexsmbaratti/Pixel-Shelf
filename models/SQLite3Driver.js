@@ -3,11 +3,13 @@ const fs = require('fs');
 
 const create = require('./SQLiteUtils/CreateDriver');
 const read = require('./SQLiteUtils/ReadDriver');
-var IGDBDriver = require('./IGDBDriver');
+const IGDBDriver = require('./IGDBDriver');
 
 function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
 }
+
+// TODO: Create initialize database function
 
 SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy) {
     let parsedSortBy;

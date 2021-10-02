@@ -121,6 +121,15 @@ CREATE TABLE igdb
     igdbURL     TEXT PRIMARY KEY
 );
 
+CREATE TABLE igdbplatform
+(
+    description TEXT,
+    category    INTEGER,
+    logoURL     TEXT,
+    generation  INTEGER,
+    igdbURL     TEXT PRIMARY KEY
+);
+
 CREATE TABLE rating
 (
     ratingorg TEXT,
