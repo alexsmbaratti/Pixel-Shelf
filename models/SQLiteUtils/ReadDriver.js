@@ -104,6 +104,27 @@ module.exports = {
                 }
             });
         });
+    },
+    selectPlatformByID: function (platformID) {
+        return new Promise(function (resolve, reject) {
+            let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    db.get(`SELECT platform.*
+                            FROM platform
+                            WHERE platform.id = ?`, [platformID], (err, row) => {
+                        if (err) {
+                            reject(err);
+                        } else if (!row) {
+                            reject();
+                        } else {
+                            resolve(row);
+                        }
+                    });
+                }
+            });
+        });
     }, selectGenresByGame: function (gameID) {
         return new Promise(function (resolve, reject) {
             let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {

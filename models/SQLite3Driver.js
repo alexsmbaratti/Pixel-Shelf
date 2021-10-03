@@ -399,6 +399,24 @@ SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetada
     });
 }
 
+SQLite3Driver.prototype.getCachedPlatformIGDBMetadataByID = function getCachedPlatformIGDBMetadataByID(id) {
+    return new Promise(function (resolve, reject) {
+        read.selectPlatformByID(id).then(platformRes => {
+            if (platformRes['name']) {
+                IGDBDriver.getPlatformByName(platformRes['name']).then(res => {
+                    resolve(res);
+                }).catch(err => {
+                    reject(err);
+                });
+            } else {
+                reject();
+            }
+        }).catch(err => {
+            reject(err);
+        });
+    });
+}
+
 SQLite3Driver.prototype.getPlatform = function getPlatform(id) {
     return new Promise(function (resolve, reject) {
         SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
