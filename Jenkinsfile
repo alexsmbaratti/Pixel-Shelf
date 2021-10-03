@@ -14,7 +14,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
-                sh 'jest'
+                sh 'jest -i'
             }
         }
         stage('Deploy') {
