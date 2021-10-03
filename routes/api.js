@@ -661,7 +661,7 @@ router.post('/thermal-printer/:libraryId', function (req, res) {
         driver.getLibraryGame(libraryId).then(libraryGame => {
             axios({
                 method: 'post',
-                url: thermalPrinterEndpoint + '/api/pixel-shelf/library/' + libraryId,
+                url: thermalPrinterEndpoint + '/api/pixel-shelf/library',
                 headers: {
                     'Content-Type': 'application/json'
                 },
