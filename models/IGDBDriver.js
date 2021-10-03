@@ -78,6 +78,27 @@ module.exports = {
                 });
         });
     },
+    getPlatformByName: function (name) {
+        return new Promise(function (resolve, reject) {
+            axios({
+                method: 'post',
+                url: 'https://api.igdb.com/' + version + '/platforms/',
+                headers: {
+                    'Client-ID': clientID,
+                    'Authorization': 'Bearer ' + clientToken,
+                    'Content-Type': 'text/plain'
+                },
+                data: 'fields *, platform_logo.*; where name = \"' + name + '\";'
+            })
+                .then(function (res) {
+                    let resJSON = res.data;
+                    resolve(resJSON);
+                })
+                .catch(function (e) {
+                    reject(e);
+                });
+        });
+    },
     checkStatus: function () {
         return new Promise(function (resolve, reject) {
             axios({

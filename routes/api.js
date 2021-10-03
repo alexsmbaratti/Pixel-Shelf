@@ -197,6 +197,10 @@ router.get('/games/:gameId/igdb', function (req, res, next) {
     });
 });
 
+router.get('/platforms/:platformId/igdb', function (req, res, next) {
+    res.status(501).send({"status": 501, "msg": "Not implemented!"});
+});
+
 router.get('/library/:libraryId/', function (req, res, next) {
     let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
