@@ -652,6 +652,10 @@ SQLite3Driver.prototype.updateLibrary = function updateLibrary(id, json) {
             let value = json['manual'] === true ? 1 : 0;
             transaction.push("manual = " + value);
         }
+        if (json.hasOwnProperty('gift')) {
+            let value = json['gift'] === true ? 1 : 0;
+            transaction.push("gift = " + value);
+        }
 
         if (transaction.length == 0) {
             resolve();

@@ -31,6 +31,9 @@ function updateGameInfo(id) {
     let editedManual = document.getElementById("manual-check").checked;
     let originalManual = document.getElementById("manual-check").getAttribute("data-original");
 
+    let editedGift = document.getElementById("gift-check").checked;
+    let originalGift = document.getElementById("gift-check").getAttribute("data-original");
+
     let retailerSelect = document.getElementById("retailer-selection");
     let editedRetailerID = retailerSelect[retailerSelect.selectedIndex].value;
 
@@ -57,6 +60,9 @@ function updateGameInfo(id) {
     }
     if (String(editedManual) !== originalManual) {
         data['manual'] = editedManual;
+    }
+    if (String(editedGift) !== originalGift) {
+        data['gift'] = editedGift;
     }
     if (originalRetailerID === null && editedRetailerID === -2) {
 
