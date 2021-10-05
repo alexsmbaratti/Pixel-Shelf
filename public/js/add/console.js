@@ -10,8 +10,8 @@ function submitConsoleInfo() {
         warningDiv.removeChild(warningDiv.firstChild);
     }
 
-    consoleText = document.getElementById("name-text").value;
-    brandText = document.getElementById("brand-text").value;
+    consoleText = document.getElementById("name-text").value.trim();
+    brandText = document.getElementById("brand-text").value.trim();
     if (consoleText.length === 0) { // If left blank
         warningMessage.innerHTML = "You must enter a platform name.";
         warningDiv.appendChild(warningMessage);

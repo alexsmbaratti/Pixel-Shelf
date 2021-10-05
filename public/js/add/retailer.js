@@ -10,9 +10,9 @@ function submitRetailerInfo() {
         warningDiv.removeChild(warningDiv.firstChild);
     }
 
-    let retailerText = document.getElementById("retailer-text").value;
-    let subText = document.getElementById("subtext-text").value;
-    let urlText = document.getElementById("url-text").value;
+    let retailerText = document.getElementById("retailer-text").value.trim();
+    let subText = document.getElementById("subtext-text").value.trim();
+    let urlText = document.getElementById("url-text").value.trim();
     let isOnline = document.getElementById("tab-online").classList.contains('is-active');
     if (retailerText.length === 0) { // If left blank
         warningMessage.innerHTML = "You must enter a retailer name.";
@@ -29,12 +29,12 @@ function submitRetailerInfo() {
     }
 
     if (!isOnline) {
-        latitude = document.getElementById("latitude-text").value;
+        latitude = document.getElementById("latitude-text").value.trim();
         if (isNaN(latitude) || isNaN(parseFloat(latitude))) {
             latitude = null;
         }
 
-        longitude = document.getElementById("longitude-text").value;
+        longitude = document.getElementById("longitude-text").value.trim();
         if (isNaN(longitude) || isNaN(parseFloat(longitude))) {
             longitude = null;
         }

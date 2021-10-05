@@ -6,7 +6,7 @@ function seriesSelect() {
     let selectedValue = document.getElementById('series-selection').value;
     let button = document.getElementById('series-submit-button');
     let addSeriesDiv = document.getElementById('add-series-div');
-    let newSeries = document.getElementById('series-text').value;
+    let newSeries = document.getElementById('series-text').value.trim();
 
     if (selectedValue == -1) {
         addSeriesDiv.setAttribute('class', '');
@@ -27,7 +27,7 @@ function seriesSelect() {
 
 function submitSeriesInfo() {
     let selectedValue = document.getElementById('series-selection').value;
-    let seriesSelect = document.getElementById('series-selection');
+    let seriesSelect = document.getElementById('series-selection'); // TODO: Clean up
     if (selectedValue == -1) {
         postSeries();
     } else if (selectedValue >= 0) {

@@ -10,7 +10,7 @@ function submitGameInfo() {
         warningDiv.removeChild(warningDiv.firstChild);
     }
 
-    let titleText = document.getElementById("title-text").value;
+    let titleText = document.getElementById("title-text").value.trim();
     let platformSelect = document.getElementById("platform-selection");
     if (titleText.length == 0) { // If left blank
         warningMessage.innerHTML = "You must enter a game title.";
@@ -61,9 +61,9 @@ function submitGameInfo() {
 }
 
 function submitEditionInfo() {
-    let editionText = document.getElementById("edition-text").value;
-    let upcText = document.getElementById("upc-text").value;
-    let msrpText = document.getElementById("msrp-text").value;
+    let editionText = document.getElementById("edition-text").value.trim();
+    let upcText = document.getElementById("upc-text").value.trim();
+    let msrpText = document.getElementById("msrp-text").value.trim();
     let currencySelect = document.getElementById("msrp-currency-selection");
 
     if (isNaN(msrpText) && msrpText.length > 0) {
@@ -134,7 +134,7 @@ function submitDestinationInfo() {
 }
 
 function submitPurchaseInfo() {
-    let cost = document.getElementById("cost-text").value;
+    let cost = document.getElementById("cost-text").value.trim();
     if (cost.length == 0) {
         cost = null;
     }
