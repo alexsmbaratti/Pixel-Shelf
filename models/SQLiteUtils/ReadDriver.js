@@ -252,55 +252,55 @@ function parseLibraryFilters(filters = []) {
     filters.forEach(filter => {
         switch (filter) {
             case 'not-new': // Filter out new library entries
-                filter.push("library.new != 1");
+                parsedFilters.push("library.new != 1");
                 break;
             case 'not-used': // Filter out used library entries
-                filter.push("library.new != 0");
+                parsedFilters.push("library.new != 0");
                 break;
             case 'not-gift': // Filter out gifted library entries
-                filter.push("library.gift != 1");
+                parsedFilters.push("library.gift != 1");
                 break;
             case 'not-box': // Filter out library entries with a box/case
-                filter.push("library.box != 1");
+                parsedFilters.push("library.box != 1");
                 break;
             case 'not-manual': // Filter out library entries with a manual
-                filter.push("library.manual != 1");
+                parsedFilters.push("library.manual != 1");
                 break;
             case 'not-complete': // Filter out completed library entries
-                filter.push("library.progress != 3");
+                parsedFilters.push("library.progress != 3");
                 break;
             case 'not-in-progress': // Filter out in progress library entries
-                filter.push("library.progress != 2");
+                parsedFilters.push("library.progress != 2");
                 break;
             case 'not-backlog': // Filter out backlog library entries
-                filter.push("library.progress != 1");
+                parsedFilters.push("library.progress != 1");
                 break;
             case 'not-purchased': // Filter out purchased (uncategorized) library entries
-                filter.push("library.progress != 0");
+                parsedFilters.push("library.progress != 0");
                 break;
             case 'not-standard': // Filter out Standard Edition library entries
-                filter.push("edition.edition != 'Standard Edition'");
+                parsedFilters.push("edition.edition != 'Standard Edition'");
                 break;
             case 'standard-only': // Filter out non-Standard Edition library entries
-                filter.push("edition.edition = 'Standard Edition'");
+                parsedFilters.push("edition.edition = 'Standard Edition'");
                 break;
             case 'not-below-msrp': // Filter out below-MSRP library entries
-                filter.push("edition.msrp > library.cost");
+                parsedFilters.push("edition.msrp > library.cost");
                 break;
             case 'not-above-msrp': // Filter out above-MSRP library entries
-                filter.push("edition.msrp < library.cost");
+                parsedFilters.push("edition.msrp < library.cost");
                 break;
             case 'not-msrp': // Filter out cost equal MSRP library entries
-                filter.push("edition.msrp != library.cost");
+                parsedFilters.push("edition.msrp != library.cost");
                 break;
             case 'no-date-added': // Filter out library entries with a timestamp
-                filter.push("library.timestamp IS NULL");
+                parsedFilters.push("library.timestamp IS NULL");
                 break;
             case 'no-cost': // Filter out library entries with a cost
-                filter.push("library.cost IS NULL");
+                parsedFilters.push("library.cost IS NULL");
                 break;
             case 'no-retailer': // Filter out library entries with a retailer
-                filter.push("library.retailerid IS NULL");
+                parsedFilters.push("library.retailerid IS NULL");
                 break;
             default:
         }
