@@ -10,6 +10,9 @@ function fetchLibrary(sortBy = "title") {
                 mainDiv.removeChild(mainDiv.firstChild);
             }
 
+            let libraryBar = document.getElementById("library-bar");
+            libraryBar.classList.remove("is-hidden");
+
             if (request.status === 200) {
                 data = data.library;
 
