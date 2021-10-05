@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="/stylesheets/styles.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="<%= jsSrc %>"></script>
-    <script>fetchLibrary();</script>
 </head>
 <body>
 <%- include('partials/navbar') %>
@@ -21,12 +20,14 @@
     <div class="navbar-menu">
         <div class="navbar-start">
             <div class="navbar-item">
-                <span class="icon-text">
-                <span class="icon">
-                    <i class="fas fa-filter"></i>
+                <div onclick="toggleFilterOptions()">
+                    <span class="icon-text">
+                    <span class="icon">
+                        <i class="fas fa-filter"></i>
+                    </span>
+                    <span>Filter</span>
+                </div>
                 </span>
-                <span>Filter</span>
-            </span>
             </div>
         </div>
 
@@ -42,6 +43,77 @@
         </div>
     </div>
 </nav>
+<section id="filter-options" class="hero is-dark is-hidden">
+    <div class="hero-body">
+        <div id="filters-parent" class="columns">
+            <div class="column">
+                <p class="has-text-weight-bold">Condition</p>
+                <label class="checkbox">
+                    <input id="new-filter" type="checkbox" checked>
+                    New
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="used-filter" type="checkbox" checked>
+                    Used
+                </label>
+            </div>
+            <div class="column">
+                <p class="has-text-weight-bold">Progress</p>
+                <label class="checkbox">
+                    <input id="purchased-filter" type="checkbox" checked>
+                    Purchased
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="backlog-filter" type="checkbox" checked>
+                    Backlog
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="currently-playing-filter" type="checkbox" checked>
+                    Currently Playing
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="completed-filter" type="checkbox" checked>
+                    Completed
+                </label>
+            </div>
+            <div class="column">
+                <p class="has-text-weight-bold">Cost</p>
+                <label class="checkbox">
+                    <input id="above-msrp-filter" type="checkbox" checked>
+                    Above MSRP
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="msrp-filter" type="checkbox" checked>
+                    At MSRP
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="below-msrp-filter" type="checkbox" checked>
+                    Below MSRP
+                </label>
+            </div>
+            <div class="column">
+                <p class="has-text-weight-bold">Format</p>
+                <label class="checkbox">
+                    <input id="digital-filter" type="checkbox" checked>
+                    Digital
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="physical-filter" type="checkbox" checked>
+                    Physical
+                </label>
+            </div>
+        </div>
+        <button class="button is-primary" onclick="fetchLibrary('title')">Apply</button>
+        <button class="button is-light">Reset</button>
+    </div>
+</section>
 <table class="table is-hoverable is-striped is-fullwidth">
     <thead>
     <tr>
@@ -61,5 +133,6 @@
         <progress class="progress is-small is-primary" max="100"></progress>
     </div>
 </div>
+<script>fetchLibrary();</script>
 </body>
 </html>

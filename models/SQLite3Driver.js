@@ -1637,48 +1637,20 @@ SQLite3Driver.prototype.getEditionsWithoutMSRP = function getEditionsWithoutMSRP
 
 SQLite3Driver.prototype.getLibraryEntriesWithoutCost = function getLibraryEntriesWithoutCost() {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT library.id, game.title, edition.edition
-                       FROM edition,
-                            game,
-                            library
-                       WHERE edition.gameid = game.id
-                         AND library.editionid = edition.id
-                         AND library.cost IS NULL`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(res);
-                }
-            });
+        read.selectLibraryEntries('title', ['no-cost']).then(libraryEntries => {
+            resolve(libraryEntries);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
 
 SQLite3Driver.prototype.getLibraryEntriesWithoutDateAdded = function getLibraryEntriesWithoutDateAdded() {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT library.id, game.title, edition.edition
-                       FROM edition,
-                            game,
-                            library
-                       WHERE edition.gameid = game.id
-                         AND library.editionid = edition.id
-                         AND library.timestamp IS NULL`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(res);
-                }
-            });
+        read.selectLibraryEntries('title', ['no-date-added']).then(libraryEntries => {
+            resolve(libraryEntries);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
@@ -1763,24 +1735,10 @@ SQLite3Driver.prototype.getFiguresFromRetailer = function getFiguresFromRetailer
 
 SQLite3Driver.prototype.getLibraryEntriesWithoutRetailer = function getLibraryEntriesWithoutRetailer() {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT library.id, game.title, edition.edition
-                       FROM edition,
-                            game,
-                            library
-                       WHERE edition.gameid = game.id
-                         AND library.editionid = edition.id
-                         AND library.retailerid IS NULL`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(res);
-                }
-            });
+        read.selectLibraryEntries('title', ['no-retailer']).then(libraryEntries => {
+            resolve(libraryEntries);
+        }).catch(err => {
+            reject(err);
         });
     });
 }

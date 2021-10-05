@@ -2,6 +2,8 @@ function fetchLibrary(sortBy = "title") {
     let request = new XMLHttpRequest();
     request.open('GET', `/api/library?sortBy=${sortBy}`);
 
+    let filters = collectFilters();
+
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
             let data = JSON.parse(request.responseText);
@@ -78,5 +80,28 @@ function fetchLibrary(sortBy = "title") {
         }
     }
 
-    request.send();
+    console.log(filters);
+    request.send(JSON.stringify({"filters": filters}));
+}
+
+function toggleFilterOptions() {
+    let filterOptions = document.getElementById("filter-options");
+    if (filterOptions.classList.contains("is-hidden")) {
+        filterOptions.classList.remove("is-hidden");
+    } else {
+        filterOptions.classList.add("is-hidden");
+    }
+}
+
+function collectFilters() {
+    let filters = [];
+
+    if (!document.getElementById('new-filter').checked) {
+        filters.push('not-new');
+    }
+    if (!document.getElementById('used-filter').checked) {
+        filters.push('not-used');
+    }
+
+    return filters;
 }

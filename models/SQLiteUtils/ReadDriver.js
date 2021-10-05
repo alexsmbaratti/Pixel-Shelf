@@ -209,7 +209,7 @@ module.exports = {
                         if (err) {
                             reject(err);
                         } else if (!rows) {
-                            reject();
+                            reject(); // Should this reject or return empty array?
                         } else {
                             resolve(rows);
                         }
@@ -263,7 +263,7 @@ function parseLibraryFilters(filters = []) {
             case 'not-box': // Filter out library entries with a box/case
                 filter.push("library.box != 1");
                 break;
-            case 'not-box': // Filter out library entries with a manual
+            case 'not-manual': // Filter out library entries with a manual
                 filter.push("library.manual != 1");
                 break;
             case 'not-complete': // Filter out completed library entries
@@ -283,6 +283,24 @@ function parseLibraryFilters(filters = []) {
                 break;
             case 'standard-only': // Filter out non-Standard Edition library entries
                 filter.push("edition.edition = 'Standard Edition'");
+                break;
+            case 'not-below-msrp': // Filter out below-MSRP library entries
+                filter.push("edition.msrp > library.cost");
+                break;
+            case 'not-above-msrp': // Filter out above-MSRP library entries
+                filter.push("edition.msrp < library.cost");
+                break;
+            case 'not-msrp': // Filter out cost equal MSRP library entries
+                filter.push("edition.msrp != library.cost");
+                break;
+            case 'no-date-added': // Filter out library entries with a timestamp
+                filter.push("library.timestamp IS NULL");
+                break;
+            case 'no-cost': // Filter out library entries with a cost
+                filter.push("library.cost IS NULL");
+                break;
+            case 'no-retailer': // Filter out library entries with a retailer
+                filter.push("library.retailerid IS NULL");
                 break;
             default:
         }

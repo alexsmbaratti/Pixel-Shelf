@@ -29,8 +29,9 @@ router.get('/', function (req, res, next) {
  * Returns status code 200 with an array of library entries
  */
 router.get('/library', function (req, res, next) {
+    console.log(req.body);
     let sortBy = req.query.sortBy;
-    let where = req.query.where;
+    let where = req.query.where; // TODO: Ultimately replace the where query param with filters
     if (sortBy === null) {
         sortBy = 'title';
     }
