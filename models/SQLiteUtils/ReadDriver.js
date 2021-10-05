@@ -21,7 +21,7 @@ module.exports = {
                                     "symbol": row['symbol']
                                 });
                             });
-                            console.log(`SELECT ${result.length} rows queried from currency table`);
+                            console.log("SELECT " + result.length + " rows queried from currency table");
                             resolve(result);
                         }
                     });
@@ -51,7 +51,7 @@ module.exports = {
                                     "brand": row.brand
                                 });
                             });
-                            console.log(`SELECT ${result.length} rows queried from platform and brand tables`);
+                            console.log("SELECT " + result.length + " rows queried from platform and brand tables");
                             resolve(result);
                         }
                     });
@@ -125,7 +125,8 @@ module.exports = {
                 }
             });
         });
-    }, selectGenresByGame: function (gameID) {
+    },
+    selectGenresByGame: function (gameID) {
         return new Promise(function (resolve, reject) {
             let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
@@ -151,7 +152,8 @@ module.exports = {
                 }
             });
         });
-    }, selectRatingsByGame: function (gameID) {
+    },
+    selectRatingsByGame: function (gameID) {
         return new Promise(function (resolve, reject) {
             let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
@@ -177,5 +179,89 @@ module.exports = {
                 }
             });
         });
+    },
+    selectLibraryEntries: function (sortBy = 'title', filters = []) {
+        return new Promise(function (resolve, reject) {
+            let parsedSortBy = parseLibrarySort(sortBy);
+            let parsedFilters = parseLibraryFilters(filters);
+
+            let db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    db.all(`SELECT library.id,
+                                   game.title,
+                                   platform.name,
+                                   library.timestamp,
+                                   library.cost,
+                                   library.gift,
+                                   library.new,
+                                   edition.edition
+                            FROM game,
+                                 platform,
+                                 edition,
+                                 library
+                            WHERE editionid = edition.id
+                              AND gameid = game.id
+                              AND platform.id = platformid
+                                ${parsedFilters}
+                            ORDER BY ${parsedSortBy}`, [], (err, rows) => {
+                        if (err) {
+                            reject(err);
+                        } else if (!rows) {
+                            reject();
+                        } else {
+                            resolve(rows);
+                        }
+                    });
+                }
+            });
+        });
     }
+}
+
+function parseLibrarySort(sortBy = "title") {
+    let parsedSortBy;
+    switch (sortBy) {
+        case 'title':
+            parsedSortBy = "game.title ASC";
+            break;
+        case 'platform':
+            parsedSortBy = "platform.name ASC, game.title ASC";
+            break;
+        case 'dateAdded':
+            parsedSortBy = "library.timestamp ASC";
+            break;
+        case 'cost':
+            parsedSortBy = "library.cost ASC, library.gift DESC";
+            break;
+        case 'edition':
+            parsedSortBy = "edition.edition ASC";
+            break;
+        case 'id':
+            parsedSortBy = "library.id ASC";
+            break;
+        default:
+            parsedSortBy = "game.title ASC";
+    }
+    return parsedSortBy;
+}
+
+function parseLibraryFilters(filters = []) {
+    let parsedFilters = "";
+    filters.forEach(filter => {
+        switch (filter) {
+            case 'not-new':
+                filter += "AND library.new != 1";
+                break;
+            case 'not-used':
+                filter += "AND library.new != 0";
+                break;
+            case 'not-used':
+                filter += "AND library.new != 0";
+                break;
+            default:
+        }
+    });
+    return parsedFilters;
 }
