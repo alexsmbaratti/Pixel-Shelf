@@ -248,20 +248,44 @@ function parseLibrarySort(sortBy = "title") {
 }
 
 function parseLibraryFilters(filters = []) {
-    let parsedFilters = "";
+    let parsedFilters = [];
     filters.forEach(filter => {
         switch (filter) {
-            case 'not-new':
-                filter += "AND library.new != 1";
+            case 'not-new': // Filter out new library entries
+                filter.push("library.new != 1");
                 break;
-            case 'not-used':
-                filter += "AND library.new != 0";
+            case 'not-used': // Filter out used library entries
+                filter.push("library.new != 0");
                 break;
-            case 'not-used':
-                filter += "AND library.new != 0";
+            case 'not-gift': // Filter out gifted library entries
+                filter.push("library.gift != 1");
+                break;
+            case 'not-box': // Filter out library entries with a box/case
+                filter.push("library.box != 1");
+                break;
+            case 'not-box': // Filter out library entries with a manual
+                filter.push("library.manual != 1");
+                break;
+            case 'not-complete': // Filter out completed library entries
+                filter.push("library.progress != 3");
+                break;
+            case 'not-in-progress': // Filter out in progress library entries
+                filter.push("library.progress != 2");
+                break;
+            case 'not-backlog': // Filter out backlog library entries
+                filter.push("library.progress != 1");
+                break;
+            case 'not-purchased': // Filter out purchased (uncategorized) library entries
+                filter.push("library.progress != 0");
+                break;
+            case 'not-standard': // Filter out Standard Edition library entries
+                filter.push("edition.edition != 'Standard Edition'");
+                break;
+            case 'standard-only': // Filter out non-Standard Edition library entries
+                filter.push("edition.edition = 'Standard Edition'");
                 break;
             default:
         }
     });
-    return parsedFilters;
+    return ' AND ' + parsedFilters.join(' AND ');
 }
