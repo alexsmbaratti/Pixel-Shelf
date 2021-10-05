@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <%- include('partials/metadata') %>
     <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="<%= jsSrc %>"></script>
     <script>fetchLibrary();</script>
 </head>
@@ -16,6 +17,31 @@
         </p>
     </div>
 </section>
+<nav class="navbar is-dark">
+    <div id="library-bar" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item">
+                <span class="icon-text">
+                <span class="icon">
+                    <i class="fas fa-filter"></i>
+                </span>
+                <span>Filter</span>
+            </span>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <p class="control has-icons-left">
+                    <input class="input is-rounded" type="text" placeholder="Search Library...">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</nav>
 <table class="table is-hoverable is-striped is-fullwidth">
     <thead>
     <tr>
