@@ -373,7 +373,7 @@ SQLite3Driver.prototype.getCoverByID = function getCoverByID(id) {
     });
 }
 
-SQLite3Driver.prototype.getCachedIGDBMetadataByID = function getCachedIGDBMetadataByID(id) {
+SQLite3Driver.prototype.getCachedIGDBGameMetadataByID = function getCachedIGDBGameMetadataByID(id) {
     return new Promise(function (resolve, reject) {
         read.selectIGDBByGame(id).then(res => {
             res['genres'] = [];

@@ -190,7 +190,7 @@ router.get('/library/size', function (req, res, next) {
 router.get('/games/:gameId/igdb', function (req, res, next) {
     let driver = new SQLite3Driver();
     const gameID = req.params.gameId;
-    driver.getCachedIGDBMetadataByID(gameID).then(result => {
+    driver.getCachedIGDBGameMetadataByID(gameID).then(result => {
         res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
