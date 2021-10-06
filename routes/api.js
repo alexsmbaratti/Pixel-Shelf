@@ -35,13 +35,14 @@ router.get('/library', function (req, res, next) {
 
     // TODO: Send 400 if filters are malformed
     let parsedFilters = [];
-    if (filters.length > 2) {
+    if (filters !== undefined && filters.length > 2) {
         parsedFilters = filters.substring(1, filters.length - 1).split(',');
     }
 
-    if (sortBy === null) {
+    if (sortBy === undefined) {
         sortBy = 'title';
     }
+
     let driver = new SQLite3Driver();
     if (where !== undefined) {
         if (where === 'no-cost') {
