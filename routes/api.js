@@ -79,8 +79,8 @@ router.get('/library', function (req, res, next) {
             res.status(501).send({"status": 501, "msg": "Not Implemented!"});
         }
     } else {
-        driver.getLibrary(sortBy, parsedFilters).then(result => {
-            res.status(200).send({"status": 200, "library": result});
+        driver.getLibrary(sortBy, parsedFilters).then(libraryEntries => {
+            res.status(200).send({"status": 200, "library": libraryEntries});
         }).catch(err => {
             sendError(res, err);
         });

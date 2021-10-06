@@ -16,7 +16,12 @@ function fetchLibrary(sortBy = "title") {
             libraryBar.classList.remove("is-hidden");
 
             if (request.status === 200) {
-                data = data.library;
+                data = data['library'];
+
+                let tableBody = document.getElementById("table-body");
+                while (tableBody.firstChild) {
+                    tableBody.removeChild(tableBody.firstChild);
+                }
 
                 if (data.length == 0) {
                     let noGamesText = document.createElement("p");
@@ -24,11 +29,6 @@ function fetchLibrary(sortBy = "title") {
                     noGamesText.innerHTML = "No Games to Display...";
                     mainDiv.appendChild(noGamesText);
                     return;
-                }
-
-                let tableBody = document.getElementById("table-body");
-                while (tableBody.firstChild) {
-                    tableBody.removeChild(tableBody.firstChild);
                 }
 
                 data.forEach(game => {
