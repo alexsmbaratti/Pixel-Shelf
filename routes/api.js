@@ -35,7 +35,7 @@ router.get('/library', function (req, res, next) {
 
     // TODO: Send 400 if filters are malformed
     let parsedFilters = [];
-    if (filters.includes(',')) {
+    if (filters.length > 2) {
         parsedFilters = filters.substring(1, filters.length - 1).split(',');
     }
 
