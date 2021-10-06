@@ -269,6 +269,12 @@ function parseLibraryFilters(filters = []) {
                 case 'not-manual': // Filter out library entries with a manual
                     parsedFilters.push("library.manual != 1");
                     break;
+                case 'not-digital': // Filter out library entries that are digital
+                    parsedFilters.push("edition.digital != 1");
+                    break;
+                case 'not-physical': // Filter out library entries that are physical
+                    parsedFilters.push("edition.digital != 0");
+                    break;
                 case 'not-complete': // Filter out completed library entries
                     parsedFilters.push("library.progress != 3");
                     break;

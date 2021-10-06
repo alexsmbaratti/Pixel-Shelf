@@ -101,6 +101,12 @@ function collectFilters() {
     if (!document.getElementById('used-filter').checked) {
         filters.push('not-used');
     }
+    if (!document.getElementById('digital-filter').checked) {
+        filters.push('not-digital');
+    }
+    if (!document.getElementById('physical-filter').checked) {
+        filters.push('not-physical');
+    }
 
     return filters;
 }
