@@ -1,5 +1,14 @@
 function fetchLibrary(sortBy = "title") {
     let filters = collectFilters();
+    let filterText = document.getElementById("filter-text");
+    let filterOptions = document.getElementById("filter-options");
+    filterOptions.classList.add("is-hidden");
+
+    if (filters.length === 0) {
+        filterText.classList.remove("has-text-primary");
+    } else {
+        filterText.classList.add("has-text-primary");
+    }
 
     let request = new XMLHttpRequest();
     request.open('GET', `/api/library?sortBy=${sortBy}&filters=[${filters.join(',')}]`);
