@@ -1,8 +1,8 @@
 function fetchLibrary(sortBy = "title") {
-    let request = new XMLHttpRequest();
-    request.open('GET', `/api/library?sortBy=${sortBy}`);
-
     let filters = collectFilters();
+
+    let request = new XMLHttpRequest();
+    request.open('GET', `/api/library?sortBy=${sortBy}&filters=[${filters.join(',')}]`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
@@ -80,8 +80,7 @@ function fetchLibrary(sortBy = "title") {
         }
     }
 
-    console.log(filters);
-    request.send(JSON.stringify({"filters": filters}));
+    request.send();
 }
 
 function toggleFilterOptions() {

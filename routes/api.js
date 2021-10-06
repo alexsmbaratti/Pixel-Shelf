@@ -31,6 +31,14 @@ router.get('/', function (req, res, next) {
 router.get('/library', function (req, res, next) {
     let sortBy = req.query.sortBy;
     let where = req.query.where; // TODO: Ultimately replace the where query param with filters
+    let filters = req.query.filters;
+
+    // TODO: Send 400 if filters are malformed
+    let parsedFilters = [];
+    if (filters.includes(',')) {
+        parsedFilters = filters.substring(1, filters.length - 1).split(',');
+    }
+
     if (sortBy === null) {
         sortBy = 'title';
     }
@@ -70,7 +78,7 @@ router.get('/library', function (req, res, next) {
             res.status(501).send({"status": 501, "msg": "Not Implemented!"});
         }
     } else {
-        driver.getLibrary(sortBy).then(result => {
+        driver.getLibrary(sortBy, parsedFilters).then(result => {
             res.status(200).send({"status": 200, "library": result});
         }).catch(err => {
             sendError(res, err);

@@ -209,7 +209,7 @@ module.exports = {
                         if (err) {
                             reject(err);
                         } else if (!rows) {
-                            reject(); // Should this reject or return empty array?
+                            resolve([]);
                         } else {
                             resolve(rows);
                         }
@@ -248,62 +248,66 @@ function parseLibrarySort(sortBy = "title") {
 }
 
 function parseLibraryFilters(filters = []) {
-    let parsedFilters = [];
-    filters.forEach(filter => {
-        switch (filter) {
-            case 'not-new': // Filter out new library entries
-                parsedFilters.push("library.new != 1");
-                break;
-            case 'not-used': // Filter out used library entries
-                parsedFilters.push("library.new != 0");
-                break;
-            case 'not-gift': // Filter out gifted library entries
-                parsedFilters.push("library.gift != 1");
-                break;
-            case 'not-box': // Filter out library entries with a box/case
-                parsedFilters.push("library.box != 1");
-                break;
-            case 'not-manual': // Filter out library entries with a manual
-                parsedFilters.push("library.manual != 1");
-                break;
-            case 'not-complete': // Filter out completed library entries
-                parsedFilters.push("library.progress != 3");
-                break;
-            case 'not-in-progress': // Filter out in progress library entries
-                parsedFilters.push("library.progress != 2");
-                break;
-            case 'not-backlog': // Filter out backlog library entries
-                parsedFilters.push("library.progress != 1");
-                break;
-            case 'not-purchased': // Filter out purchased (uncategorized) library entries
-                parsedFilters.push("library.progress != 0");
-                break;
-            case 'not-standard': // Filter out Standard Edition library entries
-                parsedFilters.push("edition.edition != 'Standard Edition'");
-                break;
-            case 'standard-only': // Filter out non-Standard Edition library entries
-                parsedFilters.push("edition.edition = 'Standard Edition'");
-                break;
-            case 'not-below-msrp': // Filter out below-MSRP library entries
-                parsedFilters.push("edition.msrp > library.cost");
-                break;
-            case 'not-above-msrp': // Filter out above-MSRP library entries
-                parsedFilters.push("edition.msrp < library.cost");
-                break;
-            case 'not-msrp': // Filter out cost equal MSRP library entries
-                parsedFilters.push("edition.msrp != library.cost");
-                break;
-            case 'no-date-added': // Filter out library entries with a timestamp
-                parsedFilters.push("library.timestamp IS NULL");
-                break;
-            case 'no-cost': // Filter out library entries with a cost
-                parsedFilters.push("library.cost IS NULL");
-                break;
-            case 'no-retailer': // Filter out library entries with a retailer
-                parsedFilters.push("library.retailerid IS NULL");
-                break;
-            default:
-        }
-    });
-    return ' AND ' + parsedFilters.join(' AND ');
+    if (filters.length == 0) {
+        return "";
+    } else {
+        let parsedFilters = [];
+        filters.forEach(filter => {
+            switch (filter) {
+                case 'not-new': // Filter out new library entries
+                    parsedFilters.push("library.new != 1");
+                    break;
+                case 'not-used': // Filter out used library entries
+                    parsedFilters.push("library.new != 0");
+                    break;
+                case 'not-gift': // Filter out gifted library entries
+                    parsedFilters.push("library.gift != 1");
+                    break;
+                case 'not-box': // Filter out library entries with a box/case
+                    parsedFilters.push("library.box != 1");
+                    break;
+                case 'not-manual': // Filter out library entries with a manual
+                    parsedFilters.push("library.manual != 1");
+                    break;
+                case 'not-complete': // Filter out completed library entries
+                    parsedFilters.push("library.progress != 3");
+                    break;
+                case 'not-in-progress': // Filter out in progress library entries
+                    parsedFilters.push("library.progress != 2");
+                    break;
+                case 'not-backlog': // Filter out backlog library entries
+                    parsedFilters.push("library.progress != 1");
+                    break;
+                case 'not-purchased': // Filter out purchased (uncategorized) library entries
+                    parsedFilters.push("library.progress != 0");
+                    break;
+                case 'not-standard': // Filter out Standard Edition library entries
+                    parsedFilters.push("edition.edition != 'Standard Edition'");
+                    break;
+                case 'standard-only': // Filter out non-Standard Edition library entries
+                    parsedFilters.push("edition.edition = 'Standard Edition'");
+                    break;
+                case 'not-below-msrp': // Filter out below-MSRP library entries
+                    parsedFilters.push("edition.msrp > library.cost");
+                    break;
+                case 'not-above-msrp': // Filter out above-MSRP library entries
+                    parsedFilters.push("edition.msrp < library.cost");
+                    break;
+                case 'not-msrp': // Filter out cost equal MSRP library entries
+                    parsedFilters.push("edition.msrp != library.cost");
+                    break;
+                case 'no-date-added': // Filter out library entries with a timestamp
+                    parsedFilters.push("library.timestamp IS NULL");
+                    break;
+                case 'no-cost': // Filter out library entries with a cost
+                    parsedFilters.push("library.cost IS NULL");
+                    break;
+                case 'no-retailer': // Filter out library entries with a retailer
+                    parsedFilters.push("library.retailerid IS NULL");
+                    break;
+                default:
+            }
+        });
+        return ' AND ' + parsedFilters.join(' AND ');
+    }
 }

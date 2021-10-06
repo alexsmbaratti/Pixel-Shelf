@@ -11,70 +11,24 @@ function SQLite3Driver() {
 
 // TODO: Create initialize database function
 
-SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy = 'title') {
-    let parsedSortBy;
-    switch (sortBy) {
-        case 'title':
-            parsedSortBy = "game.title ASC";
-            break;
-        case 'platform':
-            parsedSortBy = "platform.name ASC, game.title ASC";
-            break;
-        case 'dateAdded':
-            parsedSortBy = "library.timestamp ASC";
-            break;
-        case 'cost':
-            parsedSortBy = "library.cost ASC, library.gift DESC";
-            break;
-        case 'edition':
-            parsedSortBy = "edition.edition ASC";
-            break;
-        case 'id':
-            parsedSortBy = "library.id ASC";
-            break;
-        default:
-            parsedSortBy = "game.title ASC";
-    }
-    // TODO: Allow for filtering
+SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy = 'title', filters = []) {
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT library.id,
-                              game.title,
-                              platform.name,
-                              library.timestamp,
-                              library.cost,
-                              library.gift,
-                              edition.edition
-                       FROM game,
-                            platform,
-                            edition,
-                            library
-                       WHERE editionid = edition.id
-                         AND gameid = game.id
-                         AND platform.id = platformid
-                       ORDER BY ${parsedSortBy}`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    let result = [];
-                    rows.forEach((row) => {
-                        result.push({
-                            "id": row.id,
-                            "title": row.title,
-                            "platform": row.name,
-                            "dateAdded": row.timestamp,
-                            "gift": row.gift == 1,
-                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2), // TODO: Allow a library to format based on currency
-                            "edition": row.edition
-                        });
-                    });
-                    resolve(result);
-                }
+        read.selectLibraryEntries(sortBy, filters).then(libraryEntries => {
+            let parsedLibrary = [];
+            libraryEntries.forEach((libraryEntry) => {
+                parsedLibrary.push({
+                    "id": libraryEntry.id,
+                    "title": libraryEntry.title,
+                    "platform": libraryEntry.name,
+                    "dateAdded": libraryEntry.timestamp,
+                    "gift": libraryEntry.gift == 1,
+                    "cost": libraryEntry.cost === null ? null : (Math.round(libraryEntry.cost * 100) / 100).toFixed(2), // TODO: Allow a library to format based on currency
+                    "edition": libraryEntry.edition
+                });
             });
+            resolve(parsedLibrary);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
