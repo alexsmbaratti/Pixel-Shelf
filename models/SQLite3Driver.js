@@ -34,65 +34,23 @@ SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy = 'title', filte
 }
 
 SQLite3Driver.prototype.getBacklog = function getBacklog(sortBy) {
-    let parsedSortBy;
-    switch (sortBy) {
-        case 'title':
-            parsedSortBy = "game.title";
-            break;
-        case 'platform':
-            parsedSortBy = "platform.name ASC, game.title";
-            break;
-        case 'dateAdded':
-            parsedSortBy = "library.timestamp ASC";
-            break;
-        case 'cost':
-            parsedSortBy = "library.cost";
-            break;
-        case 'edition':
-            parsedSortBy = "edition.edition";
-            break;
-        default:
-            parsedSortBy = "game.title";
-    }
     return new Promise(function (resolve, reject) {
-        SQLite3Driver.prototype.db = new sqlite3.Database(SQLite3Driver.prototype.dbName, sqlite3.OPEN_READONLY, (err) => {
-            if (err) {
-                reject(err);
-            }
-            let sql = `SELECT library.id,
-                              game.title,
-                              platform.name,
-                              library.timestamp,
-                              library.cost,
-                              edition.edition
-                       FROM game,
-                            platform,
-                            edition,
-                            library
-                       WHERE editionid = edition.id
-                         AND library.progress = 1
-                         AND gameid = game.id
-                         AND platform.id = platformid
-                       ORDER BY ${parsedSortBy} ASC`;
-            SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    let result = [];
-                    rows.forEach((row) => {
-                        result.push({
-                            "id": row.id,
-                            "title": row.title,
-                            "platform": row.name,
-                            "dateAdded": row.timestamp,
-                            "cost": row.cost === null ? null : (Math.round(row.cost * 100) / 100).toFixed(2),
-                            "edition": row.edition
-                        });
-                    });
-
-                    resolve(result);
-                }
+        read.selectLibraryEntries(sortBy, ['not-purchased', 'not-in-progress', 'not-complete']).then(libraryEntries => {
+            let parsedLibrary = [];
+            libraryEntries.forEach((libraryEntry) => {
+                parsedLibrary.push({
+                    "id": libraryEntry.id,
+                    "title": libraryEntry.title,
+                    "platform": libraryEntry.name,
+                    "dateAdded": libraryEntry.timestamp,
+                    "gift": libraryEntry.gift == 1,
+                    "cost": libraryEntry.cost === null ? null : (Math.round(libraryEntry.cost * 100) / 100).toFixed(2), // TODO: Allow a library to format based on currency
+                    "edition": libraryEntry.edition
+                });
             });
+            resolve(parsedLibrary);
+        }).catch(err => {
+            reject(err);
         });
     });
 }
