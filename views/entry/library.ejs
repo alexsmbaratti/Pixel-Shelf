@@ -38,6 +38,9 @@
                                 <div class="column">
                                     <h1 class="title is-5"><%= entry.platform %></h1>
                                     <h1 class="subtitle"><%= entry.edition %></h1>
+                                    <% if (entry.digital) { %>
+                                        <span class="tag is-info">Digital</span>
+                                    <% } %>
                                 </div>
                                 <div class="column is-one-fifth">
                                     <figure id="rating-figure" class="image is-48x48"></figure>
