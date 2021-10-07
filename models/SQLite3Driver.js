@@ -495,7 +495,8 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "retailerID": row.retailerid,
                             "progress": row.progress,
                             "notes": row.notes,
-                            "gift": row.gift == 1
+                            "gift": row.gift == 1,
+                            "digital": row.digital == 1
                         };
                         resolve(result);
                     } catch (e) {
