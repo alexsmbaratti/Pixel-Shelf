@@ -16,31 +16,28 @@
         </p>
     </div>
 </section>
-<!-- TODO: Remove extra navbar to avoid conflict with dropdowns -->
-<nav id="library-bar" class="navbar is-dark is-hidden">
-    <div class="navbar-menu">
-        <div class="navbar-start">
-            <div class="navbar-item">
-                <div onclick="toggleFilterOptions()">
-                    <span id="filter-text" class="icon-text">
+<nav id="library-bar" class="level is-dark is-hidden pt-2 pb-2">
+    <div class="level-left pl-3">
+        <div class="level-item">
+            <div onclick="toggleFilterOptions()">
+                    <span id="filter-text" class="icon-text has-text-light">
                         <span class="icon">
                             <i class="fas fa-filter"></i>
                         </span>
                         <span>Filter</span>
                     </span>
-                </div>
             </div>
         </div>
+    </div>
 
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <p class="control has-icons-left">
-                    <input class="input is-rounded" type="text" placeholder="Search Library...">
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-search"></i>
-                    </span>
-                </p>
-            </div>
+    <div class="level-right pr-3">
+        <div class="level-item">
+            <p class="control has-icons-left">
+                <input class="input is-rounded" type="text" placeholder="Search Library...">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                </span>
+            </p>
         </div>
     </div>
 </nav>
