@@ -1,6 +1,9 @@
 function fetchLibrary(sortBy = "title") {
+    let tableHead = document.getElementById("table-head");
+    tableHead.classList.add("is-hidden");
+
     let request = new XMLHttpRequest();
-    request.open('GET', `/api/library/backlog?sortBy=${sortBy}`);
+    request.open('GET', `/api/library?sortBy=${sortBy}&filters=[not-purchased,not-in-progress,not-complete]`);
 
     request.onreadystatechange = function () {
         if (request.readyState === 4) {
@@ -10,20 +13,22 @@ function fetchLibrary(sortBy = "title") {
                 mainDiv.removeChild(mainDiv.firstChild);
             }
 
-            if (request.status === 200) {
-                data = data['backlog'];
+            tableHead.classList.remove("is-hidden");
 
-                if (data.length == 0) {
-                    let noGamesText = document.createElement("p");
-                    noGamesText.setAttribute("class", "title has-text-centered");
-                    noGamesText.innerHTML = "No Games in Backlog...";
-                    mainDiv.appendChild(noGamesText);
-                    return;
-                }
+            if (request.status === 200) {
+                data = data['library'];
 
                 let tableBody = document.getElementById("table-body");
                 while (tableBody.firstChild) {
                     tableBody.removeChild(tableBody.firstChild);
+                }
+
+                if (data.length == 0) {
+                    let noGamesText = document.createElement("p");
+                    noGamesText.setAttribute("class", "title has-text-centered");
+                    noGamesText.innerHTML = "No Games to Display...";
+                    mainDiv.appendChild(noGamesText);
+                    return;
                 }
 
                 data.forEach(game => {
@@ -37,20 +42,27 @@ function fetchLibrary(sortBy = "title") {
                     platform.innerHTML = game.platform;
 
                     let dateAdded = document.createElement("td");
-                    if (game.dateAdded === null) {
+                    if (game['dateAdded'] === null) {
                         dateAdded.innerHTML = 'Unknown';
                     } else {
-                        let date = new Date(game.dateAdded);
+                        let date = new Date(game['dateAdded']);
                         dateAdded.innerHTML = (date.getUTCMonth() + 1) + '-' + date.getUTCDate() + '-' + date.getUTCFullYear();
                     }
 
                     let cost = document.createElement("td");
-                    cost.innerHTML = game.cost;
+                    if (game['gift']) {
+                        cost.innerHTML = 'Gift';
+                    } else if (game['cost'] == null) {
+                        cost.innerHTML = 'Unknown';
+                    } else {
+                        cost.innerHTML = game['cost'];
+                    }
 
                     let edition = document.createElement("td");
-                    edition.innerHTML = game.edition;
+                    edition.innerHTML = game['edition'];
 
                     let row = document.createElement("tr");
+                    row.setAttribute("id", `library-${game['id']}-row`);
                     row.appendChild(title);
                     row.appendChild(platform);
                     row.appendChild(dateAdded);
