@@ -106,39 +106,13 @@ function toggleFilterOptions() {
 
 function collectFilters() {
     let filters = [];
+    let checkboxes = document.getElementsByClassName('checkbox');
 
-    if (!document.getElementById('new-filter').checked) {
-        filters.push('not-new');
-    }
-    if (!document.getElementById('used-filter').checked) {
-        filters.push('not-used');
-    }
-    if (!document.getElementById('digital-filter').checked) {
-        filters.push('not-digital');
-    }
-    if (!document.getElementById('physical-filter').checked) {
-        filters.push('not-physical');
-    }
-    if (!document.getElementById('above-msrp-filter').checked) {
-        filters.push('not-above-msrp');
-    }
-    if (!document.getElementById('msrp-filter').checked) {
-        filters.push('not-msrp');
-    }
-    if (!document.getElementById('below-msrp-filter').checked) {
-        filters.push('not-below-msrp');
-    }
-    if (!document.getElementById('purchased-filter').checked) {
-        filters.push('not-purchased');
-    }
-    if (!document.getElementById('backlog-filter').checked) {
-        filters.push('not-backlog');
-    }
-    if (!document.getElementById('currently-playing-filter').checked) {
-        filters.push('not-in-progress');
-    }
-    if (!document.getElementById('completed-filter').checked) {
-        filters.push('not-complete');
+    for (let i = 0; i < checkboxes.length; i++) {
+        let checkbox = checkboxes[i].children[0];
+        if (!checkbox.checked) {
+            filters.push(checkbox.getAttribute('value'));
+        }
     }
 
     return filters;
@@ -146,6 +120,7 @@ function collectFilters() {
 
 function resetFilters() {
     let checkboxes = document.getElementsByClassName('checkbox');
+
     for (let i = 0; i < checkboxes.length; i++) {
         checkboxes[i].children[0].checked = true;
     }
