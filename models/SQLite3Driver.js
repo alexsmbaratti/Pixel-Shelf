@@ -5,11 +5,53 @@ const create = require('./SQLiteUtils/CreateDriver');
 const read = require('./SQLiteUtils/ReadDriver');
 const IGDBDriver = require('./IGDBDriver');
 
+var dbName = './models/db/pixelshelf.db';
+
 function SQLite3Driver() {
-    SQLite3Driver.prototype.dbName = './models/db/pixelshelf.db';
+    SQLite3Driver.prototype.dbName = dbName;
 }
 
 // TODO: Create initialize database function
+SQLite3Driver.prototype.initializeDB = function initializeDB(sqlPath = './models/initdb.sql') {
+    return new Promise(function (resolve, reject) {
+        // Adapted from https://levelup.gitconnected.com/running-sql-queries-from-an-sql-file-in-a-nodejs-app-sqlite-a927f0e8a545
+        let sql = fs.readFileSync(sqlPath).toString();
+
+        SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+            if (err) {
+                reject(err);
+            }
+
+            let queries = sql.toString().split(";");
+
+            SQLite3Driver.prototype.db.serialize(() => {
+                SQLite3Driver.prototype.db.run("BEGIN TRANSACTION;", err => {
+                    if (err) {
+                        reject(err);
+                        throw err;
+                    }
+                });
+                queries.forEach(query => {
+                    if (query) {
+                        SQLite3Driver.prototype.db.run(query + ';', err => {
+                            if (err) {
+                                reject(err);
+                                throw err;
+                            }
+                        });
+                    }
+                });
+                SQLite3Driver.prototype.db.run("COMMIT;", err => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        });
+    });
+}
 
 SQLite3Driver.prototype.getLibrary = function getLibrary(sortBy = 'title', filters = []) {
     return new Promise(function (resolve, reject) {

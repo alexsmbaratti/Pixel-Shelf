@@ -25,6 +25,15 @@ router.get('/', function (req, res, next) {
     res.status(200).send({"status": 200});
 });
 
+router.post('/initdb', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    driver.initializeDB().then(() => {
+        res.status(200).send({"status": 200});
+    }).catch(err => {
+        sendError(res, err);
+    })
+});
+
 /**
  * Returns status code 200 with an array of library entries
  */
