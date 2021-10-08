@@ -2,7 +2,9 @@ function fetchLibrary(sortBy = "title") {
     let filters = collectFilters();
     let filterText = document.getElementById("filter-text");
     let filterOptions = document.getElementById("filter-options");
+    let tableHead = document.getElementById("table-head");
     filterOptions.classList.add("is-hidden");
+    tableHead.classList.add("is-hidden");
 
     if (filters.length === 0) {
         filterText.classList.remove("has-text-primary");
@@ -23,6 +25,7 @@ function fetchLibrary(sortBy = "title") {
 
             let libraryBar = document.getElementById("library-bar");
             libraryBar.classList.remove("is-hidden");
+            tableHead.classList.remove("is-hidden");
 
             if (request.status === 200) {
                 data = data['library'];
@@ -51,10 +54,10 @@ function fetchLibrary(sortBy = "title") {
                     platform.innerHTML = game.platform;
 
                     let dateAdded = document.createElement("td");
-                    if (game.dateAdded === null) {
+                    if (game['dateAdded'] === null) {
                         dateAdded.innerHTML = 'Unknown';
                     } else {
-                        let date = new Date(game.dateAdded);
+                        let date = new Date(game['dateAdded']);
                         dateAdded.innerHTML = (date.getUTCMonth() + 1) + '-' + date.getUTCDate() + '-' + date.getUTCFullYear();
                     }
 
@@ -64,11 +67,11 @@ function fetchLibrary(sortBy = "title") {
                     } else if (game['cost'] == null) {
                         cost.innerHTML = 'Unknown';
                     } else {
-                        cost.innerHTML = game.cost;
+                        cost.innerHTML = game['cost'];
                     }
 
                     let edition = document.createElement("td");
-                    edition.innerHTML = game.edition;
+                    edition.innerHTML = game['edition'];
 
                     let row = document.createElement("tr");
                     row.setAttribute("id", `library-${game['id']}-row`);
@@ -115,6 +118,15 @@ function collectFilters() {
     }
     if (!document.getElementById('physical-filter').checked) {
         filters.push('not-physical');
+    }
+    if (!document.getElementById('above-msrp-filter').checked) {
+        filters.push('not-above-msrp');
+    }
+    if (!document.getElementById('msrp-filter').checked) {
+        filters.push('not-msrp');
+    }
+    if (!document.getElementById('below-msrp-filter').checked) {
+        filters.push('not-below-msrp');
     }
 
     return filters;

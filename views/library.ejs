@@ -97,6 +97,11 @@
                     <input id="below-msrp-filter" type="checkbox" checked>
                     Below MSRP
                 </label>
+                <br>
+                <label class="checkbox">
+                    <input id="unknown-cost-filter" type="checkbox" checked>
+                    Unknown Cost
+                </label>
             </div>
             <div class="column">
                 <p class="has-text-weight-bold">Format</p>
@@ -116,7 +121,7 @@
     </div>
 </section>
 <table class="table is-hoverable is-striped is-fullwidth">
-    <thead>
+    <thead id="table-head" class="is-hidden">
     <tr>
         <th onclick="fetchLibrary('title')">Title</th>
         <th onclick="fetchLibrary('platform')">Platform</th>
