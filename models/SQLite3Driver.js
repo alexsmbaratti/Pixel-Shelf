@@ -11,7 +11,6 @@ function SQLite3Driver() {
     SQLite3Driver.prototype.dbName = dbName;
 }
 
-// TODO: Create initialize database function
 SQLite3Driver.prototype.initializeDB = function initializeDB(sqlPath = './models/initdb.sql') {
     return new Promise(function (resolve, reject) {
         // Adapted from https://levelup.gitconnected.com/running-sql-queries-from-an-sql-file-in-a-nodejs-app-sqlite-a927f0e8a545

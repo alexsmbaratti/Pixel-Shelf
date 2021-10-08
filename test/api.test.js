@@ -1,13 +1,18 @@
 const pixelShelf = require("../app");
 const supertest = require("supertest");
 
+const SQLite3Driver = require('../models/SQLite3Driver');
+
 var consoleID = null;
 var gameID = null;
 var editionID = null;
 var retailerID = null;
 
-beforeAll(() => {
-    // TODO: Initialize database
+beforeAll(done => {
+    let driver = new SQLite3Driver();
+    driver.initializeDB().then(() => {
+        done();
+    })
     // TODO: Generate token
 });
 
