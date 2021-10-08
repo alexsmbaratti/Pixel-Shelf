@@ -294,13 +294,16 @@ function parseLibraryFilters(filters = []) {
                     parsedFilters.push("edition.edition = 'Standard Edition'");
                     break;
                 case 'not-below-msrp': // Filter out below-MSRP library entries
-                    parsedFilters.push("edition.msrp > library.cost");
+                    parsedFilters.push("(edition.msrp <= library.cost OR library.cost IS NULL)");
                     break;
                 case 'not-above-msrp': // Filter out above-MSRP library entries
-                    parsedFilters.push("edition.msrp < library.cost");
+                    parsedFilters.push("(edition.msrp >= library.cost OR library.cost IS NULL)");
+                    break;
+                case 'no-null-cost': // Filter out library entries without a cost
+                    parsedFilters.push("library.cost IS NOT NULL");
                     break;
                 case 'not-msrp': // Filter out cost equal MSRP library entries
-                    parsedFilters.push("edition.msrp != library.cost");
+                    parsedFilters.push("(edition.msrp != library.cost OR library.cost IS NULL)");
                     break;
                 case 'no-date-added': // Filter out library entries with a timestamp
                     parsedFilters.push("library.timestamp IS NULL");
@@ -314,6 +317,7 @@ function parseLibraryFilters(filters = []) {
                 default:
             }
         });
+
         return ' AND ' + parsedFilters.join(' AND ');
     }
 }
