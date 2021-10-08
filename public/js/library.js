@@ -128,6 +128,18 @@ function collectFilters() {
     if (!document.getElementById('below-msrp-filter').checked) {
         filters.push('not-below-msrp');
     }
+    if (!document.getElementById('purchased-filter').checked) {
+        filters.push('not-purchased');
+    }
+    if (!document.getElementById('backlog-filter').checked) {
+        filters.push('not-backlog');
+    }
+    if (!document.getElementById('currently-playing-filter').checked) {
+        filters.push('not-in-progress');
+    }
+    if (!document.getElementById('completed-filter').checked) {
+        filters.push('not-complete');
+    }
 
     return filters;
 }
