@@ -321,3 +321,73 @@ function parseLibraryFilters(filters = []) {
         return ' AND ' + parsedFilters.join(' AND ');
     }
 }
+
+function parseLibrarySort(sortBy = "title") {
+    let parsedSortBy;
+    switch (sortBy) {
+        case 'title':
+            parsedSortBy = "game.title ASC";
+            break;
+        case 'platform':
+            parsedSortBy = "platform.name ASC, game.title ASC";
+            break;
+        case 'dateAdded':
+            parsedSortBy = "library.timestamp ASC";
+            break;
+        case 'cost':
+            parsedSortBy = "library.cost ASC, library.gift DESC";
+            break;
+        case 'edition':
+            parsedSortBy = "edition.edition ASC";
+            break;
+        case 'id':
+            parsedSortBy = "library.id ASC";
+            break;
+        default:
+            parsedSortBy = "game.title ASC";
+    }
+    return parsedSortBy;
+}
+
+function parseLibraryFilters(filters = []) {
+    let parsedFilters = [];
+    filters.forEach(filter => {
+        switch (filter) {
+            case 'not-new': // Filter out new library entries
+                filter.push("library.new != 1");
+                break;
+            case 'not-used': // Filter out used library entries
+                filter.push("library.new != 0");
+                break;
+            case 'not-gift': // Filter out gifted library entries
+                filter.push("library.gift != 1");
+                break;
+            case 'not-box': // Filter out library entries with a box/case
+                filter.push("library.box != 1");
+                break;
+            case 'not-box': // Filter out library entries with a manual
+                filter.push("library.manual != 1");
+                break;
+            case 'not-complete': // Filter out completed library entries
+                filter.push("library.progress != 3");
+                break;
+            case 'not-in-progress': // Filter out in progress library entries
+                filter.push("library.progress != 2");
+                break;
+            case 'not-backlog': // Filter out backlog library entries
+                filter.push("library.progress != 1");
+                break;
+            case 'not-purchased': // Filter out purchased (uncategorized) library entries
+                filter.push("library.progress != 0");
+                break;
+            case 'not-standard': // Filter out Standard Edition library entries
+                filter.push("edition.edition != 'Standard Edition'");
+                break;
+            case 'standard-only': // Filter out non-Standard Edition library entries
+                filter.push("edition.edition = 'Standard Edition'");
+                break;
+            default:
+        }
+    });
+    return ' AND ' + parsedFilters.join(' AND ');
+}
