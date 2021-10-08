@@ -2,21 +2,21 @@ function expandBurger() {
     let burger = document.getElementById("burger");
     let menu = document.getElementById("navbar-menu");
 
-    if (burger.getAttribute("class") == "navbar-burger") {
-        burger.setAttribute("class", "navbar-burger is-active");
-        menu.setAttribute("class", "navbar-menu is-active");
+    if (burger.classList.contains("navbar-burger")) {
+        burger.classList.add("is-active");
+        menu.classList.add("is-active");
     } else {
-        burger.setAttribute("class", "navbar-burger");
-        menu.setAttribute("class", "navbar-menu ");
+        burger.classList.remove("is-active");
+        menu.classList.remove("is-active");
     }
 }
 
 function expandDropdown(id) {
     let dropdown = document.getElementById(id);
 
-    if (dropdown.getAttribute("class") == "navbar-item has-dropdown is-hoverable") {
-        dropdown.setAttribute("class", "navbar-item has-dropdown is-hoverable is-active");
+    if (dropdown.classList.contains("is-active")) {
+        dropdown.classList.remove("is-active");
     } else {
-        dropdown.setAttribute("class", "navbar-item has-dropdown is-hoverable");
+        dropdown.classList.add("is-active");
     }
 }

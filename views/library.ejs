@@ -4,8 +4,8 @@
     <title><%= title %></title>
     <%- include('partials/metadata') %>
     <link rel="stylesheet" href="/stylesheets/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="<%= jsSrc %>"></script>
-    <script>fetchLibrary();</script>
 </head>
 <body>
 <%- include('partials/navbar') %>
@@ -16,8 +16,109 @@
         </p>
     </div>
 </section>
+<nav id="library-bar" class="level is-dark is-hidden pt-2 pb-2">
+    <div class="level-left pl-3">
+        <div class="level-item">
+            <div onclick="toggleFilterOptions()">
+                    <span id="filter-text" class="icon-text has-text-light">
+                        <span class="icon">
+                            <i class="fas fa-filter"></i>
+                        </span>
+                        <span>Filter</span>
+                    </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="level-right pr-3">
+        <div class="level-item">
+            <p class="control has-icons-left">
+                <input class="input is-rounded" type="text" placeholder="Search Library...">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-search"></i>
+                </span>
+            </p>
+        </div>
+    </div>
+</nav>
+<section id="filter-options" class="hero is-dark is-hidden">
+    <div class="hero-body">
+        <div id="filters-parent" class="columns">
+            <div class="column">
+                <p class="has-text-weight-bold">Condition</p>
+                <label class="checkbox">
+                    <input id="new-filter" type="checkbox" value="not-new" checked>
+                    New
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="used-filter" type="checkbox" value="not-used" checked>
+                    Used
+                </label>
+            </div>
+            <div class="column">
+                <p class="has-text-weight-bold">Progress</p>
+                <label class="checkbox">
+                    <input id="purchased-filter" type="checkbox" value="not-purchased" checked>
+                    Purchased
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="backlog-filter" type="checkbox" value="not-backlog" checked>
+                    Backlog
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="currently-playing-filter" type="checkbox" value="not-in-progress" checked>
+                    Currently Playing
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="completed-filter" type="checkbox" value="not-complete" checked>
+                    Completed
+                </label>
+            </div>
+            <div class="column">
+                <p class="has-text-weight-bold">Cost</p>
+                <label class="checkbox">
+                    <input id="above-msrp-filter" type="checkbox" value="not-above-msrp" checked>
+                    Above MSRP
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="msrp-filter" type="checkbox" value="not-msrp" checked>
+                    At MSRP
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="below-msrp-filter" type="checkbox" value="not-below-msrp" checked>
+                    Below MSRP
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="unknown-cost-filter" type="checkbox" value="no-null-cost" checked>
+                    Unknown Cost
+                </label>
+            </div>
+            <div class="column">
+                <p class="has-text-weight-bold">Format</p>
+                <label class="checkbox">
+                    <input id="digital-filter" type="checkbox" value="not-digital" checked>
+                    Digital
+                </label>
+                <br>
+                <label class="checkbox">
+                    <input id="physical-filter" type="checkbox" value="not-physical" checked>
+                    Physical
+                </label>
+            </div>
+        </div>
+        <button class="button is-primary" onclick="fetchLibrary('title')">Apply</button>
+        <button class="button is-light" onclick="resetFilters()">Reset</button>
+    </div>
+</section>
 <table class="table is-hoverable is-striped is-fullwidth">
-    <thead>
+    <thead id="table-head" class="is-hidden">
     <tr>
         <th onclick="fetchLibrary('title')">Title</th>
         <th onclick="fetchLibrary('platform')">Platform</th>
@@ -35,5 +136,6 @@
         <progress class="progress is-small is-primary" max="100"></progress>
     </div>
 </div>
+<script>fetchLibrary();</script>
 </body>
 </html>
