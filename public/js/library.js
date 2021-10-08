@@ -131,3 +131,12 @@ function collectFilters() {
 
     return filters;
 }
+
+function resetFilters() {
+    let checkboxes = document.getElementsByClassName('checkbox');
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].children[0].checked = true;
+    }
+
+    fetchLibrary('title');
+}
