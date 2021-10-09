@@ -22,7 +22,6 @@ module.exports = {
                 .then(function (response) {
                     let data = response.data;
                     clientToken = data['access_token']; // Update the prototype's token
-                    console.log("IGDB Generated new token");
                 })
                 .catch(function (error) {
                     // TODO: Allow logging here after regenerateToken has been reworked
