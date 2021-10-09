@@ -449,9 +449,17 @@ router.get('/amiibo/:amiiboID/cover', function (req, res, next) {
         console.log(err);
         res.redirect('/images/covers/placeholder.jpg');
     });
+});
 
-})
-;
+router.get('/platforms/:platformId/logo', function (req, res, next) {
+    let driver = new SQLite3Driver();
+    const platformID = req.params.platformId;
+    driver.getLogoByID(platformID).then(result => {
+        res.redirect(result);
+    }).catch(err => {
+        res.redirect('/images/logos/placeholder.png');
+    });
+});
 
 router.get('/editions', function (req, res, next) {
     let upc = req.query.upc;

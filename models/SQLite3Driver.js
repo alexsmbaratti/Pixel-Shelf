@@ -326,6 +326,20 @@ SQLite3Driver.prototype.getCoverByID = function getCoverByID(id) {
     });
 }
 
+SQLite3Driver.prototype.getLogoByID = function getLogoByID(id) {
+    return new Promise(function (resolve, reject) {
+        read.selectIGDBByPlatform(id).then(res => {
+            if (res['logoURL']) {
+                resolve(res['logoURL']);
+            } else {
+                reject();
+            }
+        }).catch(err => {
+            reject(err);
+        });
+    });
+}
+
 SQLite3Driver.prototype.getCachedIGDBGameMetadataByID = function getCachedIGDBGameMetadataByID(id) {
     return new Promise(function (resolve, reject) {
         read.selectIGDBByGame(id).then(res => {
