@@ -161,6 +161,31 @@ module.exports = {
             }
         });
     },
+    insertIGDBPlatform: function (igdbURL, description = null, category = null, logo = null, generation = null) {
+        return new Promise(function (resolve, reject) {
+            if (igdbURL) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO igdbplatform
+                                VALUES (?, ?, ?, ?, ?)`, [description, category, logo, generation, igdbURL], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let igdbID = this.lastID;
+                                logInsert('IGDB Platform', igdbID, igdbURL);
+                                resolve(igdbID);
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
     insertGenre: function (id, description) {
         return new Promise(function (resolve, reject) {
             if (id && description) {

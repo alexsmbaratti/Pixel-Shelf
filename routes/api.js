@@ -621,26 +621,33 @@ router.post('/retailers', function (req, res) {
 router.post('/consoles', function (req, res) {
     let driver = new SQLite3Driver();
     driver.lookupBrand(req.body.brand).then(result => {
+        let consoleData = {
+            "name": req.body['name'],
+            "brandID": result['id']
+        };
         if (result.found === true) {
-            let consoleData = {
-                "name": req.body['name'],
-                "brandID": result['id']
-            };
-            driver.addConsole(consoleData).then(addResult => {
-                res.status(200).send({"status": 200, "id": addResult});
-            }).catch(err => {
-                sendError(res, err);
-            });
-        } else {
-            driver.addBrand(req.body).then(brandID => {
-                let consoleData = {
-                    "name": req.body['name'],
-                    "brandID": brandID
-                };
+            IGDBDriver.getPlatformByName(consoleData['name']).then(result => {
+                if (result.length > 0) {
+                    consoleData['igdb-url'] = result[0].url;
+                }
                 driver.addConsole(consoleData).then(addResult => {
                     res.status(200).send({"status": 200, "id": addResult});
                 }).catch(err => {
                     sendError(res, err);
+                });
+            });
+        } else {
+            driver.addBrand(req.body).then(brandID => {
+                consoleData['brandID'] = brandID;
+                IGDBDriver.getPlatformByName(consoleData['name']).then(result => {
+                    if (result.length > 0) {
+                        consoleData['igdb-url'] = result[0].url;
+                    }
+                    driver.addConsole(consoleData).then(addResult => {
+                        res.status(200).send({"status": 200, "id": addResult});
+                    }).catch(err => {
+                        sendError(res, err);
+                    });
                 });
             }).catch(err => {
                 sendError(res, err);

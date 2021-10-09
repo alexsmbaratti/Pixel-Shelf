@@ -92,6 +92,9 @@ module.exports = {
                 .then(function (res) {
                     let resJSON = res.data;
                     resolve(resJSON);
+                    if (resJSON.length > 0) {
+                        cachePlatformMetadata(resJSON);
+                    }
                 })
                 .catch(function (e) {
                     reject(e);
@@ -165,4 +168,24 @@ function cacheMetadata(resJSON) {
         create.insertHasARating(ageRating['rating'], resJSON[0]['url']).catch(err => {
         });
     });
+}
+
+function cachePlatformMetadata(resJSON) {
+    if (resJSON[0]['platform_logo']) {
+        let size = 'logo_med_2x';
+        let imageID = resJSON[0]['platform_logo']['image_id'];
+        https.get(`https://images.igdb.com/igdb/image/upload/t_${size}/${imageID}.jpg`, function (fileRes) {
+            let imagePath = "/images/logos/" + imageID + ".jpg";
+            const file = fs.createWriteStream(__dirname + "/../public" + imagePath);
+            fileRes.pipe(file);
+            create.insertIGDBPlatform(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['category'], resJSON[0]['generation'], imagePath).catch(err => {
+                console.log(err);
+            });
+        }).on('error', function (err) {
+        });
+    } else {
+        create.insertIGDBPlatform(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['category'], resJSON[0]['generation'], null).catch(err => {
+            console.log(err);
+        });
+    }
 }
