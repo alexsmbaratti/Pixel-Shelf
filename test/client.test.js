@@ -45,3 +45,14 @@ test('Game Library Page', () => {
             expect(documentBody.getElementsByTagName('td').item(7).firstElementChild.firstElementChild.getAttribute('class')).toBe('fas fa-times'); // Gift
         });
 });
+
+test('Platform Page', () => {
+    return supertest(pixelShelf)
+        .get("/platforms/1")
+        .expect(200)
+        .then((response) => {
+            const documentBody = new JSDOM(response.text).window.document.body;
+            expect(documentBody.getElementsByTagName('h1').item(0).textContent).toBe('A Console'); // Console
+            expect(documentBody.getElementsByTagName('h1').item(1).textContent).toBe('A Brand'); // Brand
+        });
+});
