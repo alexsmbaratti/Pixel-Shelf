@@ -18,7 +18,7 @@ test('No Filters', () => {
         .expect(200)
         .then(response => {
             let library = response['body']['library'];
-            expect(library.length).toBe(2);
+            expect(library.length).toBe(3);
         });
 });
 
@@ -29,5 +29,15 @@ test('Only Digital Titles', () => {
         .then(response => {
             let library = response['body']['library'];
             expect(library.length).toBe(1);
+        });
+});
+
+test('Only Physical Titles', () => {
+    return supertest(pixelShelf)
+        .get('/api/library?sortBy=title&filters=[not-digital]')
+        .expect(200)
+        .then(response => {
+            let library = response['body']['library'];
+            expect(library.length).toBe(2);
         });
 });

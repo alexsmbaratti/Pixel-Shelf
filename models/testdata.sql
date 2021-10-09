@@ -23,6 +23,9 @@ VALUES ('Special Edition', '000000000001', 99.99, 1, 0, 'USD', 1, 2);
 INSERT INTO library
 VALUES (39.99, '2021-01-01T00:00:00.000Z', 1, 1, 1, 1, 1, 3, 0, 'USD', 0, NULL, 1);
 
+INSERT INTO library
+VALUES (39.99, '2021-02-01T00:00:00.000Z', 1, 1, 1, 1, 1, 3, 0, 'USD', 0, 'Random Second Copy', 2);
+
 -- Z Game
 INSERT INTO game
 VALUES ('Z Game', 1, NULL, 2);
@@ -31,4 +34,4 @@ INSERT INTO edition
 VALUES ('Digital Deluxe Edition', '000000000002', 79.99, 1, 1, 'USD', 1, 3);
 
 INSERT INTO library
-VALUES (79.99, '2021-01-01T00:00:00.000Z', 3, 2, 1, 0, 0, 2, 0, 'USD', 0, NULL, 2);
+VALUES (79.99, '2021-01-01T00:00:00.000Z', 3, 2, 1, 0, 0, 2, 0, 'USD', 0, NULL, 3);
