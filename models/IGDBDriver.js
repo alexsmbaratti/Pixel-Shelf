@@ -14,115 +14,123 @@ var clientToken = null;
 module.exports = {
     regenerateToken: function () {
         return new Promise(function (resolve, reject) {
-            axios({
-                method: 'post',
-                url: `https://id.twitch.tv/oauth2/token?client_id=${clientID}&client_secret=${clientSecret}&grant_type=client_credentials`,
-                headers: {}
-            })
-                .then(function (response) {
-                    let data = response.data;
-                    clientToken = data['access_token']; // Update the prototype's token
-                })
-                .catch(function (error) {
-                    // TODO: Allow logging here after regenerateToken has been reworked
-                    reject(error);
-                });
+            getToken().then(() => {
+                resolve();
+            }).catch(err => {
+                reject(err);
+            });
         });
     },
     getGameByName: function (name) {
         return new Promise(function (resolve, reject) {
-            axios({
-                method: 'post',
-                url: 'https://api.igdb.com/' + version + '/games/',
-                headers: {
-                    'Client-ID': clientID,
-                    'Authorization': 'Bearer ' + clientToken,
-                    'Content-Type': 'text/plain'
-                },
-                data: 'fields first_release_date, summary, url, age_ratings.rating, age_ratings.category, genres.name, cover.image_id; where name = \"' + name + '\";'
-            })
-                .then(function (res) {
-                    let resJSON = res.data;
-                    resolve(resJSON);
-                    if (resJSON.length > 0) {
-                        cacheMetadata(resJSON);
-                    }
+            generateTokenIfNeeded().then(() => {
+                axios({
+                    method: 'post',
+                    url: 'https://api.igdb.com/' + version + '/games/',
+                    headers: {
+                        'Client-ID': clientID,
+                        'Authorization': 'Bearer ' + clientToken,
+                        'Content-Type': 'text/plain'
+                    },
+                    data: 'fields first_release_date, summary, url, age_ratings.rating, age_ratings.category, genres.name, cover.image_id; where name = \"' + name + '\";'
                 })
-                .catch(function (e) {
-                    reject(e);
-                });
+                    .then(function (res) {
+                        let resJSON = res.data;
+                        resolve(resJSON);
+                        if (resJSON.length > 0) {
+                            cacheMetadata(resJSON);
+                        }
+                    })
+                    .catch(function (e) {
+                        reject(e);
+                    });
+            }).catch(err => {
+                reject(err);
+            })
         });
     },
     getGameByURL: function (url) {
         return new Promise(function (resolve, reject) {
-            axios({
-                method: 'post',
-                url: 'https://api.igdb.com/' + version + '/games/',
-                headers: {
-                    'Client-ID': clientID,
-                    'Authorization': 'Bearer ' + clientToken,
-                    'Content-Type': 'text/plain'
-                },
-                data: 'fields first_release_date, summary, url, age_ratings.rating, age_ratings.category, genres.name, cover.image_id; where url = \"' + url + '\";'
-            })
-                .then(function (res) {
-                    let resJSON = res.data;
-                    resolve(resJSON);
-                    if (resJSON.length > 0) {
-                        cacheMetadata(resJSON);
-                    }
+            generateTokenIfNeeded().then(() => {
+                axios({
+                    method: 'post',
+                    url: 'https://api.igdb.com/' + version + '/games/',
+                    headers: {
+                        'Client-ID': clientID,
+                        'Authorization': 'Bearer ' + clientToken,
+                        'Content-Type': 'text/plain'
+                    },
+                    data: 'fields first_release_date, summary, url, age_ratings.rating, age_ratings.category, genres.name, cover.image_id; where url = \"' + url + '\";'
                 })
-                .catch(function (e) {
-                    reject(e);
-                });
+                    .then(function (res) {
+                        let resJSON = res.data;
+                        resolve(resJSON);
+                        if (resJSON.length > 0) {
+                            cacheMetadata(resJSON);
+                        }
+                    })
+                    .catch(function (e) {
+                        reject(e);
+                    });
+            }).catch(err => {
+                reject(err);
+            });
         });
     },
     getPlatformByName: function (name) {
         return new Promise(function (resolve, reject) {
-            axios({
-                method: 'post',
-                url: 'https://api.igdb.com/' + version + '/platforms/',
-                headers: {
-                    'Client-ID': clientID,
-                    'Authorization': 'Bearer ' + clientToken,
-                    'Content-Type': 'text/plain'
-                },
-                data: 'fields *, platform_logo.*; where name = \"' + name + '\";'
-            })
-                .then(function (res) {
-                    let resJSON = res.data;
-                    resolve(resJSON);
-                    if (resJSON.length > 0) {
-                        cachePlatformMetadata(resJSON);
-                    }
+            generateTokenIfNeeded().then(() => {
+                axios({
+                    method: 'post',
+                    url: 'https://api.igdb.com/' + version + '/platforms/',
+                    headers: {
+                        'Client-ID': clientID,
+                        'Authorization': 'Bearer ' + clientToken,
+                        'Content-Type': 'text/plain'
+                    },
+                    data: 'fields *, platform_logo.*; where name = \"' + name + '\";'
                 })
-                .catch(function (e) {
-                    reject(e);
-                });
+                    .then(function (res) {
+                        let resJSON = res.data;
+                        resolve(resJSON);
+                        if (resJSON.length > 0) {
+                            cachePlatformMetadata(resJSON);
+                        }
+                    })
+                    .catch(function (e) {
+                        reject(e);
+                    });
+            }).catch(err => {
+                reject(err);
+            });
         });
     },
     checkStatus: function () {
         return new Promise(function (resolve, reject) {
-            axios({
-                method: 'post',
-                url: 'https://api.igdb.com/' + version + '/games',
-                headers: {
-                    'Client-ID': clientID,
-                    'Authorization': 'Bearer ' + clientToken,
-                    'Content-Type': 'text/plain'
-                },
-                data: 'where url = "https://www.igdb.com/games/gex";'
-            })
-                .then(function (res) {
-                    if (res.status === 200) {
-                        resolve();
-                    } else {
-                        reject("Received non-200 status code");
-                    }
+            generateTokenIfNeeded().then(() => {
+                axios({
+                    method: 'post',
+                    url: 'https://api.igdb.com/' + version + '/games',
+                    headers: {
+                        'Client-ID': clientID,
+                        'Authorization': 'Bearer ' + clientToken,
+                        'Content-Type': 'text/plain'
+                    },
+                    data: 'where url = "https://www.igdb.com/games/gex";'
                 })
-                .catch(function (e) {
-                    reject(e);
-                });
+                    .then(function (res) {
+                        if (res.status === 200) {
+                            resolve();
+                        } else {
+                            reject("Received non-200 status code");
+                        }
+                    })
+                    .catch(function (e) {
+                        reject(e);
+                    });
+            }).catch(err => {
+                reject(err);
+            });
         });
     }
 }
@@ -188,4 +196,38 @@ function cachePlatformMetadata(resJSON) {
             console.log(err);
         });
     }
+}
+
+function getToken() {
+    return new Promise(function (resolve, reject) {
+        axios({
+            method: 'post',
+            url: `https://id.twitch.tv/oauth2/token?client_id=${clientID}&client_secret=${clientSecret}&grant_type=client_credentials`,
+            headers: {}
+        })
+            .then(function (response) {
+                let data = response.data;
+                clientToken = data['access_token']; // Update the prototype's token
+                resolve();
+            })
+            .catch(function (error) {
+                reject(error);
+            });
+    });
+}
+
+function generateTokenIfNeeded() {
+    return new Promise(function (resolve, reject) {
+        if (clientToken) { // Token has already been set
+            // TODO: Check if the token has expired
+            resolve();
+        } else {
+            getToken().then(() => {
+                console.log("IGDB Automatically generated a new token");
+                resolve();
+            }).catch(err => {
+                reject();
+            });
+        }
+    });
 }

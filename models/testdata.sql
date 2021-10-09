@@ -2,7 +2,10 @@ INSERT INTO brand
 VALUES ('A Brand', 1);
 
 INSERT INTO platform
-VALUES ('A Console', 1, NULL, 1);
+VALUES ('A Console', 1, 'http://example.com/platforms/a-console', 1);
+
+INSERT INTO igdbplatform
+VALUES ('This is a description.', 1, NULL, 9, 'http://example.com/platforms/a-console');
 
 INSERT INTO retailer
 VALUES ('A Retailer', 'Anytown Location', 0, 30.000, -70.000, NULL, 1);
@@ -12,7 +15,10 @@ VALUES ('Pixel Shelf Shop Channel', NULL, 1, NULL, NULL, NULL, 2);
 
 -- A Game
 INSERT INTO game
-VALUES ('A Game', 1, NULL, 1);
+VALUES ('A Game', 1, 'http://example.com/games/a-game', 1);
+
+INSERT INTO igdb
+VALUES ('This is a game.', NULL, NULL, 'http://example.com/games/a-game');
 
 INSERT INTO edition
 VALUES ('Standard Edition', '000000000000', 59.99, 1, 0, 'USD', 1, 1);

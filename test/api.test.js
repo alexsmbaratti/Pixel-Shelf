@@ -2,6 +2,7 @@ const pixelShelf = require("../app");
 const supertest = require("supertest");
 
 const SQLite3Driver = require('../models/SQLite3Driver');
+const IGDBDriver = require('../models/IGDBDriver');
 
 var consoleID = null;
 var gameID = null;
@@ -13,7 +14,6 @@ beforeAll(done => {
     driver.initializeDB().then(() => {
         done();
     })
-    // TODO: Generate token
 });
 
 test('API is online', () => {

@@ -10,9 +10,8 @@ beforeEach(done => {
     driver.initializeDB().then(() => {
         driver.initializeDB('./models/testdata.sql').then(() => {
             done();
-        })
-    })
-    // TODO: Generate token
+        });
+    });
 });
 
 test('Index Page Loads', () => {
