@@ -358,16 +358,8 @@ SQLite3Driver.prototype.getCachedIGDBGameMetadataByID = function getCachedIGDBGa
 
 SQLite3Driver.prototype.getCachedPlatformIGDBMetadataByID = function getCachedPlatformIGDBMetadataByID(id) {
     return new Promise(function (resolve, reject) {
-        read.selectPlatformByID(id).then(platformRes => {
-            if (platformRes['name']) {
-                IGDBDriver.getPlatformByName(platformRes['name']).then(res => {
-                    resolve(res);
-                }).catch(err => {
-                    reject(err);
-                });
-            } else {
-                reject();
-            }
+        read.selectIGDBByPlatform(id).then(res => {
+            resolve(res);
         }).catch(err => {
             reject(err);
         });
@@ -392,7 +384,8 @@ SQLite3Driver.prototype.getPlatform = function getPlatform(id) {
                     resolve({
                         "id": row.id,
                         "name": row.name,
-                        "brand": row.brand
+                        "brand": row.brand,
+                        "igdbURL": row.igdbURL
                     });
                 }
             });
