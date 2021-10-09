@@ -21,7 +21,7 @@ router.get('/:platformId', function (req, res, next) {
             res.render('entry/404', {type: 'Console'});
         } else {
             res.render('entry/console', {
-                title: result.title + ' - Pixel Shelf',
+                title: result.name + ' - Pixel Shelf',
                 entry: result,
                 id: platformId
             });
