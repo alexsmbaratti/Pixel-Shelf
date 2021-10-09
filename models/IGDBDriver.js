@@ -178,13 +178,13 @@ function cachePlatformMetadata(resJSON) {
             let imagePath = "/images/logos/" + imageID + ".jpg";
             const file = fs.createWriteStream(__dirname + "/../public" + imagePath);
             fileRes.pipe(file);
-            create.insertIGDBPlatform(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['category'], resJSON[0]['generation'], imagePath).catch(err => {
+            create.insertIGDBPlatform(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['category'], imagePath, resJSON[0]['generation']).catch(err => {
                 console.log(err);
             });
         }).on('error', function (err) {
         });
     } else {
-        create.insertIGDBPlatform(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['category'], resJSON[0]['generation'], null).catch(err => {
+        create.insertIGDBPlatform(resJSON[0]['url'], resJSON[0]['summary'], resJSON[0]['category'], null, resJSON[0]['generation']).catch(err => {
             console.log(err);
         });
     }

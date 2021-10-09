@@ -17,3 +17,4 @@ keys/
 !public/images/covers/placeholder.jpg
 !public/images/amiibo/placeholder.png
 !models/backups/README.txt
+/public/images/logos/
