@@ -452,6 +452,7 @@ SQLite3Driver.prototype.getLibraryGame = function getLibraryGame(id) {
                             "date": row.timestamp,
                             "gameID": row.gameid,
                             "editionID": row.editionid,
+                            "platformID": row.platformid,
                             "retailerID": row.retailerid,
                             "progress": row.progress,
                             "notes": row.notes,

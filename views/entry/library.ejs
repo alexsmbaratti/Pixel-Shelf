@@ -36,7 +36,9 @@
                             <h1 class="title"><%= entry.title %></h1>
                             <div class="columns">
                                 <div class="column">
-                                    <h1 class="title is-5"><%= entry.platform %></h1>
+                                    <a href="/platforms/<%= entry.platformID %>">
+                                        <h1 class="title is-5"><%= entry.platform %></h1>
+                                    </a>
                                     <h1 class="subtitle"><%= entry.edition %></h1>
                                     <% if (entry.digital) { %>
                                         <span class="tag is-info">Digital</span>
