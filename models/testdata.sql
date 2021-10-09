@@ -2,7 +2,7 @@ INSERT INTO brand
 VALUES ('A Brand', 1);
 
 INSERT INTO platform
-VALUES ('A Console', 1, 1);
+VALUES ('A Console', 1, NULL, 1);
 
 INSERT INTO retailer
 VALUES ('A Retailer', 'Anytown Location', 0, 30.000, -70.000, NULL, 1);

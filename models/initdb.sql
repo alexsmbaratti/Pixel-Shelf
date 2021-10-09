@@ -34,8 +34,10 @@ CREATE TABLE platform
 (
     name    TEXT NOT NULL,
     brandid INTEGER,
+    igdbURL TEXT,
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
-    FOREIGN KEY (brandid) REFERENCES brand (id) ON DELETE CASCADE
+    FOREIGN KEY (brandid) REFERENCES brand (id) ON DELETE CASCADE,
+    FOREIGN KEY (igdbURL) REFERENCES igdbplatform (igdbURL) ON DELETE SET NULL
 );
 
 CREATE TABLE edition
