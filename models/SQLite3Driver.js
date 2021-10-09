@@ -713,7 +713,7 @@ SQLite3Driver.prototype.updateGame = function updateGame(id, json) {
 
 SQLite3Driver.prototype.addConsole = function addConsole(json) {
     return new Promise(function (resolve, reject) {
-        create.insertPlatform(json['name'], json['brandID'], json['igdbURL']).then(res => {
+        create.insertPlatform(json['name'], json['brandID'], json['igdb-url']).then(res => {
             resolve(res);
         }).catch(err => {
             reject(err);
