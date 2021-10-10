@@ -2,6 +2,7 @@ const pixelShelf = require("../app");
 const supertest = require("supertest");
 
 const SQLite3Driver = require("../models/SQLite3Driver");
+const EXPECTED_LIBRARY_SIZE = 3;
 
 beforeEach(done => {
     SQLite3Driver.initializeDB().then(() => {
@@ -17,7 +18,7 @@ test('No Filters', () => {
         .expect(200)
         .then(response => {
             let library = response['body']['library'];
-            expect(library.length).toBe(3);
+            expect(library.length).toBe(EXPECTED_LIBRARY_SIZE);
         });
 });
 
@@ -78,5 +79,15 @@ test('Filter New and Used Titles', () => {
         .then(response => {
             let library = response['body']['library'];
             expect(library.length).toBe(0);
+        });
+});
+
+test('Filter Gifted Titles', () => {
+    return supertest(pixelShelf)
+        .get('/api/library?sortBy=title&filters=[not-gift]')
+        .expect(200)
+        .then(response => {
+            let library = response['body']['library'];
+            expect(library.length).toBe(3);
         });
 });
