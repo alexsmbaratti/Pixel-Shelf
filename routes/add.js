@@ -28,19 +28,6 @@ router.get('/amiibo', function (req, res, next) {
     });
 });
 
-router.get('/mass', function (req, res, next) {
-    res.render('mass', {title: 'Pixel Shelf'});
-});
-
-router.post('/mass', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.massImport(req.body).then(result => {
-        res.status(200).send({"status": 200});
-    }).catch(err => {
-        res.status(500).send({"status": 500});
-    });
-});
-
 router.get('/console', function (req, res, next) {
     res.render('add/console', {title: 'Pixel Shelf'});
 });
