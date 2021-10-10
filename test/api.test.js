@@ -14,9 +14,15 @@ beforeAll(done => {
     })
 });
 
-test('API is online', () => {
+test('API is reachable', () => {
     return supertest(pixelShelf)
         .get("/api")
+        .expect(200);
+});
+
+test('Database is reachable', () => {
+    return supertest(pixelShelf)
+        .get("/api/db")
         .expect(200);
 });
 
