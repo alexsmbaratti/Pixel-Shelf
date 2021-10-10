@@ -7,6 +7,9 @@ VALUES ('A Console', 1, 'http://example.com/platforms/a-console', 1);
 INSERT INTO igdbplatform
 VALUES ('This is a description.', 1, NULL, 9, 'http://example.com/platforms/a-console');
 
+INSERT INTO platform
+VALUES ('B Console', 1, NULL, 2);
+
 INSERT INTO retailer
 VALUES ('A Retailer', 'Anytown Location', 0, 30.000, -70.000, NULL, 1);
 
@@ -30,7 +33,7 @@ INSERT INTO library
 VALUES (39.99, '2021-01-01T00:00:00.000Z', 1, 1, 1, 1, 1, 3, 0, 'USD', 0, NULL, 1);
 
 INSERT INTO library
-VALUES (39.99, '2021-02-01T00:00:00.000Z', 1, 1, 1, 1, 1, 3, 0, 'USD', 0, 'Random Second Copy', 2);
+VALUES (39.99, '2021-02-01T00:00:00.000Z', 1, NULL, 1, 1, 1, 3, 0, 'USD', 0, 'Random Second Copy without Retailer Information', 2);
 
 -- Z Game
 INSERT INTO game
