@@ -6,15 +6,12 @@ const read = require('./SQLiteUtils/ReadDriver');
 const IGDBDriver = require('./IGDBDriver');
 
 var dbName = './models/db/pixelshelf.db';
-
-function SQLite3Driver() {
-    SQLite3Driver.prototype.dbName = dbName;
-}
+var db;
 
 module.exports = {
     checkStatus: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -28,15 +25,15 @@ module.exports = {
             // Adapted from https://levelup.gitconnected.com/running-sql-queries-from-an-sql-file-in-a-nodejs-app-sqlite-a927f0e8a545
             let sql = fs.readFileSync(sqlPath).toString();
 
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
                     reject(err);
                 }
 
                 let queries = sql.toString().split(";");
 
-                SQLite3Driver.prototype.db.serialize(() => {
-                    SQLite3Driver.prototype.db.run("BEGIN TRANSACTION;", err => {
+                db.serialize(() => {
+                    db.run("BEGIN TRANSACTION;", err => {
                         if (err) {
                             reject(err);
                             throw err;
@@ -44,7 +41,7 @@ module.exports = {
                     });
                     queries.forEach(query => {
                         if (query) {
-                            SQLite3Driver.prototype.db.run(query + ';', err => {
+                            db.run(query + ';', err => {
                                 if (err) {
                                     reject(err);
                                     throw err;
@@ -52,7 +49,7 @@ module.exports = {
                             });
                         }
                     });
-                    SQLite3Driver.prototype.db.run("COMMIT;", err => {
+                    db.run("COMMIT;", err => {
                         if (err) {
                             reject(err);
                         } else {
@@ -112,14 +109,14 @@ module.exports = {
     },
     getLibrarySize: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
                 let sql = `SELECT COUNT(id)
                            FROM library`;
                 // TODO: Change to get
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -133,14 +130,14 @@ module.exports = {
     },
     getFigureSize: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
                 let sql = `SELECT COUNT(id)
                            FROM figure`;
                 // TODO: Change to get
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -153,14 +150,14 @@ module.exports = {
     },
     getWishlistSize: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
                 let sql = `SELECT COUNT(id)
                            FROM wishlist`;
                 // TODO: Change to get
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -173,7 +170,7 @@ module.exports = {
     },
     countByCondition: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -181,7 +178,7 @@ module.exports = {
                            FROM library
                            GROUP BY library.new
                            ORDER BY library.new DESC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -193,7 +190,7 @@ module.exports = {
     },
     countByDateAdded: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -201,7 +198,7 @@ module.exports = {
                            FROM library
                            GROUP BY library.timestamp
                            ORDER BY library.timestamp ASC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -213,7 +210,7 @@ module.exports = {
     },
     countFiguresByDateAdded: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -221,7 +218,7 @@ module.exports = {
                            FROM figure
                            GROUP BY figure.timestamp
                            ORDER BY figure.timestamp ASC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -233,7 +230,7 @@ module.exports = {
     },
     getEditionsWithoutUPC: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -242,7 +239,7 @@ module.exports = {
                                 game
                            WHERE edition.gameid = game.id
                              AND edition.upc IS NULL`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -254,7 +251,7 @@ module.exports = {
     },
     countByPlatform: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -268,7 +265,7 @@ module.exports = {
                              AND game.platformid = platform.id
                            GROUP BY platform.id
                            ORDER BY COUNT(library.id) DESC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -280,7 +277,7 @@ module.exports = {
     },
     countByProgress: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -288,7 +285,7 @@ module.exports = {
                            FROM library
                            GROUP BY library.progress
                            ORDER BY library.progress DESC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -300,7 +297,7 @@ module.exports = {
     },
     countByBrand: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -316,7 +313,7 @@ module.exports = {
                              AND platform.brandid = brand.id
                            GROUP BY brand.id
                            ORDER BY COUNT(library.id) DESC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -346,7 +343,7 @@ module.exports = {
     },
     getFiguresWithoutDateAdded: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -357,7 +354,7 @@ module.exports = {
                            WHERE amiibo.seriesid = series.id
                              AND figure.amiiboid = amiibo.id
                              AND figure.timestamp IS NULL`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -378,14 +375,14 @@ module.exports = {
     },
     getGamesWithoutIGDBMetadata: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
                 let sql = `SELECT id, title
                            FROM game
                            WHERE igdbURL IS NULL`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -397,7 +394,7 @@ module.exports = {
     },
     getEditionsWithoutMSRP: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -406,7 +403,7 @@ module.exports = {
                                 game
                            WHERE edition.gameid = game.id
                              AND edition.msrp IS NULL`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -418,7 +415,7 @@ module.exports = {
     },
     getGamesWithoutLibrary: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -432,7 +429,7 @@ module.exports = {
                                    FROM library AS l
                                    WHERE e.id = l.editionid
                                )`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -494,7 +491,7 @@ module.exports = {
                 parsedSortBy = "game.title";
         }
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -514,7 +511,7 @@ module.exports = {
                              AND gameid = game.id
                              AND platform.id = platformid
                            ORDER BY ${parsedSortBy} ASC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                db.all(sql, [], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -559,7 +556,7 @@ module.exports = {
                 parsedSortBy = "game.title";
         }
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -579,7 +576,7 @@ module.exports = {
                              AND gameid = game.id
                              AND platform.id = platformid
                            ORDER BY ${parsedSortBy} ASC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                db.all(sql, [], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -622,7 +619,7 @@ module.exports = {
         }
 
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -635,7 +632,7 @@ module.exports = {
                              AND gameid = game.id
                              AND platform.id = platformid
                            ORDER BY ${parsedSortBy} ASC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                db.all(sql, [], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -678,7 +675,7 @@ module.exports = {
                 parsedSortBy = "amiibo.title ASC, series.series ASC";
         }
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -697,7 +694,7 @@ module.exports = {
                            WHERE seriesid = series.id
                              AND amiiboid = amiibo.id
                            ORDER BY ${parsedSortBy}`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                db.all(sql, [], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -739,7 +736,7 @@ module.exports = {
     },
     getFigure: function (id) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -763,7 +760,7 @@ module.exports = {
                              AND figure.id = ?
                            LIMIT 1`;
 
-                SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
+                db.get(sql, [id], (err, row) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -833,7 +830,7 @@ module.exports = {
     },
     getLibraryEntriesFromRetailer: function (id) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -847,7 +844,7 @@ module.exports = {
                              AND library.editionid = edition.id
                              AND edition.gameid = game.id
                            ORDER BY game.title ASC`;
-                SQLite3Driver.prototype.db.all(sql, [id], (err, res) => {
+                db.all(sql, [id], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -859,7 +856,7 @@ module.exports = {
     },
     getFiguresFromRetailer: function (id) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -873,7 +870,7 @@ module.exports = {
                              AND figure.amiiboid = amiibo.id
                              AND amiibo.seriesid = series.id
                            ORDER BY amiibo.title ASC`;
-                SQLite3Driver.prototype.db.all(sql, [id], (err, res) => {
+                db.all(sql, [id], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -923,7 +920,7 @@ module.exports = {
     },
     getPlatform: function (id) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -932,7 +929,7 @@ module.exports = {
                                 brand
                            WHERE platform.brandid = brand.id
                              AND platform.id = ?`;
-                SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
+                db.get(sql, [id], (err, row) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -958,14 +955,14 @@ module.exports = {
     },
     getSeries: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
                 let sql = `SELECT *
                            FROM series
                            ORDER BY series ASC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, res) => {
+                db.all(sql, [], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -977,7 +974,7 @@ module.exports = {
     },
     getLibraryGame: function (id) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -991,7 +988,7 @@ module.exports = {
                              AND platform.id = platformid
                              AND library.id = ?
                            LIMIT 1`;
-                SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
+                db.get(sql, [id], (err, row) => {
                     if (err) {
                         reject(err);
                     } else if (row) {
@@ -1050,14 +1047,14 @@ module.exports = {
                 parsedSortBy = "retailer.retailer";
         }
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
                 let sql = `SELECT *
                            FROM retailer
                            ORDER BY ${parsedSortBy} ASC`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                db.all(sql, [], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -1081,14 +1078,14 @@ module.exports = {
     },
     getPhysicalRetailers: function () {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
                 let sql = `SELECT *
                            FROM retailer
                            WHERE online = 0`;
-                SQLite3Driver.prototype.db.all(sql, [], (err, rows) => {
+                db.all(sql, [], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -1111,7 +1108,7 @@ module.exports = {
     },
     getRetailer: function (id) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -1120,7 +1117,7 @@ module.exports = {
                     SELECT *
                     FROM retailer
                     WHERE id = ?`;
-                SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
+                db.get(sql, [id], (err, row) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -1140,7 +1137,7 @@ module.exports = {
     },
     getWishlistGame: function (id) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -1158,7 +1155,7 @@ module.exports = {
                       AND platform.id = platformid
                       AND wishlist.id = ?
                     LIMIT 1`;
-                SQLite3Driver.prototype.db.get(sql, [id], (err, row) => {
+                db.get(sql, [id], (err, row) => {
                     if (err) {
                         reject(err);
                     } else if (row) {
@@ -1207,12 +1204,12 @@ module.exports = {
     },
     addWishlist: function (json) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
-                SQLite3Driver.prototype.db.run(`INSERT
+                db.run(`INSERT
                                                 INTO wishlist
                                                 VALUES (?, ?)`, [`${json.editionID}`], function (err) {
                     if (err) {
@@ -1257,12 +1254,12 @@ module.exports = {
     },
     addRetailer: function (json) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
                 if (err) {
                     console.log(err);
                     reject(err);
                 }
-                SQLite3Driver.prototype.db.run(`INSERT
+                db.run(`INSERT
                                                 INTO retailer
                                                 VALUES (?, ?, ?, ?, ?, ?,
                                                         ?)`, [json.retailer, json.subtext, json.online ? 1 : 0, json.lat, json.long, json.url], function (err) {
@@ -1289,7 +1286,7 @@ module.exports = {
     },
     lookupEdition: function (edition, gameID, digital = false) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -1304,7 +1301,7 @@ module.exports = {
                              AND gameid = ?
                              AND digital = ?`;
                 // TODO: Change to get
-                SQLite3Driver.prototype.db.all(sql, [edition, gameID, parsedDigital], (err, res) => {
+                db.all(sql, [edition, gameID, parsedDigital], (err, res) => {
                     if (err) {
                         console.log(err);
                         reject(err);
@@ -1321,7 +1318,7 @@ module.exports = {
     },
     lookupBrand: function (name) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -1330,7 +1327,7 @@ module.exports = {
                     SELECT *
                     FROM brand
                     WHERE brand = ? `;
-                SQLite3Driver.prototype.db.get(sql, [name], (err, row) => {
+                db.get(sql, [name], (err, row) => {
                     if (err) {
                         reject(err);
                     } else if (row) {
@@ -1344,7 +1341,7 @@ module.exports = {
     },
     lookupByUPC: function (upc) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -1357,7 +1354,7 @@ module.exports = {
                              AND edition.upc = ?
                            LIMIT 1`;
                 // TODO: Change to get
-                SQLite3Driver.prototype.db.all(sql, [upc], (err, rows) => {
+                db.all(sql, [upc], (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -1390,7 +1387,7 @@ module.exports = {
             if (platformID == undefined) {
                 platformID = '\'undefined\'';
             }
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -1401,7 +1398,7 @@ module.exports = {
                     WHERE title = ?
                       AND platformid = ? `;
                 // TODO: Change to get
-                SQLite3Driver.prototype.db.all(sql, [title, platformID], (err, res) => {
+                db.all(sql, [title, platformID], (err, res) => {
                     if (err) {
                         console.log(err);
                         reject(err);
@@ -1418,7 +1415,7 @@ module.exports = {
     },
     lookupAmiibo: function (name, seriesID) {
         return new Promise(function (resolve, reject) {
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READONLY, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -1426,7 +1423,7 @@ module.exports = {
                            FROM amiibo
                            WHERE title = ?
                              AND seriesid = ? `;
-                SQLite3Driver.prototype.db.all(sql, [name, seriesID], (err, res) => {
+                db.all(sql, [name, seriesID], (err, res) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -1480,12 +1477,12 @@ module.exports = {
                 resolve();
             } else {
                 let sql = transaction.join(', ');
-                SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
+                db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     }
-                    SQLite3Driver.prototype.db.run(`UPDATE library
+                    db.run(`UPDATE library
                                                     SET ${sql}
                                                     WHERE id = ?`, [id], function (err) {
                         if (err) {
@@ -1516,12 +1513,12 @@ module.exports = {
                 resolve();
             } else {
                 let sql = transaction.join(', ');
-                SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
+                db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     }
-                    SQLite3Driver.prototype.db.run(`UPDATE edition
+                    db.run(`UPDATE edition
                                                     SET ${sql}
                                                     WHERE id = ?`, [id], function (err) {
                         if (err) {
@@ -1549,12 +1546,12 @@ module.exports = {
                 resolve();
             } else {
                 let sql = transaction.join(', ');
-                SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
+                db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, function (err) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     }
-                    SQLite3Driver.prototype.db.run(`UPDATE game
+                    db.run(`UPDATE game
                                                     SET ${sql}
                                                     WHERE id = ?`, [id], function (err) {
                         if (err) {
@@ -1573,7 +1570,7 @@ module.exports = {
             if (libraryID == -1) {
                 reject({"msg": "Please supply a library ID"});
             }
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -1581,7 +1578,7 @@ module.exports = {
                 let sql = `UPDATE library
                            SET progress = ?
                            WHERE id = ?`;
-                SQLite3Driver.prototype.db.run(sql, [progress, libraryID], function (err) {
+                db.run(sql, [progress, libraryID], function (err) {
                     if (err) {
                         reject(err);
                     } else {
@@ -1596,7 +1593,7 @@ module.exports = {
             if (id == '*') {
                 reject();
             }
-            SQLite3Driver.prototype.db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+            db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
                     console.log(err);
                     reject(err);
@@ -1605,7 +1602,7 @@ module.exports = {
                            FROM library
                            WHERE id = ?`;
                 // TODO: Change to run
-                SQLite3Driver.prototype.db.all(sql, [id], (err) => {
+                db.all(sql, [id], (err) => {
                     if (err) {
                         console.log(err);
                         reject(err);

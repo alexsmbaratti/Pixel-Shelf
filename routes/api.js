@@ -43,10 +43,9 @@ router.get('/library', function (req, res, next) {
         sortBy = 'title';
     }
 
-    let driver = new SQLite3Driver();
     if (where !== undefined) {
         if (where === 'no-cost') {
-            driver.getLibraryEntriesWithoutCost().then(result => {
+            SQLite3Driver.getLibraryEntriesWithoutCost().then(result => {
                 if (result != undefined) {
                     res.status(200).send({"status": 200, "data": result});
                 } else {
@@ -56,7 +55,7 @@ router.get('/library', function (req, res, next) {
                 sendError(res, err);
             });
         } else if (where === 'no-date-added') {
-            driver.getLibraryEntriesWithoutDateAdded().then(result => {
+            SQLite3Driver.getLibraryEntriesWithoutDateAdded().then(result => {
                 if (result != undefined) {
                     res.status(200).send({"status": 200, "data": result});
                 } else {
@@ -66,7 +65,7 @@ router.get('/library', function (req, res, next) {
                 sendError(res, err);
             });
         } else if (where === 'no-retailer') {
-            driver.getLibraryEntriesWithoutRetailer().then(result => {
+            SQLite3Driver.getLibraryEntriesWithoutRetailer().then(result => {
                 if (result != undefined) {
                     res.status(200).send({"status": 200, "data": result});
                 } else {
@@ -79,7 +78,7 @@ router.get('/library', function (req, res, next) {
             res.status(501).send({"status": 501, "msg": "Not Implemented!"});
         }
     } else {
-        driver.getLibrary(sortBy, parsedFilters).then(libraryEntries => {
+        SQLite3Driver.getLibrary(sortBy, parsedFilters).then(libraryEntries => {
             res.status(200).send({"status": 200, "library": libraryEntries});
         }).catch(err => {
             sendError(res, err);
@@ -103,8 +102,7 @@ router.get('/library/backlog', function (req, res, next) {
     if (sortBy === null) {
         sortBy = 'title';
     }
-    let driver = new SQLite3Driver();
-    driver.getBacklog(sortBy).then(result => {
+    SQLite3Driver.getBacklog(sortBy).then(result => {
         res.status(200).send({"status": 200, "backlog": result});
     }).catch(err => {
         sendError(res, err);
@@ -112,8 +110,7 @@ router.get('/library/backlog', function (req, res, next) {
 });
 
 router.get('/export', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.createBackup().then(result => {
+    SQLite3Driver.createBackup().then(result => {
         res.download(`${__dirname}/../models/backups/${result}`, result);
     }).catch(err => {
         sendError(res, err);
@@ -121,8 +118,7 @@ router.get('/export', function (req, res, next) {
 });
 
 router.get('/db/stats', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getDBStats().then(result => {
+    SQLite3Driver.getDBStats().then(result => {
         res.status(200).send({"status": 200, "stats": result});
     }).catch(err => {
         sendError(res, err);
@@ -134,8 +130,7 @@ router.get('/library/playing', function (req, res, next) {
     if (sortBy === null) {
         sortBy = 'title';
     }
-    let driver = new SQLite3Driver();
-    driver.getCurrentlyPlaying(sortBy).then(result => {
+    SQLite3Driver.getCurrentlyPlaying(sortBy).then(result => {
         res.status(200).send({"status": 200, "currentlyPlaying": result});
     }).catch(err => {
         sendError(res, err);
@@ -147,8 +142,7 @@ router.get('/library/completed', function (req, res, next) {
     if (sortBy === null) {
         sortBy = 'title';
     }
-    let driver = new SQLite3Driver();
-    driver.getCompleted(sortBy).then(result => {
+    SQLite3Driver.getCompleted(sortBy).then(result => {
         res.status(200).send({"status": 200, "completed": result});
     }).catch(err => {
         sendError(res, err);
@@ -156,39 +150,38 @@ router.get('/library/completed', function (req, res, next) {
 });
 
 router.get('/library/size', function (req, res, next) {
-    let driver = new SQLite3Driver();
     if (req.query.by === 'platform') {
-        driver.countByPlatform().then(result => {
+        SQLite3Driver.countByPlatform().then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
         });
     } else if (req.query.by === 'brand') {
-        driver.countByBrand().then(result => {
+        SQLite3Driver.countByBrand().then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
         });
     } else if (req.query.by === 'progress') {
-        driver.countByProgress().then(result => {
+        SQLite3Driver.countByProgress().then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
         });
     } else if (req.query.by === 'condition') {
-        driver.countByCondition().then(result => {
+        SQLite3Driver.countByCondition().then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
         });
     } else if (req.query.by === 'date-added') {
-        driver.countByDateAdded().then(result => {
+        SQLite3Driver.countByDateAdded().then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
         });
     } else {
-        driver.getLibrarySize().then(result => {
+        SQLite3Driver.getLibrarySize().then(result => {
             res.status(200).send({"status": 200, "size": result});
         }).catch(err => {
             sendError(res, err);
@@ -197,9 +190,8 @@ router.get('/library/size', function (req, res, next) {
 });
 
 router.get('/games/:gameId/igdb', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const gameID = req.params.gameId;
-    driver.getCachedIGDBGameMetadataByID(gameID).then(result => {
+    SQLite3Driver.getCachedIGDBGameMetadataByID(gameID).then(result => {
         res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
@@ -207,9 +199,8 @@ router.get('/games/:gameId/igdb', function (req, res, next) {
 });
 
 router.get('/platforms/:platformId/igdb', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const platformID = req.params.platformId;
-    driver.getCachedPlatformIGDBMetadataByID(platformID).then(result => {
+    SQLite3Driver.getCachedPlatformIGDBMetadataByID(platformID).then(result => {
         res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
@@ -217,9 +208,8 @@ router.get('/platforms/:platformId/igdb', function (req, res, next) {
 });
 
 router.get('/library/:libraryId/', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
-    driver.getLibraryGame(libraryId).then(result => {
+    SQLite3Driver.getLibraryGame(libraryId).then(result => {
         res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
@@ -227,12 +217,11 @@ router.get('/library/:libraryId/', function (req, res, next) {
 });
 
 router.put('/library/:libraryId', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
-    driver.updateLibrary(libraryId, req.body).then(() => {
-        driver.getLibraryGame(libraryId).then(result => {
-            driver.updateEdition(result['editionID'], req.body).then(() => {
-                driver.updateGame(result['gameID'], req.body).then(() => {
+    SQLite3Driver.updateLibrary(libraryId, req.body).then(() => {
+        SQLite3Driver.getLibraryGame(libraryId).then(result => {
+            SQLite3Driver.updateEdition(result['editionID'], req.body).then(() => {
+                SQLite3Driver.updateGame(result['gameID'], req.body).then(() => {
                     res.status(204).send({"status": 204});
                 }).catch(err => {
                     sendError(res, err);
@@ -243,15 +232,13 @@ router.put('/library/:libraryId', function (req, res, next) {
         }).catch(err => {
             sendError(res, err);
         });
-
     }).catch(err => {
         sendError(res, err);
     });
 });
 
 router.put('/library/:libraryId/progress', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.updateProgress(req.params.libraryId, req.body['progress']).then(result => {
+    SQLite3Driver.updateProgress(req.params.libraryId, req.body['progress']).then(result => {
         res.status(204).send({"status": 204});
     }).catch(err => {
         sendError(res, err);
@@ -259,14 +246,13 @@ router.put('/library/:libraryId/progress', function (req, res, next) {
 });
 
 router.get('/figures', function (req, res, next) {
-    let driver = new SQLite3Driver();
     let sortBy = req.query.sortBy;
     let where = req.query.where;
     if (sortBy === null) {
         sortBy = 'title';
     }
     if (where === 'no-date-added') {
-        driver.getFiguresWithoutDateAdded().then(result => {
+        SQLite3Driver.getFiguresWithoutDateAdded().then(result => {
             if (result != undefined) {
                 res.status(200).send({"status": 200, "data": result});
             } else {
@@ -276,7 +262,7 @@ router.get('/figures', function (req, res, next) {
             sendError(res, err);
         });
     } else {
-        driver.getFigures(sortBy).then(result => {
+        SQLite3Driver.getFigures(sortBy).then(result => {
             res.status(200).send({"status": 200, "figures": result});
         }).catch(err => {
             sendError(res, err);
@@ -285,7 +271,6 @@ router.get('/figures', function (req, res, next) {
 });
 
 router.get('/retailers', function (req, res, next) {
-    let driver = new SQLite3Driver();
     let online = req.query.online;
     let sortBy = req.query.sortBy;
     if (sortBy === null) {
@@ -293,7 +278,7 @@ router.get('/retailers', function (req, res, next) {
     }
     if (online !== undefined) {
         if (online === 'false') {
-            driver.getPhysicalRetailers().then(result => {
+            SQLite3Driver.getPhysicalRetailers().then(result => {
                 res.status(200).send({"status": 200, "data": result});
             }).catch(err => {
                 sendError(res, err);
@@ -302,7 +287,7 @@ router.get('/retailers', function (req, res, next) {
             res.status(501).send({"status": 501, "msg": "Not Implemented!"});
         }
     } else {
-        driver.getRetailers(sortBy).then(result => {
+        SQLite3Driver.getRetailers(sortBy).then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
@@ -311,8 +296,7 @@ router.get('/retailers', function (req, res, next) {
 });
 
 router.get('/retailers/:retailerId', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getRetailer(req.params.retailerId).then(result => {
+    SQLite3Driver.getRetailer(req.params.retailerId).then(result => {
         res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
@@ -320,8 +304,7 @@ router.get('/retailers/:retailerId', function (req, res, next) {
 });
 
 router.get('/retailers/:retailerId/library', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getLibraryEntriesFromRetailer(req.params.retailerId).then(result => {
+    SQLite3Driver.getLibraryEntriesFromRetailer(req.params.retailerId).then(result => {
         res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
@@ -329,8 +312,7 @@ router.get('/retailers/:retailerId/library', function (req, res, next) {
 });
 
 router.get('/retailers/:retailerId/figures', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getFiguresFromRetailer(req.params.retailerId).then(result => {
+    SQLite3Driver.getFiguresFromRetailer(req.params.retailerId).then(result => {
         res.status(200).send({"status": 200, "data": result});
     }).catch(err => {
         sendError(res, err);
@@ -338,15 +320,14 @@ router.get('/retailers/:retailerId/figures', function (req, res, next) {
 });
 
 router.get('/figures/size', function (req, res, next) {
-    let driver = new SQLite3Driver();
     if (req.query.by === 'date-added') {
-        driver.countFiguresByDateAdded().then(result => {
+        SQLite3Driver.countFiguresByDateAdded().then(result => {
             res.status(200).send({"status": 200, "data": result});
         }).catch(err => {
             sendError(res, err);
         });
     } else {
-        driver.getFigureSize().then(result => {
+        SQLite3Driver.getFigureSize().then(result => {
             res.status(200).send({"status": 200, "size": result});
         }).catch(err => {
             sendError(res, err);
@@ -355,8 +336,7 @@ router.get('/figures/size', function (req, res, next) {
 });
 
 router.delete('/library/:libraryId', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.deleteGame(req.params.libraryId).then(result => {
+    SQLite3Driver.deleteGame(req.params.libraryId).then(result => {
         res.status(204).send({"status": 204});
     }).catch(err => {
         sendError(res, err);
@@ -368,8 +348,7 @@ router.get('/wishlist', function (req, res, next) {
     if (sortBy === null) {
         sortBy = 'title';
     }
-    let driver = new SQLite3Driver();
-    driver.getWishlist(sortBy).then(result => {
+    SQLite3Driver.getWishlist(sortBy).then(result => {
         res.status(200).send({"status": 200, "library": result});
     }).catch(err => {
         sendError(res, err);
@@ -377,8 +356,7 @@ router.get('/wishlist', function (req, res, next) {
 });
 
 router.get('/wishlist/size', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getWishlistSize().then(result => {
+    SQLite3Driver.getWishlistSize().then(result => {
         res.status(200).send({"status": 200, "size": result});
     }).catch(err => {
         sendError(res, err);
@@ -393,8 +371,7 @@ router.get('/games', function (req, res, next) {
     let where = req.query.where;
     if (where !== undefined) {
         if (where === 'no-library') {
-            let driver = new SQLite3Driver();
-            driver.getGamesWithoutLibrary().then(result => {
+            SQLite3Driver.getGamesWithoutLibrary().then(result => {
                 if (result != undefined) {
                     res.status(200).send({"status": 200, "data": result});
                 } else {
@@ -404,8 +381,7 @@ router.get('/games', function (req, res, next) {
                 sendError(res, err);
             });
         } else if (where === 'no-igdb') {
-            let driver = new SQLite3Driver();
-            driver.getGamesWithoutIGDBMetadata().then(result => {
+            SQLite3Driver.getGamesWithoutIGDBMetadata().then(result => {
                 if (result != undefined) {
                     res.status(200).send({"status": 200, "data": result});
                 } else {
@@ -427,9 +403,8 @@ router.get('/games/:id', function (req, res, next) {
 });
 
 router.get('/games/:gameId/cover', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const gameId = req.params.gameId;
-    driver.getCoverByID(gameId).then(result => {
+    SQLite3Driver.getCoverByID(gameId).then(result => {
         res.redirect(result);
     }).catch(err => {
         res.redirect('/images/covers/placeholder.jpg');
@@ -437,7 +412,6 @@ router.get('/games/:gameId/cover', function (req, res, next) {
 });
 
 router.get('/amiibo/:amiiboID/cover', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const amiiboID = req.params.amiiboID;
     figureArtExists(amiiboID, req).then(exists => {
         if (!exists) {
@@ -452,9 +426,8 @@ router.get('/amiibo/:amiiboID/cover', function (req, res, next) {
 });
 
 router.get('/platforms/:platformId/logo', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const platformID = req.params.platformId;
-    driver.getLogoByID(platformID).then(result => {
+    SQLite3Driver.getLogoByID(platformID).then(result => {
         res.redirect(result);
     }).catch(err => {
         res.redirect('/images/logos/placeholder.png');
@@ -466,8 +439,7 @@ router.get('/editions', function (req, res, next) {
     let where = req.query.where;
     if (where !== undefined) {
         if (where === 'no-upc') {
-            let driver = new SQLite3Driver();
-            driver.getEditionsWithoutUPC().then(result => {
+            SQLite3Driver.getEditionsWithoutUPC().then(result => {
                 if (result != undefined) {
                     res.status(200).send({"status": 200, "data": result});
                 } else {
@@ -477,8 +449,7 @@ router.get('/editions', function (req, res, next) {
                 sendError(res, err);
             });
         } else if (where === 'no-msrp') {
-            let driver = new SQLite3Driver();
-            driver.getEditionsWithoutMSRP().then(result => {
+            SQLite3Driver.getEditionsWithoutMSRP().then(result => {
                 if (result != undefined) {
                     res.status(200).send({"status": 200, "data": result});
                 } else {
@@ -489,8 +460,7 @@ router.get('/editions', function (req, res, next) {
             });
         }
     } else if (upc !== undefined) {
-        let driver = new SQLite3Driver();
-        driver.lookupByUPC(upc).then(result => {
+        SQLite3Driver.lookupByUPC(upc).then(result => {
             if (result != undefined) {
                 res.status(200).send({"status": 200, "data": result});
             } else {
@@ -509,8 +479,7 @@ router.get('/editions/:id', function (req, res, next) {
 });
 
 router.get('/db', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.checkStatus().then(result => {
+    SQLite3Driver.checkStatus().then(result => {
         res.status(200).send({"status": 200});
     }).catch(err => {
         sendError(res, err);
@@ -518,8 +487,7 @@ router.get('/db', function (req, res, next) {
 });
 
 router.post('/games', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.lookupGame(req.body.title, req.body.platform).then(gameResult => {
+    SQLite3Driver.lookupGame(req.body.title, req.body.platform).then(gameResult => {
         if (gameResult.found === true) {
             res.status(200).send({"status": 200, "id": gameResult.id, "igdb": gameResult.igdb});
         } else {
@@ -530,7 +498,7 @@ router.post('/games', function (req, res) {
                 } else {
                     igdbLink = result[0].url;
                 }
-                driver.addGame({
+                SQLite3Driver.addGame({
                     "title": req.body.title,
                     "platform": req.body.platform,
                     "igdb-url": igdbLink
@@ -540,7 +508,7 @@ router.post('/games', function (req, res) {
                     sendError(res, err);
                 })
             }).catch(err => { // For some reason IGDB cannot be reached, just set the metadata to null and allow the user to manually add it later
-                driver.addGame({
+                SQLite3Driver.addGame({
                     "title": req.body.title,
                     "platform": req.body.platform,
                     "igdb-url": null
@@ -557,12 +525,11 @@ router.post('/games', function (req, res) {
 });
 
 router.post('/editions', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.lookupEdition(req.body.edition, req.body.gameID, req.body.digital).then(result => {
+    SQLite3Driver.lookupEdition(req.body.edition, req.body.gameID, req.body.digital).then(result => {
         if (result.found === true) {
             res.status(200).send({"status": 200, "id": result.id});
         } else {
-            driver.addEdition(req.body).then(addResult => {
+            SQLite3Driver.addEdition(req.body).then(addResult => {
                 res.status(200).send({"status": 200, "id": addResult});
             }).catch(err => {
                 sendError(res, err);
@@ -574,8 +541,7 @@ router.post('/editions', function (req, res) {
 });
 
 router.post('/library', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.addLibrary(req.body).then(addResult => {
+    SQLite3Driver.addLibrary(req.body).then(addResult => {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
         sendError(res, err);
@@ -583,8 +549,7 @@ router.post('/library', function (req, res) {
 });
 
 router.post('/series', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.addSeries(req.body).then(addResult => {
+    SQLite3Driver.addSeries(req.body).then(addResult => {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
         sendError(res, err);
@@ -592,12 +557,11 @@ router.post('/series', function (req, res) {
 });
 
 router.post('/amiibo', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.lookupAmiibo(req.body.title, req.body.seriesID).then(result => {
+    SQLite3Driver.lookupAmiibo(req.body.title, req.body.seriesID).then(result => {
         if (result.found === true) {
             res.status(200).send({"status": 200, "id": result.id});
         } else {
-            driver.addAmiibo(req.body).then(addResult => {
+            SQLite3Driver.addAmiibo(req.body).then(addResult => {
                 res.status(200).send({"status": 200, "id": addResult});
             }).catch(err => {
                 sendError(res, err);
@@ -609,8 +573,7 @@ router.post('/amiibo', function (req, res) {
 });
 
 router.post('/figures', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.addFigure(req.body).then(addResult => {
+    SQLite3Driver.addFigure(req.body).then(addResult => {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
         sendError(res, err);
@@ -618,8 +581,7 @@ router.post('/figures', function (req, res) {
 });
 
 router.post('/retailers', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.addRetailer(req.body).then(addResult => {
+    SQLite3Driver.addRetailer(req.body).then(addResult => {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
         sendError(res, err);
@@ -627,8 +589,7 @@ router.post('/retailers', function (req, res) {
 });
 
 router.post('/consoles', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.lookupBrand(req.body.brand).then(result => {
+    SQLite3Driver.lookupBrand(req.body.brand).then(result => {
         let consoleData = {
             "name": req.body['name'],
             "brandID": result['id']
@@ -638,20 +599,20 @@ router.post('/consoles', function (req, res) {
                 if (result.length > 0) {
                     consoleData['igdb-url'] = result[0].url;
                 }
-                driver.addConsole(consoleData).then(addResult => {
+                SQLite3Driver.addConsole(consoleData).then(addResult => {
                     res.status(200).send({"status": 200, "id": addResult});
                 }).catch(err => {
                     sendError(res, err);
                 });
             });
         } else {
-            driver.addBrand(req.body).then(brandID => {
+            SQLite3Driver.addBrand(req.body).then(brandID => {
                 consoleData['brandID'] = brandID;
                 IGDBDriver.getPlatformByName(consoleData['name']).then(result => {
                     if (result.length > 0) {
                         consoleData['igdb-url'] = result[0].url;
                     }
-                    driver.addConsole(consoleData).then(addResult => {
+                    SQLite3Driver.addConsole(consoleData).then(addResult => {
                         res.status(200).send({"status": 200, "id": addResult});
                     }).catch(err => {
                         sendError(res, err);
@@ -667,8 +628,7 @@ router.post('/consoles', function (req, res) {
 });
 
 router.post('/wishlist', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.addWishlist(req.body).then(addResult => {
+    SQLite3Driver.addWishlist(req.body).then(addResult => {
         res.status(200).send({"status": 200, "id": addResult});
     }).catch(err => {
         sendError(res, err);
@@ -687,8 +647,7 @@ router.post('/thermal-printer/:libraryId', function (req, res) {
     const libraryId = req.params.libraryId;
 
     if (thermalPrinterEndpoint) {
-        let driver = new SQLite3Driver();
-        driver.getLibraryGame(libraryId).then(libraryGame => {
+        SQLite3Driver.getLibraryGame(libraryId).then(libraryGame => {
             axios({
                 method: 'post',
                 url: thermalPrinterEndpoint + '/api/pixel-shelf/library',

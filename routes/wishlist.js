@@ -8,10 +8,9 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:wishlistId', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const wishlistId = req.params.wishlistId;
-    driver.getWishlistGame(wishlistId).then(result => {
-        driver.getCurrencies().then(currencies => {
+    SQLite3Driver.getWishlistGame(wishlistId).then(result => {
+        SQLite3Driver.getCurrencies().then(currencies => {
             res.render('entry/wishlist', {
                 title: result.title + ' - Pixel Shelf',
                 entry: result,

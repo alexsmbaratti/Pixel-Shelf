@@ -8,9 +8,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:figureId', function (req, res, next) {
-  let driver = new SQLite3Driver();
   const figureId = req.params.figureId;
-  driver.getFigure(figureId).then(result => {
+  SQLite3Driver.getFigure(figureId).then(result => {
     if (result && result.constructor === Object && Object.keys(result).length === 0) {
       res.status(404);
       res.render('404', {title: 'Pixel Shelf', type: 'amiibo'});

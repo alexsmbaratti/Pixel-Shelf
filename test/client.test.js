@@ -6,9 +6,8 @@ const {JSDOM} = jsdom;
 const SQLite3Driver = require("../models/SQLite3Driver");
 
 beforeEach(done => {
-    let driver = new SQLite3Driver();
-    driver.initializeDB().then(() => {
-        driver.initializeDB('./models/testdata.sql').then(() => {
+    SQLite3Driver.initializeDB().then(() => {
+        SQLite3Driver.initializeDB('./models/testdata.sql').then(() => {
             done();
         });
     });
