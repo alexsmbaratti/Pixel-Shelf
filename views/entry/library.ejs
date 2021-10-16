@@ -103,7 +103,11 @@
                                 </tr>
                                 <tr>
                                     <th>UPC</th>
-                                    <td><%= entry.upc %></td>
+                                    <% if (entry.upc) { %>
+                                        <td><%= entry.upc %></td>
+                                    <% } else { %>
+                                        <td>None</td>
+                                    <% } %>
                                 </tr>
                                 </tbody>
                             </table>
