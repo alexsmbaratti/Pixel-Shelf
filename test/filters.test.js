@@ -8,8 +8,8 @@ beforeEach(done => {
     SQLite3Driver.initializeDB().then(() => {
         SQLite3Driver.initializeDB('./models/testdata.sql').then(() => {
             done();
-        })
-    })
+        });
+    });
 });
 
 test('No Filters', () => {
