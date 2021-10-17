@@ -22,6 +22,12 @@ test('No Filters', () => {
         });
 });
 
+test('Malformed Filters', () => {
+    return supertest(pixelShelf)
+        .get('/api/library?sortBy=title&filters=not-physical,not-new')
+        .expect(400);
+});
+
 test('Filter Physical Titles', () => {
     return supertest(pixelShelf)
         .get('/api/library?sortBy=title&filters=[not-physical]')

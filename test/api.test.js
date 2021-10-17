@@ -55,6 +55,16 @@ test('Library Size', () => {
         });
 });
 
+test('Get Library Without Specifying Sort Order', () => {
+    return supertest(pixelShelf)
+        .get("/api/library")
+        .expect(200)
+        .then(response => {
+            let librarySize = response['body']['library'].length;
+            expect(librarySize).toBe(EXPECTED_LIBRARY_SIZE);
+        });
+});
+
 test('Get Library Entry', () => {
     return supertest(pixelShelf)
         .get("/api/library/1")

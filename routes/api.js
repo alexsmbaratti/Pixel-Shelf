@@ -32,10 +32,18 @@ router.get('/library', function (req, res, next) {
     let sortBy = req.query.sortBy;
     let filters = req.query.filters;
 
-    // TODO: Send 400 if filters are malformed
     let parsedFilters = [];
-    if (filters !== undefined && filters.length > 2) {
-        parsedFilters = filters.substring(1, filters.length - 1).split(',');
+    if (filters !== undefined) { // Filters are defined
+        if (filters.length > 2 && filters.charAt(0) == '[' && filters.charAt(filters.length - 1) == ']') { // Contains at least []
+            parsedFilters = filters.substring(1, filters.length - 1).split(',');
+        } else if (filters.length == 2 && filters == '[]') { // Empty brackets with no filters
+        } else {
+            res.status(400).send({
+                "status": 400,
+                "error": "Filters are malformed. Filters must be comma-separated enclosed in square brackets."
+            });
+            return;
+        }
     }
 
     if (sortBy === undefined) {
