@@ -61,5 +61,11 @@ VALUES ('Z Game', 1, NULL, 2);
 INSERT INTO edition
 VALUES ('Digital Deluxe Edition', '000000000002', 79.99, 1, 1, 'USD', 1, 3);
 
+INSERT INTO edition
+VALUES ('Standard Edition', '000000000003', 59.99, 2, 0, 'USD', 1, 6);
+
 INSERT INTO library
 VALUES (79.99, '2021-01-01T00:00:00.000Z', 3, 2, 1, 0, 0, 2, 0, 'USD', 0, NULL, 3);
+
+INSERT INTO library
+VALUES (9.99, '2021-01-01T00:00:00.000Z', 6, NULL, 0, 1, 0, 2, 0, 'USD', 0, 'A Used Game', 6);

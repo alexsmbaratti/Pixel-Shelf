@@ -2,7 +2,7 @@ const pixelShelf = require("../app");
 const supertest = require("supertest");
 
 const SQLite3Driver = require("../models/SQLite3Driver");
-const EXPECTED_LIBRARY_SIZE = 5;
+const EXPECTED_LIBRARY_SIZE = 6;
 
 beforeEach(done => {
     SQLite3Driver.initializeDB().then(() => {
@@ -38,7 +38,7 @@ test('Filter Digital Titles', () => {
         .expect(200)
         .then(response => {
             let library = response['body']['library'];
-            expect(library.length).toBe(3);
+            expect(library.length).toBe(4);
         });
 });
 
@@ -58,7 +58,7 @@ test('Filter New Titles', () => {
         .expect(200)
         .then(response => {
             let library = response['body']['library'];
-            expect(library.length).toBe(0);
+            expect(library.length).toBe(1);
         });
 });
 
@@ -88,6 +88,6 @@ test('Filter Gifted Titles', () => {
         .expect(200)
         .then(response => {
             let library = response['body']['library'];
-            expect(library.length).toBe(4);
+            expect(library.length).toBe(5);
         });
 });
