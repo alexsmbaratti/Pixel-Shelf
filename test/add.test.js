@@ -122,3 +122,12 @@ test('Add a new wishlist entry', () => {
         })
         .expect(200);
 });
+
+test('Add a new series', () => {
+    return supertest(pixelShelf)
+        .post('/api/series')
+        .send({
+            "series": "My Amazing Series"
+        })
+        .expect(200);
+});
