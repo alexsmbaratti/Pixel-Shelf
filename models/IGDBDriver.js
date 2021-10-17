@@ -105,6 +105,34 @@ module.exports = {
             });
         });
     },
+    getPlatformByURL: function (url) {
+        return new Promise(function (resolve, reject) {
+            generateTokenIfNeeded().then(() => {
+                axios({
+                    method: 'post',
+                    url: 'https://api.igdb.com/' + version + '/platforms/',
+                    headers: {
+                        'Client-ID': clientID,
+                        'Authorization': 'Bearer ' + clientToken,
+                        'Content-Type': 'text/plain'
+                    },
+                    data: 'fields *, platform_logo.*; where url = \"' + url + '\";'
+                })
+                    .then(function (res) {
+                        let resJSON = res.data;
+                        resolve(resJSON);
+                        if (resJSON.length > 0) {
+                            cachePlatformMetadata(resJSON);
+                        }
+                    })
+                    .catch(function (e) {
+                        reject(e);
+                    });
+            }).catch(err => {
+                reject(err);
+            });
+        });
+    },
     checkStatus: function () {
         return new Promise(function (resolve, reject) {
             generateTokenIfNeeded().then(() => {
