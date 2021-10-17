@@ -90,3 +90,20 @@ test('Sample Cached Metadata', () => {
             // TODO: Handle ratings and genres
         });
 });
+
+test('Lookup By UPC', () => {
+    return supertest(pixelShelf)
+        .post("/identify")
+        .send({
+            "upc": "000000000050"
+        })
+        .expect(200)
+        .then(response => {
+            let result = response['body']['data'];
+            expect(result['title']).toBe('B Game');
+            expect(result['platform']).toBe('B Console');
+            expect(result['edition']).toBe('Standard Edition');
+            expect(result['upc']).toBe('000000000050');
+            expect(result['msrp']).toBe(29.99);
+        });
+});
