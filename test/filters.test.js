@@ -4,6 +4,8 @@ const supertest = require("supertest");
 const SQLite3Driver = require("../models/SQLite3Driver");
 const EXPECTED_LIBRARY_SIZE = 3;
 
+jest.setTimeout(20000);
+
 beforeEach(done => {
     SQLite3Driver.initializeDB().then(() => {
         SQLite3Driver.initializeDB('./models/testdata.sql').then(() => {

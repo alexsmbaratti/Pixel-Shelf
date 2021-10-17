@@ -8,6 +8,8 @@ var gameID = null;
 var editionID = null;
 var retailerID = null;
 
+jest.setTimeout(20000);
+
 beforeAll(done => {
     SQLite3Driver.initializeDB().then(() => {
         done();
