@@ -1,23 +1,23 @@
 -- Drop Existing Tables
-DROP TABLE game;
-DROP TABLE platform;
-DROP TABLE edition;
-DROP TABLE library;
-DROP TABLE amiibo;
-DROP TABLE series;
-DROP TABLE figure;
-DROP TABLE retailer;
-DROP TABLE brand;
-DROP TABLE wishlist;
-DROP TABLE igdb;
-DROP TABLE igdbplatform;
-DROP TABLE rating;
-DROP TABLE genre;
-DROP TABLE hasagenre;
-DROP TABLE hasarating;
-DROP TABLE currency;
-DROP TABLE region;
-DROP TABLE haslink;
+DROP TABLE IF EXISTS game;
+DROP TABLE IF EXISTS platform;
+DROP TABLE IF EXISTS edition;
+DROP TABLE IF EXISTS library;
+DROP TABLE IF EXISTS amiibo;
+DROP TABLE IF EXISTS series;
+DROP TABLE IF EXISTS figure;
+DROP TABLE IF EXISTS retailer;
+DROP TABLE IF EXISTS brand;
+DROP TABLE IF EXISTS wishlist;
+DROP TABLE IF EXISTS igdb;
+DROP TABLE IF EXISTS igdbplatform;
+DROP TABLE IF EXISTS rating;
+DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS hasagenre;
+DROP TABLE IF EXISTS hasarating;
+DROP TABLE IF EXISTS currency;
+DROP TABLE IF EXISTS region;
+DROP TABLE IF EXISTS haslink;
 
 -- Create Tables
 CREATE TABLE game

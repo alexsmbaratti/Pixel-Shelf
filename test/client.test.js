@@ -5,8 +5,6 @@ const {JSDOM} = jsdom;
 
 const SQLite3Driver = require("../models/SQLite3Driver");
 
-jest.setTimeout(20000);
-
 beforeEach(done => {
     SQLite3Driver.initializeDB().then(() => {
         SQLite3Driver.initializeDB('./models/testdata.sql').then(() => {
