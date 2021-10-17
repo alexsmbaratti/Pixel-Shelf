@@ -897,12 +897,11 @@ module.exports = {
                 });
             }).catch(err => {
                 reject(err); // Send back failure and attempt to cache for the next request
-                read.selectGameByID(id).then(gameRes => {
-                    if (gameRes['igdbURL']) {
+                read.selectGameByID(id).then(game => {
+                    if (game['igdbURL']) {
                         // TODO: If the data is not already cached, attempt to retrieve it and load it into the response
-                        IGDBDriver.getGameByURL(gameRes['igdbURL']).catch(err => {
+                        IGDBDriver.getGameByURL(game['igdbURL']).catch(err => {
                         });
-                    } else {
                     }
                 }).catch(err => {
                 });
@@ -915,6 +914,14 @@ module.exports = {
                 resolve(res);
             }).catch(err => {
                 reject(err);
+                read.selectPlatformByID(id).then(platform => {
+                    if (platform['igdbURL']) {
+                        // TODO: If the data is not already cached, attempt to retrieve it and load it into the response
+                        IGDBDriver.getPlatformByURL(platform['igdbURL']).catch(err => {
+                        });
+                    }
+                }).catch(err => {
+                });
             });
         });
     },

@@ -3,14 +3,15 @@ const supertest = require("supertest");
 
 const SQLite3Driver = require('../models/SQLite3Driver');
 
-var consoleID = null;
-var gameID = null;
-var editionID = null;
-var retailerID = null;
+// TODO: Organize by library operations, status, etc.
 
-beforeAll(done => {
+const EXPECTED_LIBRARY_SIZE = 6;
+
+beforeEach(done => {
     SQLite3Driver.initializeDB().then(() => {
-        done();
+        SQLite3Driver.initializeDB('./models/testdata.sql').then(() => {
+            done();
+        })
     })
 });
 
@@ -26,109 +27,95 @@ test('Database is reachable', () => {
         .expect(200);
 });
 
-test('Add a new platform AND brand', () => {
+test('IGDB is reachable', () => {
     return supertest(pixelShelf)
-        .post('/api/consoles')
-        .send({
-            "name": "My Amazing Console",
-            "brand": "Pixel Shelf Industries"
-        })
-        .expect(200)
-        .then(response => {
-            consoleID = response['body']['id'];
-        });
-});
-
-test('Add a new platform', () => {
-    return supertest(pixelShelf)
-        .post('/api/consoles')
-        .send({
-            "name": "My New Amazing Console",
-            "brand": "Pixel Shelf Industries"
-        })
+        .get("/api/igdb")
         .expect(200);
 });
 
-test('Add a new online retailer', () => {
+test('Platform Endpoint', () => {
     return supertest(pixelShelf)
-        .post('/api/retailers')
-        .send({
-            "retailer": "The Video Game Store",
-            "online": true,
-            "url": "https://www.example.com/"
-        })
+        .get("/api/system/platform")
         .expect(200);
 });
 
-test('Add a new brick and mortar retailer', () => {
+test('Database Stats Endpoint', () => {
     return supertest(pixelShelf)
-        .post('/api/retailers')
-        .send({
-            "retailer": "The Video Game Store",
-            "subtext": "Anytown Location",
-            "online": false,
-            "lat": 30.000,
-            "long": -70.000
-        })
-        .expect(200)
-        .then(response => {
-            retailerID = response['body']['id'];
-        });
-});
-
-test('Add a new game', () => {
-    return supertest(pixelShelf)
-        .post('/api/games')
-        .send({
-            "title": "My Amazing Game",
-            "platform": consoleID
-        })
-        .expect(200)
-        .then(response => {
-            gameID = response['body']['id'];
-        });
-});
-
-test('Add a new edition', () => {
-    return supertest(pixelShelf)
-        .post('/api/editions')
-        .send({
-            "edition": "Standard Edition",
-            "upc": "1234567890",
-            "msrp": "59.99",
-            "digital": false,
-            "currency": "USD",
-            "gameID": gameID
-        })
-        .expect(200)
-        .then(response => {
-            editionID = response['body']['id'];
-        });
-});
-
-test('Add a new library entry', () => {
-    return supertest(pixelShelf)
-        .post('/api/library')
-        .send({
-            "cost": "39.99",
-            "timestamp": new Date(Date.now()).toISOString(),
-            "condition": true,
-            "box": true,
-            "manual": false,
-            "retailerID": retailerID,
-            "gift": false,
-            "notes": "Test",
-            "currency": 'USD',
-            "editionID": editionID
-        })
+        .get("/api/db/stats")
         .expect(200);
 });
 
-test('Add a new wishlist entry', () => {
+test('Library Size', () => {
     return supertest(pixelShelf)
-        .post('/api/library')
+        .get("/api/library/size")
+        .expect(200)
+        .then(response => {
+            let librarySize = response['body']['size'];
+            expect(librarySize).toBe(EXPECTED_LIBRARY_SIZE);
+        });
+});
+
+test('Get Library Without Specifying Sort Order', () => {
+    return supertest(pixelShelf)
+        .get("/api/library")
+        .expect(200)
+        .then(response => {
+            let librarySize = response['body']['library'].length;
+            expect(librarySize).toBe(EXPECTED_LIBRARY_SIZE);
+        });
+});
+
+test('Get Library Entry', () => {
+    return supertest(pixelShelf)
+        .get("/api/library/1")
+        .expect(200)
+        .then(response => {
+            let libraryEntry = response['body']['data'];
+            expect(libraryEntry['title']).toBe('A Game');
+            expect(libraryEntry['platform']).toBe('A Console');
+            expect(libraryEntry['cost']).toBe(39.99);
+            expect(libraryEntry['msrp']).toBe(59.99);
+            expect(libraryEntry['upc']).toBe('000000000000');
+            expect(libraryEntry['edition']).toBe('Standard Edition');
+            expect(libraryEntry['new']).toBe(true);
+            expect(libraryEntry['box']).toBe(true);
+            expect(libraryEntry['manual']).toBe(true);
+            expect(libraryEntry['gift']).toBe(false);
+            expect(libraryEntry['digital']).toBe(false);
+            expect(libraryEntry['igdbURL']).toBe('http://example.com/platforms/a-console');
+            expect(libraryEntry['date']).toBe('2021-01-01T00:00:00.000Z');
+            expect(libraryEntry['retailerID']).toBe(1);
+            expect(libraryEntry['progress']).toBe(3);
+        });
+});
+
+test('Sample Cached Metadata', () => {
+    return supertest(pixelShelf)
+        .get("/api/games/1/igdb")
+        .expect(200)
+        .then(response => {
+            let metadata = response['body']['data'];
+            expect(metadata['description']).toBe('This is a game.');
+            expect(metadata['coverURL']).toBe(null);
+            expect(metadata['releasedate']).toBe(null);
+            expect(metadata['igdbURL']).toBe('http://example.com/games/a-game');
+            // TODO: Handle ratings and genres
+        });
+});
+
+test('Lookup By UPC', () => {
+    return supertest(pixelShelf)
+        .post("/identify")
         .send({
-            "editionID": editionID
+            "upc": "000000000050"
         })
-        .expect(200);
+        .expect(200)
+        .then(response => {
+            let result = response['body']['data'];
+            expect(result['title']).toBe('B Game');
+            expect(result['platform']).toBe('B Console');
+            expect(result['edition']).toBe('Standard Edition');
+            expect(result['upc']).toBe('000000000050');
+            expect(result['msrp']).toBe(29.99);
+        });
 });
