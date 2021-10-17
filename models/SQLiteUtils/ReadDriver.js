@@ -111,7 +111,7 @@ module.exports = {
                 if (err) {
                     reject(err);
                 } else {
-                    db.get(`SELECT game.*, platform.*
+                    db.get(`SELECT game.*, platform.name, platform.brandid
                             FROM game,
                                  platform
                             WHERE game.id = ?
