@@ -16,7 +16,7 @@ module.exports = {
                                 reject(err);
                             } else {
                                 let gameID = this.lastID;
-                                console.log(`INSERT ${title} was inserted into game table with ID ${gameID}`);
+                                logInsert('game', gameID, title);
                                 resolve(gameID);
                             }
                         });
@@ -36,13 +36,14 @@ module.exports = {
                     } else {
                         db.run(`INSERT
                                 INTO edition
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [edition, upc, msrp, gameID, isDigital ? 1 : 0, currencyCode, region], function (err) {
+                                VALUES (?, ?, ?, ?, ?, ?, ?,
+                                        ?)`, [edition, upc, msrp, gameID, isDigital ? 1 : 0, currencyCode, region], function (err) {
                             if (err) {
                                 console.log(err);
                                 reject(err);
                             } else {
                                 let editionID = this.lastID;
-                                console.log(`INSERT ${edition} was inserted into edition table with ID ${editionID}`);
+                                logInsert('edition', editionID, edition);
                                 resolve(editionID);
                             }
                         });
@@ -66,13 +67,14 @@ module.exports = {
                     } else {
                         db.run(`INSERT
                                 INTO library
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [cost, timestamp, editionID, retailerID, isNew ? 1 : 0, hasBox ? 1 : 0, hasManual ? 1 : 0, 0, isGift ? 1 : 0, currencyCode, isPrivate ? 1 : 0, notes], function (err) {
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                                        ?)`, [cost, timestamp, editionID, retailerID, isNew ? 1 : 0, hasBox ? 1 : 0, hasManual ? 1 : 0, 0, isGift ? 1 : 0, currencyCode, isPrivate ? 1 : 0, notes], function (err) {
                             if (err) {
                                 console.log(err);
                                 reject(err);
                             } else {
                                 let libraryID = this.lastID;
-                                console.log(`INSERT A row was inserted into library table with ID ${libraryID}`);
+                                logInsert('library', libraryID);
                                 resolve(libraryID);
                             }
                         });
@@ -83,7 +85,7 @@ module.exports = {
             }
         });
     },
-    insertPlatform: function (name, brandID) {
+    insertPlatform: function (name, brandID, igdbURL = null) {
         return new Promise(function (resolve, reject) {
             if (name && brandID) {
                 let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
@@ -92,12 +94,12 @@ module.exports = {
                     } else {
                         db.run(`INSERT
                                 INTO platform
-                                VALUES (?, ?, ?)`, [name, brandID], function (err) {
+                                VALUES (?, ?, ?, ?)`, [name, brandID, igdbURL], function (err) {
                             if (err) {
                                 reject(err);
                             } else {
                                 let platformID = this.lastID;
-                                console.log(`INSERT ${name} was inserted into platform table with ID ${platformID}`);
+                                logInsert('platform', platformID, name);
                                 resolve(platformID);
                             }
                         });
@@ -123,7 +125,7 @@ module.exports = {
                                 reject(err);
                             } else {
                                 let brandID = this.lastID;
-                                console.log(`INSERT ${brandName} was inserted into brand table with ID ${brandID}`);
+                                logInsert('brand', brandID, brandName);
                                 resolve(brandID);
                             }
                         });
@@ -148,7 +150,32 @@ module.exports = {
                                 reject(err);
                             } else {
                                 let igdbID = this.lastID;
-                                console.log(`INSERT ${igdbURL} was inserted into IGDB table with ID ${igdbID}`);
+                                logInsert('IGDB', igdbID, igdbURL);
+                                resolve(igdbID);
+                            }
+                        });
+                    }
+                });
+            } else {
+                reject({status: 400});
+            }
+        });
+    },
+    insertIGDBPlatform: function (igdbURL, description = null, category = null, logo = null, generation = null) {
+        return new Promise(function (resolve, reject) {
+            if (igdbURL) {
+                let db = new sqlite3.Database(dbName, sqlite3.OPEN_READWRITE, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        db.run(`INSERT
+                                INTO igdbplatform
+                                VALUES (?, ?, ?, ?, ?)`, [description, category, logo, generation, igdbURL], function (err) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                let igdbID = this.lastID;
+                                logInsert('IGDB Platform', igdbID, igdbURL);
                                 resolve(igdbID);
                             }
                         });
@@ -173,7 +200,7 @@ module.exports = {
                                 reject(err);
                             } else {
                                 let genre = this.lastID;
-                                console.log(`INSERT ${description} was inserted into genre table with ID ${genre}`);
+                                logInsert('genre', genre, description);
                                 resolve(genre);
                             }
                         });
@@ -197,7 +224,7 @@ module.exports = {
                             if (err) {
                                 reject(err);
                             } else {
-                                console.log(`INSERT A row was inserted into hasagenre table with ID (${igdbURL}, ${genreID})`);
+                                logInsert('hasagenre', `(${igdbURL}, ${genreID})`);
                                 resolve();
                             }
                         });
@@ -221,7 +248,7 @@ module.exports = {
                             if (err) {
                                 reject(err);
                             } else {
-                                console.log(`INSERT A row was inserted into hasarating table with ID (${igdbURL}, ${ratingID})`);
+                                logInsert('hasarating', `(${igdbURL}, ${ratingID})`);
                                 resolve();
                             }
                         });
@@ -245,7 +272,7 @@ module.exports = {
                             if (err) {
                                 reject(err);
                             } else {
-                                console.log(`INSERT A row was inserted into rating table with ID ${ratingID}`);
+                                logInsert('rating', ratingID);
                                 resolve(ratingID);
                             }
                         });
@@ -270,7 +297,7 @@ module.exports = {
                                 reject(err);
                             } else {
                                 let seriesID = this.lastID;
-                                console.log(`INSERT ${series} was inserted into series table with ID ${seriesID}`);
+                                logInsert('series', seriesID, series);
                                 resolve(seriesID);
                             }
                         });
@@ -290,12 +317,13 @@ module.exports = {
                     } else {
                         db.run(`INSERT
                                 INTO amiibo
-                                VALUES (?, ?, ?, ?, ?, ?)`, [title, seriesID, msrp, type, currencyCode], function (err) {
+                                VALUES (?, ?, ?, ?, ?,
+                                        ?)`, [title, seriesID, msrp, type, currencyCode], function (err) {
                             if (err) {
                                 reject(err);
                             } else {
                                 let amiiboID = this.lastID;
-                                console.log(`INSERT ${title} was inserted into amiibo table with ID ${amiiboID}`);
+                                logInsert('amiibo', amiiboID, title);
                                 resolve(amiiboID);
                             }
                         });
@@ -315,12 +343,13 @@ module.exports = {
                     } else {
                         db.run(`INSERT
                                 INTO figure
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [cost, timestamp, retailerID, isNew ? 1 : 0, inBox ? 1 : 0, amiiboID, region, isGift, currencyCode, notes], function (err) {
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                                        ?)`, [cost, timestamp, retailerID, isNew ? 1 : 0, inBox ? 1 : 0, amiiboID, region, isGift, currencyCode, notes], function (err) {
                             if (err) {
                                 reject(err);
                             } else {
                                 let figureID = this.lastID;
-                                console.log(`INSERT A figure was inserted into figure table with ID ${figureID}`);
+                                logInsert('figure', figureID);
                                 resolve(figureID);
                             }
                         });
@@ -330,5 +359,13 @@ module.exports = {
                 reject({status: 400});
             }
         });
+    }
+}
+
+function logInsert(table, id, description = null) {
+    if (description === null) {
+        console.log('INSERT A row was inserted into ' + table + ' table with ID ' + id);
+    } else {
+        console.log('INSERT ' + description + ' was inserted into ' + table + ' table with ID ' + id);
     }
 }

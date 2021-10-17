@@ -36,9 +36,8 @@ router.get('/completed', function (req, res, next) {
 });
 
 router.get('/:libraryId', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
-    driver.getLibraryGame(libraryId).then(result => {
+    SQLite3Driver.getLibraryGame(libraryId).then(result => {
         if (result && result.constructor === Object && Object.keys(result).length === 0) {
             res.status(404);
             res.render('404', {title: 'Pixel Shelf', type: 'game'});
@@ -56,9 +55,8 @@ router.get('/:libraryId', function (req, res, next) {
 });
 
 router.get('/:libraryId/edit', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const libraryId = req.params.libraryId;
-    driver.getLibraryGame(libraryId).then(result => {
+    SQLite3Driver.getLibraryGame(libraryId).then(result => {
         res.render('edit/game', {
             title: result.title + ' - Pixel Shelf',
             entry: result,
@@ -69,7 +67,6 @@ router.get('/:libraryId/edit', function (req, res, next) {
         res.render('error', {message: "Error", error: err});
     });
 });
-
 
 
 module.exports = router;

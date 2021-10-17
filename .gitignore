@@ -7,6 +7,7 @@ public/stylesheets
 public/images/covers
 public/images/ratings
 public/images/amiibo/
+public/images/logos/
 config.json
 eink/__pycache__
 eink/lib
@@ -16,4 +17,5 @@ keys/
 
 !public/images/covers/placeholder.jpg
 !public/images/amiibo/placeholder.png
+!public/images/logos/placeholder.png
 !models/backups/README.txt

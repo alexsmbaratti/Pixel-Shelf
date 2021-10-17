@@ -1,19 +1,28 @@
 const pixelShelf = require("../app");
 const supertest = require("supertest");
 
+const SQLite3Driver = require('../models/SQLite3Driver');
+
 var consoleID = null;
 var gameID = null;
 var editionID = null;
 var retailerID = null;
 
-beforeAll(() => {
-    // TODO: Initialize database
-    // TODO: Generate token
+beforeAll(done => {
+    SQLite3Driver.initializeDB().then(() => {
+        done();
+    })
 });
 
-test('API is online', () => {
+test('API is reachable', () => {
     return supertest(pixelShelf)
         .get("/api")
+        .expect(200);
+});
+
+test('Database is reachable', () => {
+    return supertest(pixelShelf)
+        .get("/api/db")
         .expect(200);
 });
 

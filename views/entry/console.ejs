@@ -14,10 +14,27 @@
         <div class="tile pt-5">
             <div class="tile is-parent is-vertical">
                 <article class="tile is-child box">
-                    <h1 class="title"><%= entry.name %></h1>
                     <div class="columns">
+                        <div class="column is-one-fifth">
+                            <figure class="image is-1by1">
+                                <img src="/api/platforms/<%= id %>/logo">
+                            </figure>
+                        </div>
                         <div class="column">
-                            <h1 class="title is-5"><%= entry.brand %></h1>
+                            <h1 class="title"><%= entry.name %></h1>
+                            <div class="columns">
+                                <div class="column">
+                                    <h1 class="title is-5"><%= entry.brand %></h1>
+                                </div>
+                            </div>
+                            <div id="loading-div"></div>
+                            <div id="tags-div"></div>
+                            <br>
+                            <p id="description" class="has-text-light"></p>
+                            <br>
+                            <a href="<%= entry.igdbURL %>">
+                                <p id="igdb-link" class="has-text-link"></p>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -26,7 +43,7 @@
     </div>
 </div>
 <script>
-    getIGDBInfo(<%= entry.gameID %>);
+    getIGDBInfo(<%= id %>);
 </script>
 </body>
 </html>

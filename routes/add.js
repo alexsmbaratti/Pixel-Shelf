@@ -3,9 +3,8 @@ var router = express.Router();
 var SQLite3Driver = require('../models/SQLite3Driver');
 
 router.get('/game', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getPlatforms().then(platforms => {
-        driver.getCurrencies().then(currencies => {
+    SQLite3Driver.getPlatforms().then(platforms => {
+        SQLite3Driver.getCurrencies().then(currencies => {
             res.render('add/game', {title: 'Pixel Shelf', platforms: platforms, currencies: currencies});
         }).catch(err => {
             res.render('error', {error: err});
@@ -20,24 +19,10 @@ router.get('/retailer', function (req, res, next) {
 });
 
 router.get('/amiibo', function (req, res, next) {
-    let driver = new SQLite3Driver();
-    driver.getSeries().then(result => {
+    SQLite3Driver.getSeries().then(result => {
         res.render('add/figure', {title: 'Pixel Shelf', series: result});
     }).catch(err => {
         res.render('error', {error: err});
-    });
-});
-
-router.get('/mass', function (req, res, next) {
-    res.render('mass', {title: 'Pixel Shelf'});
-});
-
-router.post('/mass', function (req, res) {
-    let driver = new SQLite3Driver();
-    driver.massImport(req.body).then(result => {
-        res.status(200).send({"status": 200});
-    }).catch(err => {
-        res.status(500).send({"status": 500});
     });
 });
 

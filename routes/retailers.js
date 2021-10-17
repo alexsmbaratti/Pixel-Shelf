@@ -7,9 +7,8 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:retailerId', function (req, res, next) {
-    let driver = new SQLite3Driver();
     const retailerId = req.params.retailerId;
-    driver.getRetailer(retailerId).then(result => {
+    SQLite3Driver.getRetailer(retailerId).then(result => {
         if (result && result.constructor === Object && Object.keys(result).length === 0) {
             res.status(404);
             res.render('404', {title: 'Pixel Shelf', type: 'retailer'});
