@@ -27,9 +27,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - name: Initialize SQLite3 database
-        run: |-
-          mkdir models/db
-          cat models/initdb.sql | sqlite3 models/db/pixelshelf.db
       - name: Run Jest Testing
         run: npm test
