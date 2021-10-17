@@ -45,6 +45,18 @@ test('Game Library Page', () => {
         });
 });
 
+test('Game Library Edit Page', () => {
+    return supertest(pixelShelf)
+        .get("/library/1/edit")
+        .expect(200)
+        .then((response) => {
+            const documentBody = new JSDOM(response.text).window.document.body;
+            expect(documentBody.getElementsByTagName('input').item(6).getAttribute('value')).toBe('59.99'); // MSRP
+            expect(documentBody.getElementsByTagName('input').item(6).getAttribute('placeholder')).toBe('59.99'); // MSRP
+            // TODO: Validate other fields
+        });
+});
+
 test('Platform Page', () => {
     return supertest(pixelShelf)
         .get("/platforms/1")
