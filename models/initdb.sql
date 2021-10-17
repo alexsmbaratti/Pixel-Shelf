@@ -1,24 +1,3 @@
--- Drop Existing Tables
-DROP TABLE game;
-DROP TABLE platform;
-DROP TABLE edition;
-DROP TABLE library;
-DROP TABLE amiibo;
-DROP TABLE series;
-DROP TABLE figure;
-DROP TABLE retailer;
-DROP TABLE brand;
-DROP TABLE wishlist;
-DROP TABLE igdb;
-DROP TABLE igdbplatform;
-DROP TABLE rating;
-DROP TABLE genre;
-DROP TABLE hasagenre;
-DROP TABLE hasarating;
-DROP TABLE currency;
-DROP TABLE region;
-DROP TABLE haslink;
-
 -- Create Tables
 CREATE TABLE game
 (

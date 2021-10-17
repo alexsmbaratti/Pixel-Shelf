@@ -635,6 +635,10 @@ router.post('/wishlist', function (req, res) {
     })
 });
 
+router.post('/wishlist/:wishlistId/library', function (req, res) {
+    res.status(501).send({"status": 501, "error": "Not implemented!"});
+});
+
 router.get('/igdb', function (req, res) {
     IGDBDriver.checkStatus().then(result => {
         res.status(200).send({"status": 200});
