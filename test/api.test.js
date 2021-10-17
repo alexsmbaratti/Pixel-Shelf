@@ -3,6 +3,8 @@ const supertest = require("supertest");
 
 const SQLite3Driver = require('../models/SQLite3Driver');
 
+// TODO: Organize by library operations, status, etc.
+
 const EXPECTED_LIBRARY_SIZE = 6;
 
 beforeEach(done => {

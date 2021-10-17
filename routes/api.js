@@ -30,7 +30,6 @@ router.get('/', function (req, res, next) {
  */
 router.get('/library', function (req, res, next) {
     let sortBy = req.query.sortBy;
-    let where = req.query.where; // TODO: Ultimately replace the where query param with filters
     let filters = req.query.filters;
 
     // TODO: Send 400 if filters are malformed
@@ -43,47 +42,11 @@ router.get('/library', function (req, res, next) {
         sortBy = 'title';
     }
 
-    if (where !== undefined) {
-        if (where === 'no-cost') {
-            SQLite3Driver.getLibraryEntriesWithoutCost().then(result => {
-                if (result != undefined) {
-                    res.status(200).send({"status": 200, "data": result});
-                } else {
-                    sendError(res, "No result");
-                }
-            }).catch(err => {
-                sendError(res, err);
-            });
-        } else if (where === 'no-date-added') {
-            SQLite3Driver.getLibraryEntriesWithoutDateAdded().then(result => {
-                if (result != undefined) {
-                    res.status(200).send({"status": 200, "data": result});
-                } else {
-                    sendError(res, "No result");
-                }
-            }).catch(err => {
-                sendError(res, err);
-            });
-        } else if (where === 'no-retailer') {
-            SQLite3Driver.getLibraryEntriesWithoutRetailer().then(result => {
-                if (result != undefined) {
-                    res.status(200).send({"status": 200, "data": result});
-                } else {
-                    sendError(res, "No result");
-                }
-            }).catch(err => {
-                sendError(res, err);
-            });
-        } else {
-            res.status(501).send({"status": 501, "msg": "Not Implemented!"});
-        }
-    } else {
-        SQLite3Driver.getLibrary(sortBy, parsedFilters).then(libraryEntries => {
-            res.status(200).send({"status": 200, "library": libraryEntries});
-        }).catch(err => {
-            sendError(res, err);
-        });
-    }
+    SQLite3Driver.getLibrary(sortBy, parsedFilters).then(libraryEntries => {
+        res.status(200).send({"status": 200, "library": libraryEntries});
+    }).catch(err => {
+        sendError(res, err);
+    });
 });
 
 router.get('/system/platform', function (req, res, next) {

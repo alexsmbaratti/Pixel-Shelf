@@ -76,7 +76,7 @@ function requestNewToken() {
     request.send();
 }
 
-function maintenanceEndpointFetch(endpoint, id) {
+function maintenanceEndpointFetch(endpoint, id, key = 'data') {
     let request = new XMLHttpRequest();
     request.open('GET', endpoint);
 
@@ -90,8 +90,8 @@ function maintenanceEndpointFetch(endpoint, id) {
             if (request.status === 200) {
                 let title = document.getElementById(id + '-title');
                 let text = document.createElement("p");
-                text.innerHTML = data['data'].length;
-                let array = JSON.stringify(data['data']);
+                text.innerHTML = data[key].length;
+                let array = JSON.stringify(data[key]);
                 text.setAttribute('onclick', `toggleModal('${id}', ${array})`);
                 title.setAttribute('onclick', `toggleModal('${id}', ${array})`);
                 rowData.appendChild(text);

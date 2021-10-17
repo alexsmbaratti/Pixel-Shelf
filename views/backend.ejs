@@ -17,9 +17,9 @@
         maintenanceEndpointFetch('/api/games?where=no-igdb', 'games-no-igdb');
         maintenanceEndpointFetch('/api/editions?where=no-upc', 'editions-no-upc');
         maintenanceEndpointFetch('/api/editions?where=no-msrp', 'editions-no-msrp');
-        maintenanceEndpointFetch('/api/library?where=no-cost', 'library-no-cost');
-        maintenanceEndpointFetch('/api/library?where=no-date-added', 'library-no-date-added');
-        maintenanceEndpointFetch('/api/library?where=no-retailer', 'library-no-retailer');
+        maintenanceEndpointFetch('/api/library?filters=[no-cost]', 'library-no-cost', 'library');
+        maintenanceEndpointFetch('/api/library?filters=[no-date-added]', 'library-no-date-added', 'library');
+        maintenanceEndpointFetch('/api/library?filters=[no-retailer]', 'library-no-retailer', 'library');
         maintenanceEndpointFetch('/api/figures?where=no-date-added', 'figure-no-date-added');
         dbStatsFetch();
     </script>
