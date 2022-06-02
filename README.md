@@ -4,7 +4,7 @@ Pixel Shelf is a web server that can be used to track and organize your video ga
 can see all the details about a particular game in your collection at a glance, including cost breakdown, game progress,
 and the condition of the physical copy.
 
-![Pixel Shelf's library entry page](https://alexsmbaratti.com/images/pixel-shelf/library_screenshot.png)
+![Pixel Shelf's library entry page](https://alexsmbaratti.com/resources/images/pixel-shelf/library_screenshot.png)
 
 ## Prerequisites
 
